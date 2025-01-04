@@ -89,7 +89,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   const EdgeInsets.only(top: 15, bottom: 15),
                   backgroundColor: primarySwatch,
                   minimumSize: const Size(254, 45)),
-              onPressed: () {},
+              onPressed: () {
+                context.go('/home');
+              },
               child: const Text(
                 "Next",
                 style: TextStyle(

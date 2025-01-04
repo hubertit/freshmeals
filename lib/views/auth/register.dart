@@ -9,7 +9,6 @@ import '../../utls/styles.dart';
 import '../../utls/validatots.dart';
 import 'widgets/input_dec.dart';
 import 'widgets/phone_field.dart';
-import 'widgets/text_button.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -116,17 +115,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 : ElevatedButton(
                     style: StyleUtls.buttonStyle,
                     onPressed: () {
-                      var json = {
-                        "phone": phoneController.text,
-                        "email": emailController.text,
-                        "names": namesController.text,
-                        "password": passwordController.text
-                      };
-                      if (key.currentState!.validate()) {
-                        ref
-                            .read(userProvider.notifier)
-                            .register(context, ref, json);
-                      }
+                      context.go("/home");
+                      // var json = {
+                      //   "phone": phoneController.text,
+                      //   "email": emailController.text,
+                      //   "names": namesController.text,
+                      //   "password": passwordController.text
+                      // };
+                      // if (key.currentState!.validate()) {
+                      //   ref
+                      //       .read(userProvider.notifier)
+                      //       .register(context, ref, json);
+                      // }
                     },
                     child: const Text(
                       "Register",

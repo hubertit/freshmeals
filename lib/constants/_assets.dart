@@ -15,4 +15,12 @@ class AssetsUtils {
   static const nuts = "assets/images/Nuts.png";
   static const pasta = "assets/images/pasta.png";
   static const vegetables = "assets/images/vegetabless.png";
+////
+  static const lunch = "assets/images/lunch.png";
+  static const salad = "assets/images/salad.png";
+  static const snack = "assets/images/snack.png";
+  static const banner = "assets/images/Banner.png";
+  static const breakfast = "assets/images/breakfast.png";
+  static const dinner = "assets/images/dinner.png";
+
 }

@@ -47,6 +47,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   font_awesome_flutter: ^10.8.0
   geekyants_flutter_gauges: ^1.0.4
+  carousel_slider: ^5.0.0
 
 
 dev_dependencies:

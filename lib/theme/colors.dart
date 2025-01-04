@@ -38,7 +38,8 @@ const MaterialColor primarySwatch = MaterialColor(
 );
 
 
-Color scaffold = const Color(0xffffffff);
+// Color scaffold = const Color(0xffffffff);
+Color scaffold = const Color(0xfff5f8fe);
 Color primaryText = const Color(0xff202123);
 Color secondarTex = const Color(0xff5F6368);
 Color fieldsBackground = const Color(0xffFFFFFF);

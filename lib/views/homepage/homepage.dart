@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
+import 'package:freshmeals/views/homepage/meals.dart';
 
 // int screenIndex =1;
 class Homepage extends ConsumerStatefulWidget {
@@ -19,13 +20,13 @@ class _HomepageState extends ConsumerState<Homepage> {
     return Scaffold(
       body: IndexedStack(
         index: _index,
-        children: [
-          const Center(child: Text("Meals"),),
-          const Center(child: Text("Search"),),
-          const Center(child: Text("Cart"),),
-          const Center(child: Text("Favorites"),),
+        children:  [
+          MealsPage(),
+          Center(child: Text("Search"),),
+          Center(child: Text("Cart"),),
+          Center(child: Text("Favorites"),),
           // user!.user == null ? const SigninScreen() :
-          const Center(child: Text("Profile"),),
+          Center(child: Text("Profile"),),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

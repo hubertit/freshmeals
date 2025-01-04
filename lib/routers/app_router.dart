@@ -1,3 +1,6 @@
+import 'package:freshmeals/views/homepage/homepage.dart';
+import 'package:freshmeals/views/homepage/luch_screen.dart';
+import 'package:freshmeals/views/homepage/product_details_add_to_cart.dart';
 import 'package:freshmeals/views/welcome/ages_screen.dart';
 import 'package:freshmeals/views/welcome/gender_screen.dart';
 import 'package:freshmeals/views/welcome/goal_screen.dart';
@@ -67,5 +70,17 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
     path: '/preferences',
     builder: (context, state) =>  const PreferencesScreen(),
+  ),
+  GoRoute(
+    path: '/home',
+    builder: (context, state) =>  const Homepage(),
+  ),
+  GoRoute(
+    path: '/lunch',
+    builder: (context, state) =>   LunchPage(),
+  ),
+  GoRoute(
+    path: '/productDetails',
+    builder: (context, state) =>   ProductDetailPage(),
   ),
 ]);
