@@ -32,9 +32,9 @@ String formatStringDigits(String digits) {
   // Check the number of digits
   if (digits=='') {
     return ""; // Return all digits if 12 or fewer
-  } else if (digits.length <= 15) {
+  } else if (digits.length <= 13) {
     return digits; // Return all digits if 12 or fewer
   } else {
-    return  "${digits.substring(0, 15)}.."; // Return only the first 11 digits
+    return  "${digits.substring(0, 12)}.."; // Return only the first 11 digits
   }
 }
