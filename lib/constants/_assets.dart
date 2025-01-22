@@ -22,5 +22,7 @@ class AssetsUtils {
   static const banner = "assets/images/Banner.png";
   static const breakfast = "assets/images/breakfast.png";
   static const dinner = "assets/images/dinner.png";
-
+  static const rectangle = "assets/images/Rectangle.png";
+  static const profile = "assets/images/Screenshot 2024-12-27 at 2.46.10 PM.png";
+  static const success = "assets/images/Group 721.png";
 }

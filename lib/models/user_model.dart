@@ -1,57 +1,81 @@
 class UserModel {
-  final String userId;
-  final String lname;
-  final String fname;
-  final String phone;
-  final String email;
-  final String password;
-  final String token;
-  final String role;
-  final String createdAt;
-  final String status;
+  String names;
+  String phone;
+  String email;
+  String password;
+  int age;
+  String gender;
+  String healthStatus;
+  double height;
+  double weight;
+  String activityLevel;
+  List<int> dietaryPreferences;
 
   UserModel({
-    required this.userId,
-    required this.lname,
-    required this.fname,
+    required this.names,
     required this.phone,
     required this.email,
     required this.password,
+    required this.age,
+    required this.gender,
+    required this.healthStatus,
+    required this.height,
+    required this.weight,
+    required this.activityLevel,
+    required this.dietaryPreferences,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "name": names,
+      "phone": phone,
+      "email": email,
+      "password": password,
+      "age": age,
+      "gender": gender,
+      "health_status": healthStatus,
+      "height": height,
+      "weight": weight,
+      "activity_level": activityLevel,
+      "dietary_preferences": dietaryPreferences,
+    };
+  }
+}
+
+
+class User {
+  final int userId;
+  final String name;
+  final String email;
+  final String phoneNumber;
+  final String token;
+
+  User({
+    required this.userId,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
     required this.token,
-    required this.role,
-    required this.createdAt,
-    required this.status,
   });
 
-  // Factory method to create a User from a JSON object
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      userId: json['user_id'],
-      lname: json['lname'],
-      fname: json['fname'],
-      phone: json['phone'],
-      email: json['email'],
-      password: json['password'],
-      token: json['token'],
-      role: json['role'],
-      createdAt: json['created_at'],
-      status: json['status'],
+  // Factory constructor to parse from JSON
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      userId: json['user_id'] ?? 0,
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      phoneNumber: json['phone_number'] ?? '',
+      token: json['token'] ?? '',
     );
   }
 
-  // Method to convert a User object to a JSON object
+  // Method to convert User object to JSON
   Map<String, dynamic> toJson() {
     return {
       'user_id': userId,
-      'lname': lname,
-      'fname': fname,
-      'phone': phone,
+      'name': name,
       'email': email,
-      'password': password,
+      'phone_number': phoneNumber,
       'token': token,
-      'role': role,
-      'created_at': createdAt,
-      'status': status,
     };
   }
 }

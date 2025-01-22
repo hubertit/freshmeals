@@ -3,13 +3,19 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/user_model.dart';
+
 class WeightInputScreen extends StatefulWidget {
+  final UserModel user;
+
+  const WeightInputScreen({super.key, required this.user});
+
   @override
   _HeightInputScreenState createState() => _HeightInputScreenState();
 }
 
 class _HeightInputScreenState extends State<WeightInputScreen> {
-  double _height = 70.0; // Default height
+  double _weight = 70.0; // Default height
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +30,19 @@ class _HeightInputScreenState extends State<WeightInputScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Spacer(),
-
+                const Spacer(),
                 Center(
                   child: Text(
-                    '${_height.ceil()} Kg', // Always show ceiled value
+                    '${_weight.ceil()} Kg', // Always show ceiled value
                     style: const TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 // Linear gauge container
                 LinearGauge(
                   start: 0,
@@ -58,12 +65,12 @@ class _HeightInputScreenState extends State<WeightInputScreen> {
                           color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
-                      value: _height,
+                      value: _weight,
                       shape: PointerShape.triangle,
                       isInteractive: true,
                       onChanged: (v) {
                         setState(() {
-                          _height = v.ceil().toDouble();
+                          _weight = v.ceil().toDouble();
                         });
                       },
                     ),
@@ -83,7 +90,8 @@ class _HeightInputScreenState extends State<WeightInputScreen> {
                       ),
                     ),
                     onPressed: () {
-                      context.push('/subscription');
+                      widget.user.weight = _weight;
+                      context.push('/subscription', extra: widget.user);
                     },
                     child: const Text(
                       "NEXT",
@@ -100,8 +108,6 @@ class _HeightInputScreenState extends State<WeightInputScreen> {
                 )
               ],
             ),
-
-
           ],
         ),
       ),

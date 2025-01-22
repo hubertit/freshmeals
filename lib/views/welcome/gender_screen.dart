@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:freshmeals/models/user_model.dart';
+import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 class GenderScreen extends StatefulWidget {
-  const GenderScreen({Key? key}) : super(key: key);
+  final UserModel user;
+  const GenderScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   State<GenderScreen> createState() => _GenderScreenState();
 }
 
 class _GenderScreenState extends State<GenderScreen> {
+  // Variable to store the selected gender
+  String selectedGender ="";
+
+  // Helper method to set the selected gender
+  void selectGender(String gender) {
+    setState(() {
+      selectedGender = gender;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,69 +50,63 @@ class _GenderScreenState extends State<GenderScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 60),
-            Spacer(),
-            Row(
-              children: [
-                Container(
-                  // width: 50,
-                  // height: 50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF5F8FD),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    FontAwesomeIcons.mars,
-                    size: 40,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Male',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+            const Spacer(),
+            GestureDetector(
+              onTap: () => selectGender("Male"),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: selectedGender == "Male" ? primarySwatch : const Color(0xffF5F8FD),
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-              ],
+                    child:  Icon(
+                      FontAwesomeIcons.mars,
+                      size: 40,
+                      color:selectedGender == "Male" ?Colors.white: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Text(
+                    'Male',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: selectedGender == "Male" ? primarySwatch : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                Container(
-                  // width: 50,
-                  // height: 50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF5F8FD),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    FontAwesomeIcons.venus,
-                    size: 40,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Female',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+            GestureDetector(
+              onTap: () => selectGender("Female"),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: selectedGender == "Female" ? Colors.pink : const Color(0xffF5F8FD),
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-              ],
+                    child:  Icon(
+                      FontAwesomeIcons.venus,
+                      size: 40,
+                      color:selectedGender == "Female" ?Colors.white: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Text(
+                    'Female',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: selectedGender == "Female" ? Colors.pink : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             ElevatedButton(
@@ -111,8 +117,15 @@ class _GenderScreenState extends State<GenderScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {
-                context.push('/height');
+              onPressed: selectedGender == null
+                  ? null
+                  : () {
+                // Save the selected gender in the user object
+                widget.user.gender = selectedGender;
+                // var userM = widget.user;
+                // userM.gender = selectedGender;
+                // Navigate to the next screen
+                context.push('/height',extra: widget.user);
               },
               child: const Text(
                 "NEXT",

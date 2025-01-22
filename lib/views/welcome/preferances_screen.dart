@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/preferences.dart';
-import 'package:freshmeals/theme/colors.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:go_router/go_router.dart';
 
-class PreferencesScreen extends StatefulWidget {
-  const PreferencesScreen({Key? key}) : super(key: key);
+import '../../models/general/preferances_model.dart';
+import '../../models/user_model.dart';
+
+class PreferencesScreen extends ConsumerStatefulWidget {
+  final UserModel user;
+  const PreferencesScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<PreferencesScreen> createState() => _PreferancesScreenState();
+  ConsumerState<PreferencesScreen> createState() => _PreferencesScreenState();
 }
 
-class _PreferancesScreenState extends State<PreferencesScreen> {
-  int? _selectedGoalIndex;
+class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(preferencesProvider.notifier).preferences(context);
+    });
+    super.initState();
+  }
+
+  final selectedPreferenceProvider = StateProvider<List<int>>((ref) => []);
 
   @override
   Widget build(BuildContext context) {
+    var preferences = ref.watch(preferencesProvider);
+    var selectedPref = ref.watch(selectedPreferenceProvider);
+    var user = ref.watch(userProvider);
     return Scaffold(
-      backgroundColor: Color(0xfff5f8fe),
+      backgroundColor: const Color(0xfff5f8fe),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -28,81 +45,125 @@ class _PreferancesScreenState extends State<PreferencesScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              "You can choose interests and we have a few suggestions for you",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold, color: Colors.black54
-              ),
-            ),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                mainAxisExtent:
-                150.0, // Specify the height you want for each item
-              ),
-              itemCount: preferences.length,
-              itemBuilder: (context, index) {
-                Preference preference =
-                preferences[index];
-                return Container(
-                  // padding: const EdgeInsets.only(left: 5, bottom: 5),
-                  decoration: BoxDecoration(
-                    // color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
+      body: preferences!.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    "You can choose interests and we have a few suggestions for you",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                            preference.imagePath),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        mainAxisExtent: 150.0,
                       ),
-                      Text(
-                        preference.name,
-                        style: const TextStyle(fontSize: 12),
-                      )
-                    ],
+                      itemCount: preferences.preferances.length,
+                      itemBuilder: (context, index) {
+                        PreferenceModel preference =
+                            preferences.preferances[index];
+                        bool isSelected = selectedPref
+                            .contains(int.parse(preference.preferenceId));
+
+                        return GestureDetector(
+                          onTap: () {
+                            final selectedPreferences =
+                                ref.read(selectedPreferenceProvider.notifier);
+
+                            if (selectedPreferences.state
+                                .contains(int.parse(preference.preferenceId))) {
+                              selectedPreferences
+                                  .state = List.from(selectedPreferences.state)
+                                ..remove(int.parse(preference.preferenceId));
+                              setState(() {
+                                widget.user.dietaryPreferences = selectedPref;
+                              });
+                            } else {
+                              selectedPreferences.state =
+                                  List.from(selectedPreferences.state)
+                                    ..add(int.parse(preference.preferenceId));
+                              setState(() {
+                                widget.user.dietaryPreferences = selectedPref;
+                              });
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Colors.green,
+                                      width: 2,
+                                    )
+                                  : null,
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.network(
+                                  preference.imageUrl,
+                                  height: 70,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  preference.name,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      ref.read(userProvider.notifier).register(context, ref, widget.user.toJson());
+                      // context.push('/welcome');
+                    },
+                    child: user!.isLoading
+                        ? CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            "Done",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              onPressed: () {
-                context.push('/welcome');
-              },
-              child: const Text(
-                "Done",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
     );
   }
 }

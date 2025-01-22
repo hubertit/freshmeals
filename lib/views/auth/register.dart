@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/models/user_model.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
@@ -26,7 +27,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   var emailController = TextEditingController();
 
   bool loading = false;
-
   final List<String> _categories = ["Customer", "Farmer"];
 
   String? _category;
@@ -38,9 +38,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     country = CountryService().findByCode("US")!;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    var user = ref.watch(userProvider);
+    var userProv = ref.watch(userProvider);
     return Scaffold(
       body: Form(
         key: key,
@@ -69,16 +70,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 decoration: iDecoration(hint: "Full name"),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 15),
-            //   child: TextFormField(
-            //     controller: lNameController,
-            //     validator: (s) => s?.trim().isNotEmpty == true
-            //         ? null
-            //         : 'Last Name is required',
-            //     decoration: iDecoration(hint: "Last Name"),
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: TextFormField(
@@ -87,7 +78,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 decoration: iDecoration(hint: "Email"),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: TextFormField(
@@ -100,6 +90,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
             PhoneField(
               country: country,
+              validator: (s) => s?.trim().isNotEmpty == true
+                  ? null
+                  : 'Phone number is required',
               controller: phoneController,
               callback: (Country country) {
                 setState(() {
@@ -107,26 +100,32 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 });
               },
             ),
-            SizedBox(height: 20,),
-            user!.isLoading
+            const SizedBox(
+              height: 20,
+            ),
+            userProv!.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : ElevatedButton(
                     style: StyleUtls.buttonStyle,
                     onPressed: () {
-                      context.go("/home");
-                      // var json = {
-                      //   "phone": phoneController.text,
-                      //   "email": emailController.text,
-                      //   "names": namesController.text,
-                      //   "password": passwordController.text
-                      // };
-                      // if (key.currentState!.validate()) {
-                      //   ref
-                      //       .read(userProvider.notifier)
-                      //       .register(context, ref, json);
-                      // }
+                      UserModel user = UserModel(
+                        names: namesController.text ?? "",
+                        phone: "+${country.phoneCode}${phoneController.text}" ?? "",
+                        email: emailController.text ?? "",
+                        password: passwordController.text ?? "",
+                        age: 0,
+                        gender: '',
+                        healthStatus: 'Good',
+                        height: 0,
+                        weight: 0,
+                        activityLevel: "Moderately Active",
+                        dietaryPreferences: [],
+                      );
+                      if (key.currentState!.validate()) {
+                        context.push("/goal", extra: user);
+                      }
                     },
                     child: const Text(
                       "Register",

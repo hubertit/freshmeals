@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -6,7 +5,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
 import '../../riverpod/providers/auth_providers.dart';
-import '../../utls/styles.dart';
 import 'widgets/input_dec.dart';
 
 class SigninScreen extends ConsumerStatefulWidget {
@@ -104,7 +102,11 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
             ),
             const SizedBox(height: 20),
             // Sign In Button
-            ElevatedButton(
+            user!.isLoading
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                :ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF64BA02), // Green
                 minimumSize: const Size(double.infinity, 50),
@@ -113,11 +115,11 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                 ),
               ),
               onPressed: () {
-                // if (key.currentState!.validate()) {
-                //   ref.read(userProvider.notifier).login(
-                //       context, ref, phoneController.text, passwordController.text);
-                // }
-                context.push("/goal");
+                if (key.currentState!.validate()) {
+                  ref.read(userProvider.notifier).login(
+                      context, ref, phoneController.text, passwordController.text);
+                }
+                // context.go("/home");
               },
               child: const Text(
                 "Sign In",

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/user_model.dart';
+
 class AgeScreen extends StatefulWidget {
-  const AgeScreen({super.key});
+  final UserModel user;
+
+  const AgeScreen({super.key, required this.user});
 
   @override
   State<AgeScreen> createState() => _AgeScreenState();
@@ -21,7 +25,7 @@ class _AgeScreenState extends State<AgeScreen> {
             Navigator.pop(context);
           },
         ),
-        title:    const Text(
+        title: const Text(
           "What's your age?",
           style: TextStyle(
             fontSize: 20,
@@ -35,7 +39,6 @@ class _AgeScreenState extends State<AgeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           // const SizedBox(height: 30),
           const Spacer(),
 
@@ -107,7 +110,9 @@ class _AgeScreenState extends State<AgeScreen> {
                 ),
               ),
               onPressed: () {
-                context.push('/gender');
+                var userM = widget.user;
+                userM.age = _selectedAge;
+                context.push('/gender', extra: userM);
                 // Handle the "Next" button press
                 // print('Selected Age: $_selectedAge');
               },

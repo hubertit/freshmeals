@@ -1,67 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
-class Plan {
-  final String name;
-  final String price;
-  final String description;
 
-  Plan({
-    required this.name,
-    required this.price,
-    required this.description,
-  });
+import '../../models/user_model.dart';
 
-  // Factory method to create a Plan object from JSON
-  factory Plan.fromJson(Map<String, dynamic> json) {
-    return Plan(
-      name: json['name'] as String,
-      price: json['price'] as String,
-      description: json['description'] as String,
-    );
-  }
+// class Plan {
+//   final String name;
+//   final String price;
+//   final String description;
+//
+//   Plan({
+//     required this.name,
+//     required this.price,
+//     required this.description,
+//   });
+//
+//   // Factory method to create a Plan object from JSON
+//   factory Plan.fromJson(Map<String, dynamic> json) {
+//     return Plan(
+//       name: json['name'] as String,
+//       price: json['price'] as String,
+//       description: json['description'] as String,
+//     );
+//   }
+//
+//   // Convert a Plan object to JSON
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'name': name,
+//       'price': price,
+//       'description': description,
+//     };
+//   }
+// }
+//
+// final List<Plan> dummyPlans = [
+//   Plan(
+//     name: 'Basic Plan',
+//     price: 'RWF 30,000 /month',
+//     description:
+//         'Perfect for individuals seeking a simple, cost-effective way to enjoy healthy meals.',
+//   ),
+//   Plan(
+//     name: 'Standard Plan',
+//     price: 'RWF 50,000 /month',
+//     description:
+//         'Ideal for small families looking for variety and convenience in their meals.',
+//   ),
+//   Plan(
+//     name: 'Premium Plan',
+//     price: 'RWF 80,000 /month',
+//     description:
+//         'Designed for larger families or individuals who want premium quality meals with extra features.',
+//   ),
+// ];
 
-  // Convert a Plan object to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'price': price,
-      'description': description,
-    };
-  }
-}
-final List<Plan> dummyPlans = [
-  Plan(
-    name: 'Basic Plan',
-    price: 'RWF 30,000 /month',
-    description: 'Perfect for individuals seeking a simple, cost-effective way to enjoy healthy meals.',
-  ),
-  Plan(
-    name: 'Standard Plan',
-    price: 'RWF 50,000 /month',
-    description: 'Ideal for small families looking for variety and convenience in their meals.',
-  ),
-  Plan(
-    name: 'Premium Plan',
-    price: 'RWF 80,000 /month',
-    description: 'Designed for larger families or individuals who want premium quality meals with extra features.',
-  ),
-];
+class SubscriptionScreen extends ConsumerStatefulWidget {
+  final UserModel user;
 
-class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({Key? key}) : super(key: key);
+  const SubscriptionScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<SubscriptionScreen> createState() => _SubscriptionScreenState();
+  ConsumerState<SubscriptionScreen> createState() => _SubscriptionScreenState();
 }
 
-class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  int _selectedGoalIndex =0;
+class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
+  int _selectedGoalIndex = 0;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(subscriptionsProvider.notifier).subscriptions(context);
+    });
 
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    print(widget.user.phone);
+    var subscriptions = ref.watch(subscriptionsProvider);
     return Scaffold(
-      backgroundColor: Color(0xfff5f8fe),
+      backgroundColor: const Color(0xfff5f8fe),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -73,7 +93,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           },
         ),
       ),
-      body: Padding(
+      body:  subscriptions!.isLoading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
+          : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,30 +107,30 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               "Select a plan that fits your  health goal",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold, color: Colors.black54
-              ),
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54),
             ),
             const SizedBox(height: 30),
             Expanded(
               child: ListView.builder(
-                itemCount: dummyPlans.length,
+                itemCount: subscriptions.subscriptions.length,
                 itemBuilder: (context, index) {
-                  final goal = dummyPlans[index];
+                  final subscription = subscriptions.subscriptions[index];
                   final isSelected = _selectedGoalIndex == index;
 
                   return GestureDetector(
                     onTap: () {
                       setState(() {
                         _selectedGoalIndex = index;
+                        // widget.user.activityLevel = subscription.name;
                       });
                     },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color:
-                             Colors.white,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         // border: Border.all(
                         //   color:
@@ -120,32 +144,41 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      goal.name,
+                                      subscription.name,
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
                                     ),
-                                    if(isSelected)Switch(
-                                      value: true,
-                                      onChanged: (value) {
-                                        // _toggleTheme();
-                                      },
-                                      inactiveTrackColor: primarySwatch,
-                                      activeTrackColor: primarySwatch,
-                                      activeColor: Colors.white,
-                                    ),
+                                    if (isSelected)
+                                      Switch(
+                                        value: true,
+                                        onChanged: (value) {
+                                          // _toggleTheme();
+                                        },
+                                        inactiveTrackColor: primarySwatch,
+                                        activeTrackColor: primarySwatch,
+                                        activeColor: Colors.white,
+                                      ),
                                   ],
                                 ),
                                 const SizedBox(height: 5),
-                                Text(goal.price,style: TextStyle(fontWeight: FontWeight.bold,color: primarySwatch,fontSize: 16),),
+                                Text(
+                                  "${subscription.price} Per ${subscription.duration} Days",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: primarySwatch,
+                                      fontSize: 16),
+                                ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  goal.description,
+                                  subscription.description,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -170,7 +203,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
               ),
               onPressed: () {
-                context.push('/preferences');
+                context.push('/preferences',extra: widget.user);
               },
               child: const Text(
                 "NEXT",

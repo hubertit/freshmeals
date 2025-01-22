@@ -3,7 +3,12 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/user_model.dart';
+
 class HeightInputScreen extends StatefulWidget {
+  final UserModel user;
+  const HeightInputScreen({super.key, required this.user});
+
   @override
   _HeightInputScreenState createState() => _HeightInputScreenState();
 }
@@ -26,7 +31,8 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Linear gauge container
-                Container( height: 500,
+                Container(
+                  height: 500,
                   child: LinearGauge(
                     start: 0,
                     end: 250, // Adjust max height as needed
@@ -73,7 +79,9 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
                       ),
                     ),
                     onPressed: () {
-                      context.push('/weight');
+                      widget.user.height = _height.ceil() / 100;
+
+                      context.push('/weight', extra: widget.user);
                     },
                     child: const Text(
                       "NEXT",
@@ -92,10 +100,10 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
             ),
             Positioned(
               right: 0,
-             bottom: MediaQuery.of(context).size.height/2,
+              bottom: MediaQuery.of(context).size.height / 2,
               child: Center(
                 child: Text(
-                  '${_height.ceil()} cm', // Always show ceiled value
+                  '${_height.ceil() / 100} M', // Always show ceiled value
                   style: const TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,

@@ -47,7 +47,12 @@ dependencies:
   pin_code_fields: ^8.0.1
   font_awesome_flutter: ^10.8.0
   geekyants_flutter_gauges: ^1.0.4
+  geolocator: ^13.0.1
   carousel_slider: ^5.0.0
+  google_maps_webservice: ^0.0.20-nullsafety.5
+  flutter_markdown: ^0.7.4+1
+  google_maps_flutter: ^2.2.5
+  flutter_xlider: ^3.5.0
 
 
 dev_dependencies:
