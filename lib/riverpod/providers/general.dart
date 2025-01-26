@@ -5,7 +5,6 @@ import 'package:freshmeals/riverpod/notifiers/general/subscription.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_type.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meals_category.dart';
 
-import '../notifiers/home/meal.dart';
 
 final healthGoalsProvider =
 StateNotifierProvider<HealthGoalsNotifier, HealthGoalState?>((ref) {
@@ -26,8 +25,4 @@ StateNotifierProvider<MealsCategoryNotifier, MealsCategoryState?>((ref) {
 final mealTypesProvider =
 StateNotifierProvider<MealsTypeNotifier, MealsTypeState?>((ref) {
   return MealsTypeNotifier();
-});
-final homeMealsDataProvider =
-StateNotifierProvider<MealsNotifier, MealsState?>((ref) {
-  return MealsNotifier();
 });

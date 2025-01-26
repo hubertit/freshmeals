@@ -8,6 +8,7 @@ import 'package:freshmeals/utls/styles.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
+import '../../riverpod/providers/home.dart';
 
 class MealsPage extends ConsumerStatefulWidget {
   const MealsPage({super.key});
@@ -38,7 +39,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
         elevation: 0,
         toolbarHeight: 100,
         title: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: [
               TextField(
@@ -60,7 +61,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              SingleChildScrollView(
+             if(types!.mealCategories.isNotEmpty) SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                     children:
@@ -86,75 +87,94 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CarouselSlider.builder(
-                        itemCount: categories!.mealCategories.length,
-                        itemBuilder: (context, index, id) => Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  image: const DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image:
-                                          AssetImage(AssetsUtils.banner),
-                                          // NetworkImage(categories
-                                          //     .mealCategories[index]
-                                          //     .imageUrl)
-                                  )),
-                            ),
-                        options: CarouselOptions(
-                          aspectRatio: 16 / 10,
-                          enableInfiniteScroll: false,
-                          enlargeCenterPage: true,
-                          autoPlay: false, // Enable auto slide
-                          autoPlayInterval: const Duration(
-                              seconds: 3), // Slide transition every 3 seconds
-                          autoPlayAnimationDuration: const Duration(
-                              milliseconds: 500), // Half-second animation
-                          autoPlayCurve: Curves.easeInOut, // Smooth transition
-                        )),
+                    // CarouselSlider.builder(
+                    //     itemCount: categories!.mealCategories.length,
+                    //     itemBuilder: (context, index, id) => Container(
+                    //           decoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(10.0),
+                    //               image: const DecorationImage(
+                    //                   fit: BoxFit.fill,
+                    //                   image:
+                    //                       AssetImage(AssetsUtils.banner),
+                    //                       // NetworkImage(categories
+                    //                       //     .mealCategories[index]
+                    //                       //     .imageUrl)
+                    //               )),
+                    //         ),
+                    //     options: CarouselOptions(
+                    //       aspectRatio: 16 / 10,
+                    //       enableInfiniteScroll: false,
+                    //       enlargeCenterPage: true,
+                    //       autoPlay: false, // Enable auto slide
+                    //       autoPlayInterval: const Duration(
+                    //           seconds: 3), // Slide transition every 3 seconds
+                    //       autoPlayAnimationDuration: const Duration(
+                    //           milliseconds: 500), // Half-second animation
+                    //       autoPlayCurve: Curves.easeInOut, // Smooth transition
+                    //     )),
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          image: const DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(AssetsUtils.banner),
+                            // NetworkImage(categories
+                            //     .mealCategories[index]
+                            //     .imageUrl)
+                          )),
+                    ),
                     _buildSection(
                         "Take Your Pick",
                         List.generate(
                           mealsHome.mealsData!.yourPick.length,
                           (index) {
                             var pick = mealsHome.mealsData!.yourPick[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Container(
-                                width: 140,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  boxShadow: const [],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.vertical(
-                                          top: Radius.circular(10)),
-                                      child: Image.network(pick.imageUrl,
-                                          fit: BoxFit.cover),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(formatStringDigits(pick.name),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14)),
-                                          const SizedBox(height: 5),
-                                          Text("${pick.price} Rwf ",
-                                              style: const TextStyle(
-                                                  color: primarySwatch,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
+                            return InkWell(
+                              onTap: () =>
+                                  context.push("/mealDetails/${pick.mealId}"),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Container(
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    boxShadow: const [],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            const BorderRadius.vertical(
+                                                top: Radius.circular(10)),
+                                        child: Image.network(pick.imageUrl,
+                                            fit: BoxFit.cover),
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(formatStringDigits(pick.name),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14)),
+                                            const SizedBox(height: 5),
+                                            Text("${pick.price} Rwf ",
+                                                style: const TextStyle(
+                                                    color: primarySwatch,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

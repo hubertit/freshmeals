@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/constants/_assets.dart';
+import 'package:freshmeals/models/home/meal_model.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
+import '../../../riverpod/providers/home.dart';
 import '../../../utls/styles.dart';
 
 class AddToCartModel extends ConsumerStatefulWidget {
-  // final ProductModel productModel;
-  const AddToCartModel({
-    super.key,
-    // required this.productModel
-  });
+  final Meal productModel;
+  const AddToCartModel({super.key, required this.productModel});
 
   @override
   ConsumerState<AddToCartModel> createState() => _AddToCartModelState();
@@ -22,8 +22,8 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
 
   @override
   Widget build(BuildContext context) {
-    // var store = ref.watch(myStoreProvider);
-    // var amount =(widget.productModel.productPrice)*productQt;
+    var meal = widget.productModel;
+    var cart = ref.watch(cartProvider);
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -57,8 +57,8 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Divider(
                 thickness: 0.2,
               ),
@@ -67,30 +67,30 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
               margin: const EdgeInsets.only(bottom: 10),
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 60,
                     height: 60,
                     child: Image.asset(AssetsUtils.fruits),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  const Expanded(
+                  Expanded(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Local Cherry",
-                        style: TextStyle(
+                        meal.name,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             "For lunch",
                             style: TextStyle(
                                 color: Colors.black45,
@@ -98,7 +98,7 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                           ),
                           Spacer(),
                           Text(
-                            "Rwf 700",
+                            "Rwf ${meal.price}",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -108,26 +108,7 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Divider(
-                thickness: 0.2,
-              ),
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Amount",
-                  style: TextStyle(),
-                ),
-                Spacer(),
-                const Text(
-                  "Rwf 700",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -136,9 +117,9 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                   "Total price",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  "Rwf ${productQt * 700}",
+                  "Rwf ${double.parse(meal.price) * productQt}",
                   style: const TextStyle(
                       color: primarySwatch,
                       fontSize: 16,
@@ -157,8 +138,7 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
             //     ? const CircularProgressIndicator()
             //     :
             Container(
-              margin: const EdgeInsets.only(
-                   top: 20, bottom: 40),
+              margin: const EdgeInsets.only(top: 20, bottom: 40),
               child: Row(
                 children: [
                   Container(
@@ -180,7 +160,8 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                           color: primarySwatch,
                         )),
                   ),
-                  Container(margin: EdgeInsets.symmetric(horizontal: 10),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       "${productQt}",
                       style: TextStyle(fontSize: 16),
@@ -203,32 +184,38 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                           color: primarySwatch,
                         )),
                   ),
-                  SizedBox(width: 20,),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Expanded(
                     child: ElevatedButton(
                       style: StyleUtls.buttonStyle,
                       onPressed: () {
-                        context.push("/newAddress");
-                        // var json = {
-                        //   "token": ref.watch(userProvider)!.user!.token,
-                        //   "product_id": widget.productModel.productId,
-                        //   "quantity": productQt
-                        // };
-                        // ref
-                        //     .read(cartProvider.notifier)
-                        //     .addToCart(context, json);
+                        // context.push("/newAddress");
+                        var user = ref.watch(userProvider);
+                        var json = {
+                          "token": user!.user!.token,
+                          "meal_id": meal.mealId,
+                          "quantity": productQt,
+                          "price": productQt * double.parse(meal.price)
+                        };
+                        ref
+                            .read(cartProvider.notifier)
+                            .addToCart(ref, context, json);
                         // context.pop();
                       },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Add to cart",
-                            style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                      child: cart!.isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              "Add to cart",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
                     ),
                   ),
                 ],

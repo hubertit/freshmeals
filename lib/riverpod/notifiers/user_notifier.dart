@@ -89,7 +89,9 @@ class UserNotifier extends StateNotifier<UserState?> {
           const SnackBar(content: Text('Registered successfully')),
         );
         // await _saveUserToPreferences(user);
-        context.go("/login");
+        // context.go("/login");
+        context.push('/welcome');
+
       } else {
         throw Exception('${response.statusMessage}');
       }

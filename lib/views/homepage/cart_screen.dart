@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
+import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/home.dart';
 import '../../theme/colors.dart';
 import '../../utls/styles.dart';
 
-class ChartScreen extends StatefulWidget {
+class ChartScreen extends ConsumerStatefulWidget {
   @override
-  State<ChartScreen> createState() => _ChartScreenState();
+  ConsumerState<ChartScreen> createState() => _ChartScreenState();
 }
 
-class _ChartScreenState extends State<ChartScreen> {
+class _ChartScreenState extends ConsumerState<ChartScreen> {
   int productQt = 1;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var user = ref.watch(userProvider);
+      if (user!.user != null) {
+        await ref.read(cartProvider.notifier).myCart(context, user.user!.token);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var cart = ref.watch(cartProvider);
+    var user = ref.watch(userProvider);
+     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -25,174 +40,265 @@ class _ChartScreenState extends State<ChartScreen> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Text(
-                  "Single items",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
-              Column(
-                children: List.generate(
-                  3,
-                  (index) => Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    child: Row(
+      body: cart!.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : cart.cartItems.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        AssetsUtils.empty,
+                        height: 100,
+                      ),
+                    ),
+                    const Text("You have no items in cart!")
+                  ],
+                )
+              : SingleChildScrollView(
+                  child: Container(
+                    // color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 70,
-                          height: 70,
-                          child: Image.asset(AssetsUtils.fruits),
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(vertical: 15.0),
+                        //   child: Text(
+                        //     "Single items",
+                        //     style: TextStyle(
+                        //         fontWeight: FontWeight.bold, fontSize: 16),
+                        //   ),
+                        // ),
+
+                        Column(
+                          children: List.generate(
+                            cart.cartItems.length,
+                            (index) {
+                              var item = cart.cartItems[index];
+                              return Container(
+                                color: Colors.white,
+                                padding: const EdgeInsets.all(20),
+                                margin: EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 70,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(item.imageUrl)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5)),
+                                      ),
+                                      // child: ,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              item.mealName,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                            Spacer(),
+                                            IconButton(
+                                                onPressed: () {
+                                                  var json = {
+                                                    "token": user!.user!.token,
+                                                    "meal_id": item.mealId,
+                                                  };
+                                                  ref
+                                                      .read(cartProvider.notifier)
+                                                      .remove(context, ref,json);
+                                                },
+                                                icon: CircleAvatar(
+                                                    radius: 13,
+                                                    backgroundColor: scaffold,
+                                                    child: const Icon(
+                                                      Ionicons.close,
+                                                      size: 17,
+                                                    ))),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Rwf ${item.price}",
+                                              style: const TextStyle(
+                                                  color: primarySwatch,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Spacer(),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 1,
+                                                      horizontal: 1),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: scaffold),
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    var user =
+                                                        ref.watch(userProvider);
+                                                    var json = {
+                                                      "token":
+                                                          user!.user!.token,
+                                                      "meal_id": item.mealId,
+                                                      "quantity":
+                                                          item.quantity - 1
+                                                    };
+                                                    if (item.quantity > 1) {
+                                                      ref
+                                                          .read(cartProvider
+                                                              .notifier)
+                                                          .updateCart(ref,
+                                                              context, json);
+                                                    }
+                                                  },
+                                                  child: const Icon(
+                                                    Ionicons.remove,
+                                                    color: primarySwatch,
+                                                  )),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                              child: Text(
+                                                "${item.quantity}",
+                                                style: const TextStyle(
+                                                    fontSize: 16),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 1,
+                                                      horizontal: 1),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: scaffold),
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    var user =
+                                                        ref.watch(userProvider);
+                                                    var json = {
+                                                      "token":
+                                                          user!.user!.token,
+                                                      "meal_id": item.mealId,
+                                                      "quantity":
+                                                          item.quantity + 1
+                                                    };
+                                                    ref
+                                                        .read(cartProvider
+                                                            .notifier)
+                                                        .updateCart(ref,
+                                                            context, json);
+                                                  },
+                                                  child: const Icon(
+                                                    Ionicons.add,
+                                                    color: primarySwatch,
+                                                  )),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Local Cherry",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Rwf ${productQt * 700}",
-                                  style: const TextStyle(
-                                      color: primarySwatch,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Spacer(),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 1, horizontal: 1),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey.shade300),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: scaffold),
-                                  child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          if (productQt > 1) {
-                                            productQt -= 1;
-                                          }
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Ionicons.remove,
-                                        color: primarySwatch,
-                                      )),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    "${productQt}",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 1, horizontal: 1),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey.shade300),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: scaffold),
-                                  child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          productQt += 1;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Ionicons.add,
-                                        color: primarySwatch,
-                                      )),
-                                ),
-                              ],
-                            )
-                          ],
-                        )),
+
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(vertical: 8.0),
+                        //   child: Divider(
+                        //     thickness: 0.2,
+                        //   ),
+                        // ),
+                        // Column(
+                        //   children: List.generate(
+                        //     3,
+                        //     (index) => Container(
+                        //       margin: const EdgeInsets.only(bottom: 20),
+                        //       child: Row(
+                        //         children: [
+                        //           Container(
+                        //             width: 70,
+                        //             height: 70,
+                        //             child: Image.asset(AssetsUtils.fruits),
+                        //           ),
+                        //           const SizedBox(
+                        //             width: 10,
+                        //           ),
+                        //           const Expanded(
+                        //               child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             children: [
+                        //               Text(
+                        //                 "Local Cherry",
+                        //                 style: TextStyle(
+                        //                     fontWeight: FontWeight.bold,
+                        //                     fontSize: 16),
+                        //               ),
+                        //               SizedBox(
+                        //                 height: 5,
+                        //               ),
+                        //               Row(
+                        //                 children: [
+                        //                   Text(
+                        //                     "Rwf ${7000}",
+                        //                     style: TextStyle(
+                        //                         color: primarySwatch,
+                        //                         fontSize: 16,
+                        //                         fontWeight: FontWeight.bold),
+                        //                   ),
+                        //                 ],
+                        //               )
+                        //             ],
+                        //           )),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
+                        // ref.watch(cartProvider)!.isLoading
+                        //     ? const CircularProgressIndicator()
+                        //     :
                       ],
                     ),
                   ),
                 ),
-              ),
-
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Divider(
-                  thickness: 0.2,
-                ),
-              ),
-              Column(
-                children: List.generate(
-                  3,
-                  (index) => Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 70,
-                          child: Image.asset(AssetsUtils.fruits),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Local Cherry",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Rwf ${productQt * 700}",
-                                  style: const TextStyle(
-                                      color: primarySwatch,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            )
-                          ],
-                        )),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              // ref.watch(cartProvider)!.isLoading
-              //     ? const CircularProgressIndicator()
-              //     :
-            ],
-          ),
-        ),
-      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
@@ -204,21 +310,30 @@ class _ChartScreenState extends State<ChartScreen> {
             onPressed: () {
               context.push('/checkout');
             },
-            child:  Row(
+            child: Row(
               children: [
-                 Text(
-                  "Rwf ${productQt*700}",
+                Text(
+                  "Rwf ${productQt * 700}",
                   style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold,fontSize: 16),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                 ),
-                Spacer(),
+                const Spacer(),
                 const Text(
                   "Check Out",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold,fontSize: 16),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                 ),
-                const SizedBox(width: 20,),
-                const Icon(Icons.arrow_forward,color: Colors.white,)
+                const SizedBox(
+                  width: 20,
+                ),
+                const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                )
               ],
             ),
           ),

@@ -148,11 +148,11 @@ class ProductDetailPage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => const AddToCartModel(
-                                    // productModel: widget.product,
-                                    ));
+                            // showModalBottomSheet(
+                            //     context: context,
+                            //     builder: (context) =>  AddToCartModel(
+                            //         productModel:meal ,
+                            //         ));
                           },
                           child: const Text(
                             "Add to Cart",

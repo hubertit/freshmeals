@@ -5,6 +5,7 @@ class AssetsUtils {
   static const order = "assets/images/Artwork.png";
   static const nutri = "assets/images/Artwork@2x.png";
   static const derivered = "assets/images/Artwork (1).png";
+  static const empty = "assets/images/empty.png";
   ////
   static const drinks = "assets/images/drinks.png";
   static const healthy = "assets/images/healthy.png";

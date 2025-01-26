@@ -27,6 +27,7 @@ class MyApp extends ConsumerWidget {
           scaffoldBackgroundColor: scaffold,
           appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
+              scrolledUnderElevation: 0,
               elevation: 0,
               titleTextStyle: TextStyle(
                   color: Colors.black87,

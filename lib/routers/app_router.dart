@@ -111,8 +111,12 @@ final GoRouter router = GoRouter(routes: [
     builder: (context, state) => ProductDetailPage(),
   ),
   GoRoute(
-    path: '/mealDetails',
-    builder: (context, state) => const MealDetailScreen(),
+    path: '/mealDetails/:mealId',
+    builder: (context, state) {
+      // Retrieve the mealId from the route parameters
+      final mealId = state.pathParameters['mealId']!;
+      return MealDetailScreen(mealId: mealId);
+    },
   ),
   GoRoute(
     path: '/newAddress',

@@ -90,7 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   backgroundColor: primarySwatch,
                   minimumSize: const Size(254, 45)),
               onPressed: () {
-                context.go('/home');
+                context.go('/login');
               },
               child: const Text(
                 "Next",

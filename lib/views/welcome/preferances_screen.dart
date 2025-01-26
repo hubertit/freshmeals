@@ -24,13 +24,15 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     });
     super.initState();
   }
+  List<int> selPref = [];
 
   final selectedPreferenceProvider = StateProvider<List<int>>((ref) => []);
 
   @override
   Widget build(BuildContext context) {
+    print(selPref);
     var preferences = ref.watch(preferencesProvider);
-    var selectedPref = ref.watch(selectedPreferenceProvider);
+    // var selectedPref = ref.watch(selectedPreferenceProvider);
     var user = ref.watch(userProvider);
     return Scaffold(
       backgroundColor: const Color(0xfff5f8fe),
@@ -76,29 +78,43 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       itemBuilder: (context, index) {
                         PreferenceModel preference =
                             preferences.preferances[index];
-                        bool isSelected = selectedPref
+                        bool isSelected = selPref
                             .contains(int.parse(preference.preferenceId));
 
                         return GestureDetector(
                           onTap: () {
-                            final selectedPreferences =
-                                ref.read(selectedPreferenceProvider.notifier);
+                            // final selectedPreferences =
+                            // ref.read(selectedPreferenceProvider.notifier);
+                            //
+                            // if (selectedPreferences.state
+                            //     .contains(int.parse(preference.preferenceId))) {
+                            //   selectedPreferences
+                            //       .state = List.from(selectedPreferences.state)
+                            //     ..remove(int.parse(preference.preferenceId));
+                            //   setState(() {
+                            //     widget.user.dietaryPreferences = selectedPref;
+                            //   });
+                            // } else {
+                            //   selectedPreferences.state =
+                            //   List.from(selectedPreferences.state)
+                            //     ..add(int.parse(preference.preferenceId));
+                            //   setState(() {
+                            //     widget.user.dietaryPreferences = selectedPref;
+                            //   });
+                            // }
 
-                            if (selectedPreferences.state
+                            if (selPref
                                 .contains(int.parse(preference.preferenceId))) {
-                              selectedPreferences
-                                  .state = List.from(selectedPreferences.state)
-                                ..remove(int.parse(preference.preferenceId));
+
                               setState(() {
-                                widget.user.dietaryPreferences = selectedPref;
-                              });
+                                selPref = List.from(selPref)
+                                  ..remove(int.parse(preference.preferenceId));                              });
                             } else {
-                              selectedPreferences.state =
-                                  List.from(selectedPreferences.state)
-                                    ..add(int.parse(preference.preferenceId));
+
                               setState(() {
-                                widget.user.dietaryPreferences = selectedPref;
-                              });
+                                selPref =
+                                List.from(selPref)
+                                  ..add(int.parse(preference.preferenceId));                              });
                             }
                           },
                           child: Container(
@@ -144,7 +160,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       ),
                     ),
                     onPressed: () {
-                      ref.read(userProvider.notifier).register(context, ref, widget.user.toJson());
+                      widget.user.dietaryPreferences = selPref;
+                      ref
+                          .read(userProvider.notifier)
+                          .register(context, ref, widget.user.toJson());
                       // context.push('/welcome');
                     },
                     child: user!.isLoading

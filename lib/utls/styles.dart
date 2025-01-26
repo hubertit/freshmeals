@@ -38,3 +38,9 @@ String formatStringDigits(String digits) {
     return  "${digits.substring(0, 12)}.."; // Return only the first 11 digits
   }
 }
+String trimm(int value, String text) {
+  if (text.length > value) {
+    return "${text.substring(0, value - 2)}..";
+  }
+  return text;
+}
