@@ -21,7 +21,10 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var user = ref.watch(userProvider);
       if (user!.user != null) {
-        await ref.read(cartProvider.notifier).myCart(context, user.user!.token);
+        await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
+        await ref
+            .read(countProvider.notifier)
+            .fetchCount(context, user.user!.token);
       }
     });
     super.initState();
@@ -31,7 +34,8 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
   Widget build(BuildContext context) {
     var cart = ref.watch(cartProvider);
     var user = ref.watch(userProvider);
-     return Scaffold(
+    var count = ref.watch(countProvider);
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -121,8 +125,10 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                     "meal_id": item.mealId,
                                                   };
                                                   ref
-                                                      .read(cartProvider.notifier)
-                                                      .remove(context, ref,json);
+                                                      .read(
+                                                          cartProvider.notifier)
+                                                      .remove(
+                                                          context, ref, json);
                                                 },
                                                 icon: CircleAvatar(
                                                     radius: 13,
@@ -218,8 +224,8 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                     ref
                                                         .read(cartProvider
                                                             .notifier)
-                                                        .updateCart(ref,
-                                                            context, json);
+                                                        .updateCart(
+                                                            ref, context, json);
                                                   },
                                                   child: const Icon(
                                                     Ionicons.add,
@@ -299,46 +305,49 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                     ),
                   ),
                 ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-          padding: const EdgeInsets.all(20),
-          child: ElevatedButton(
-            style: StyleUtls.buttonStyle,
-            onPressed: () {
-              context.push('/checkout');
-            },
-            child: Row(
-              children: [
-                Text(
-                  "Rwf ${productQt * 700}",
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+      bottomNavigationBar: cart.cartItems.isEmpty
+          ? null
+          : SafeArea(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20))),
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  style: StyleUtls.buttonStyle,
+                  onPressed: () {
+                    context.push('/checkout');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        "Rwf ${count!.count.totalAmount}",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Check Out",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                const Text(
-                  "Check Out",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

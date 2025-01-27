@@ -13,7 +13,7 @@ class CartNotifier extends StateNotifier<CartState?> {
 
   final Dio _dio = Dio();
 
-  Future<void> myCart(BuildContext context, String token) async {
+  Future<void> myCart(BuildContext context, String token, WidgetRef ref) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.post(
@@ -32,6 +32,7 @@ class CartNotifier extends StateNotifier<CartState?> {
         List<CartItem> products =
             myList.map((json) => CartItem.fromJson(json)).toList();
         state = CartState(cartItems: products, isLoading: false);
+        ref.read(countProvider.notifier).fetchCount(context, token);
       }
     } catch (e) {
       // Handle the error
@@ -56,7 +57,7 @@ class CartNotifier extends StateNotifier<CartState?> {
       if (response.statusCode == 200 ) {
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token);
+          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
         }
         // List<CartItem> products = (response.data['data'] as List)
         //     .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
@@ -89,7 +90,7 @@ class CartNotifier extends StateNotifier<CartState?> {
       if (response.statusCode == 200) {
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token);
+          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
         }
       //   List<CartItem> products = (response.data['data'] as List)
       //       .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
@@ -128,7 +129,7 @@ class CartNotifier extends StateNotifier<CartState?> {
         // context.pop();
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token);
+          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),

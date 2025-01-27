@@ -25,44 +25,44 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
-    // print(userState!.user!.token);
+    print(userState!.user!.token);
     // if(userState!.user!=null){
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(150),
         child: AppBar(
-            automaticallyImplyLeading:
-                false, // Hide default back button if needed
-            flexibleSpace: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: const BoxDecoration(
-                color: Colors.white, // AppBar background color
-              ),
-              child:  Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 38,
-                        backgroundImage:AssetImage(AssetsUtils.profile) ,
-
-                      ),
-                    ],
-                  ),
-                  Text(
-                    userState!.user!.name,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(userState.user!.email),
-                ],
-              ),
+          automaticallyImplyLeading:
+              false, // Hide default back button if needed
+          flexibleSpace: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              color: Colors.white, // AppBar background color
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 38,
+                      backgroundImage: AssetImage(AssetsUtils.profile),
+                    ),
+                  ],
+                ),
+                Text(
+                  userState!.user!.name,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(userState.user!.email),
+              ],
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -73,14 +73,6 @@ class _ProfileState extends ConsumerState<Profile> {
             ),
             CoverContainer(margin: 20, children: [
               ProfileItemIcon(
-                title: 'Account Information',
-                iconSize: 18,
-                onPressed: () {
-                  context.push('/accountInfo');
-                },
-                leadingIcon: Icons.search,
-              ),
-              ProfileItemIcon(
                 title: 'My orders',
                 iconSize: 18,
                 onPressed: () {
@@ -88,30 +80,48 @@ class _ProfileState extends ConsumerState<Profile> {
                 },
                 leadingIcon: MaterialCommunityIcons.shopping,
               ),
-              // ProfileItemIcon(
-              //     title: 'Rider Track',
-              //     iconSize: 18,
-              //     onPressed: () {
-              //       context.push('/map');
-              //     },
-              //     leadingIcon: MaterialCommunityIcons.shopping,
-              //     avatarColor: const Color(0xffeff4f8)),
               ProfileItemIcon(
-                title: 'Payment Methods',
-                onPressed: () {
-                  context.push('/paymentMethod');
-                },
-                isLast: false,
-                leadingIcon: Icons.payment,
+                title: 'My Appointments',
                 iconSize: 18,
+                onPressed: () {
+                  context.push('/myAppointments');
+                },
+                leadingIcon: MaterialCommunityIcons.book_information_variant,
               ),
               ProfileItemIcon(
                 title: 'Delivery Address',
                 onPressed: () {
                   context.push('/changeAddress');
                 },
-                isLast: true,
                 leadingIcon: MaterialCommunityIcons.map_marker,
+                iconSize: 18,
+              ),
+              ProfileItemIcon(
+                title: 'Account Information',
+                iconSize: 18,
+                onPressed: () {
+                  context.push('/accountInfo');
+                },
+                leadingIcon: Icons.search,
+              ),
+
+              // ProfileItemIcon(
+              //   title: 'Payment Methods',
+              //   onPressed: () {
+              //     context.push('/paymentMethod');
+              //   },
+              //   isLast: false,
+              //   leadingIcon: Icons.payment,
+              //   iconSize: 18,
+              // ),
+
+              ProfileItemIcon(
+                title: 'Favorites',
+                onPressed: () {
+                  context.push('/favorites');
+                },
+                isLast: true,
+                leadingIcon: MaterialCommunityIcons.heart,
                 iconSize: 18,
               ),
             ]),
@@ -186,7 +196,9 @@ class _ProfileState extends ConsumerState<Profile> {
                           actions: <Widget>[
                             TextButton(
                               onPressed: () async {
-                                await ref.read(userProvider.notifier).logout(ref,context);
+                                await ref
+                                    .read(userProvider.notifier)
+                                    .logout(ref, context);
                                 //  context.go('/');
                               },
                               child: const Text(

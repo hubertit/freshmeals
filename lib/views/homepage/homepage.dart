@@ -7,6 +7,8 @@ import 'package:freshmeals/views/homepage/meals.dart';
 import 'package:freshmeals/views/homepage/profile.dart';
 import 'package:freshmeals/views/homepage/search_screen.dart';
 
+import '../appointment/appointments_booking.dart';
+
 // int screenIndex =1;
 class Homepage extends ConsumerStatefulWidget {
   final bool isSearching;
@@ -28,7 +30,7 @@ class _HomepageState extends ConsumerState<Homepage> {
           const MealsPage(),
           SearchPage(),
           ChartScreen(),
-          const FavoritesScreen(),
+          const AppointmentsScreen(),
           const Profile(),
         ],
       ),
@@ -50,8 +52,8 @@ class _HomepageState extends ConsumerState<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: "Favorites"),
+              icon: Icon(Icons.add_circle_outline),
+              label: "Booking"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.person_outline),
               label: "Account"),

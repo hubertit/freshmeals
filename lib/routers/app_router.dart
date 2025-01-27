@@ -1,7 +1,11 @@
+import 'package:freshmeals/views/appointment/appointments_booking.dart';
+import 'package:freshmeals/views/appointment/booking_screen.dart';
+import 'package:freshmeals/views/appointment/my_appointments.dart';
 import 'package:freshmeals/views/homepage/account_info.dart';
 import 'package:freshmeals/views/homepage/adress_picker.dart';
 import 'package:freshmeals/views/homepage/change_address.dart';
 import 'package:freshmeals/views/homepage/checkout_screen.dart';
+import 'package:freshmeals/views/homepage/favorites_screen.dart';
 import 'package:freshmeals/views/homepage/homepage.dart';
 import 'package:freshmeals/views/homepage/location_track.dart';
 import 'package:freshmeals/views/homepage/luch_screen.dart';
@@ -149,5 +153,17 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
     path: '/paymentMethod',
     builder: (context, state) =>  const PaymentMethodScreen(),
+  ),
+  GoRoute(
+    path: '/booking',
+    builder: (context, state) =>  const AppointmentsScreen(),
+  ),
+  GoRoute(
+    path: '/myAppointments',
+    builder: (context, state) =>  const MyAppointmentsScreen(),
+  ),
+  GoRoute(
+    path: '/favorites',
+    builder: (context, state) =>  const FavoritesScreen(),
   ),
 ]);

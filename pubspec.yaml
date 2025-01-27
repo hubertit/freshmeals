@@ -53,6 +53,7 @@ dependencies:
   flutter_markdown: ^0.7.4+1
   google_maps_flutter: ^2.2.5
   flutter_xlider: ^3.5.0
+  date_field: ^6.0.0
 
 
 dev_dependencies:
