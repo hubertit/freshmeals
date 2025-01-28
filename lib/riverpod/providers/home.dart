@@ -4,40 +4,44 @@ import 'package:freshmeals/riverpod/notifiers/count.dart';
 import 'package:freshmeals/riverpod/notifiers/home/apointments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
+import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 
 import '../notifiers/cart_notifier.dart';
 import '../notifiers/home/meal.dart';
 import '../notifiers/home/search_notifier.dart';
 
 final homeMealsDataProvider =
-StateNotifierProvider<MealsNotifier, MealsState?>((ref) {
+    StateNotifierProvider<MealsNotifier, MealsState?>((ref) {
   return MealsNotifier();
 });
 
 final mealDetailsDataProvider =
-StateNotifierProvider<MealDetailsNotifier, MealDetailsState?>((ref) {
+    StateNotifierProvider<MealDetailsNotifier, MealDetailsState?>((ref) {
   return MealDetailsNotifier();
 });
 
 final searchedProductsProvider =
-StateNotifierProvider<SearchedProductsNotifier, List<Meal>>((ref) {
+    StateNotifierProvider<SearchedProductsNotifier, List<Meal>>((ref) {
   return SearchedProductsNotifier();
 });
 
-final cartProvider =
-StateNotifierProvider<CartNotifier, CartState?>((ref) {
+final cartProvider = StateNotifierProvider<CartNotifier, CartState?>((ref) {
   return CartNotifier();
 });
 
 final appointmentsProvider =
-StateNotifierProvider<SlotsNotifier, SlotsState?>((ref) {
+    StateNotifierProvider<SlotsNotifier, SlotsState?>((ref) {
   return SlotsNotifier();
 });
 final myAppointmentsProvider =
-StateNotifierProvider<AppointmentNotifier, AppointmentState?>((ref) {
+    StateNotifierProvider<AppointmentNotifier, AppointmentState?>((ref) {
   return AppointmentNotifier();
 });
-final countProvider =
-StateNotifierProvider<CountNotifier, CountState?>((ref) {
+final countProvider = StateNotifierProvider<CountNotifier, CountState?>((ref) {
   return CountNotifier();
+});
+
+final randomMealsProvider =
+    StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
+  return RandomMealsNotifier();
 });

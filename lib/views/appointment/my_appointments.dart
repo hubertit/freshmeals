@@ -43,7 +43,7 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             appointments!.isLoading
-                ?  Column(
+                ? const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
@@ -54,43 +54,48 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
                       ),
                     ],
                   )
-                :appointments.appointments.isEmpty? Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                ),
-                Center(
-                  child: Center(
-                    child: Image.asset(AssetsUtils.emptyLogo,height: 90,),
-                  ),
-                ),
-                Text(
-                  "You have  no appointments.",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
-            )
-                :  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(top: 8.0),
-                    itemCount: appointments.appointments.length,
-                    itemBuilder: (context, index) {
-                      final appontment = appointments.appointments[index];
-                      return InkWell(
-                        onTap: () {},
-                        child: CoverContainer(
-                          children: [
-                            address(
-                                "Appointment Date", appontment.appointmentDate),
-                            address("Time slot", appontment.timeSlot),
-                            address("Duration", appontment.duration),
-                            address("Nutritionist", appontment.nutritionist),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                : appointments.appointments.isEmpty
+                    ? Column(
+                        children: [
+                          const SizedBox(
+                            height: 200,
+                          ),
+                          Center(
+                            child: Center(
+                              child: Image.asset(
+                                AssetsUtils.emptyLogo,
+                                height: 90,
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            "You have  no appointments.",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      )
+                    : ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: 8.0),
+                        itemCount: appointments.appointments.length,
+                        itemBuilder: (context, index) {
+                          final appontment = appointments.appointments[index];
+                          return InkWell(
+                            onTap: () {},
+                            child: CoverContainer(
+                              children: [
+                                address("Appointment Date",
+                                    appontment.appointmentDate),
+                                address("Time slot", appontment.timeSlot),
+                                address("Duration", appontment.duration),
+                                address(
+                                    "Nutritionist", appontment.nutritionist),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
           ],
         ),
       ),

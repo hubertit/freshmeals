@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/home/meal_model.dart';
 import '../../theme/colors.dart';
 import 'search_delegate.dart';
+import 'widgets/add_to_cart.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   @override
@@ -12,7 +15,16 @@ class SearchPage extends ConsumerStatefulWidget {
 
 class _SearchPageState extends ConsumerState<SearchPage> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(randomMealsProvider.notifier).fetchMeals(context);
+
+    });
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    var meals = ref.watch(randomMealsProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -160,35 +172,35 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           const SizedBox(height: 16),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return buildMealCard(
-                    context: context,
-                    title: "Salad",
-                    subtitle: "For lunch",
-                    price: "RWF ${[
-                      5000,
-                      6200,
-                      3200,
-                      6000,
-                      400,
-                      5000,
-                      6000,
-                      5000
-                    ][index]}",
-                    imageUrl: "assets/images/salad.png",
-                    isSale: index == 4,
-                    saleText: "SALE 12%",
-                  );
-                },
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: meals!.isLoading
+                  ? const Center(
+                child: CircularProgressIndicator(),
+              )
+                  : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: GridView.builder(
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: meals.mealCategories.length,
+                        itemBuilder: (context, index) {
+                          var meal = meals.mealCategories[index];
+                          return _buildMealCard(context: context, meal: meal);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -218,128 +230,103 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       ],
     );
   }
-
-
-}
-Widget buildMealCard({
-  required BuildContext context,
-  required String title,
-  required String subtitle,
-  required String price,
-  required String imageUrl,
-  bool isSale = false,
-  String? saleText,
-}) {
-  return InkWell(
-    onTap: () => context.push('/mealDetails'),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.withOpacity(0.2),
-        //     blurRadius: 6,
-        //     offset: Offset(0, 3),
-        //   ),
-        // ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(7)),
-                  child: Image.asset(
-                    imageUrl,
-                    height: 130,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+  Widget _buildMealCard({required BuildContext context, required Meal meal
+    // bool isSale = false,
+    // String? saleText,
+  }) {
+    return InkWell(
+      onTap: () => context.push('/mealDetails/${meal.mealId}'),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.withOpacity(0.2),
+          //     blurRadius: 6,
+          //     offset: Offset(0, 3),
+          //   ),
+          // ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(7)),
+                    child: Image.network(
+                      meal.imageUrl,
+                      height: 130,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                const Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Icon(Icons.favorite_border, color: Colors.grey),
-                ),
-                if (isSale)
-                  Positioned(
-                    bottom: 8,
+                  const Positioned(
+                    top: 8,
                     right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        saleText!,
+                    child: Icon(Icons.favorite_border, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    meal.name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  // const SizedBox(height: 4),
+                  const Text(
+                    "For lunch",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "RWF ${meal.price}",
                         style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          color: Colors.green,
                         ),
                       ),
-                    ),
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => AddToCartModel(
+                                    productModel: meal,
+                                  ));
+                            },
+                            child: const Icon(
+                              Icons.add_shopping_cart,
+                              color: Colors.white,
+                              size: 20,
+                            )),
+                      ),
+                    ],
                   ),
-              ],
+                  const SizedBox(height: 8),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                // const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      price,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: InkWell(
-                          onTap: () {
-                            context.push('/productDetails');
-                          },
-                          child: const Icon(
-                            Icons.add_shopping_cart,
-                            color: Colors.white,
-                            size: 20,
-                          )),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
+
 }

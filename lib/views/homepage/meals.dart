@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
 import '../../riverpod/providers/home.dart';
+import 'search_delegate.dart';
 
 class MealsPage extends ConsumerStatefulWidget {
   const MealsPage({super.key});
@@ -43,6 +44,13 @@ class _MealsPageState extends ConsumerState<MealsPage> {
           child: Column(
             children: [
               TextField(
+                readOnly: true,
+                onTap: () {
+                  showSearch(
+                    context: context,
+                    delegate: OpportunitySearchDelegate(ref),
+                  );
+                },
                 decoration: InputDecoration(
                   hintText: "Find something...",
                   suffixIcon: Container(
@@ -61,18 +69,19 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                 ),
               ),
               const SizedBox(height: 10),
-             if(types!.mealCategories.isNotEmpty) SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children:
-                        List.generate(types!.mealCategories.length, (index) {
-                  var mealType = types.mealCategories[index];
-                  return _buildCategoryChip(mealType.name, mealType.imageUrl,
-                      () {
-                    context.push('/lunch');
-                  });
-                })),
-              ),
+              if (types!.mealCategories.isNotEmpty)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children:
+                          List.generate(types.mealCategories.length, (index) {
+                    var mealType = types.mealCategories[index];
+                    return _buildCategoryChip(mealType.name, mealType.imageUrl,
+                        () {
+                      context.push('/lunch');
+                    });
+                  })),
+                ),
             ],
           ),
         ),
@@ -182,18 +191,20 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         )),
                     const SizedBox(height: 16),
                     _buildMealSection(
-                        "Breakfast",
-                        "Start your day with wholesome and nutritious meals",
-                        List.generate(mealsHome.mealsData!.breakfast.length,
-                            (index) {
-                          var breakF = mealsHome.mealsData!.breakfast[index];
+                      "Breakfast",
+                      "Start your day with wholesome and nutritious meals",
+                      List.generate(mealsHome.mealsData!.breakfast.length,
+                          (index) {
+                        var breakF = mealsHome.mealsData!.breakfast[index];
 
-                          return _buildMealCard(
+                        return _buildMealCard(
                             breakF.name,
                             breakF.price,
                             breakF.imageUrl,
-                          );
-                        })),
+                            () =>
+                                context.push("/mealDetails/${breakF.mealId}"));
+                      }),
+                    ),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Snack",
@@ -203,10 +214,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           var breakF = mealsHome.mealsData!.dinner[index];
 
                           return _buildMealCard(
-                            breakF.name,
-                            breakF.price,
-                            breakF.imageUrl,
-                          );
+                              breakF.name,
+                              breakF.price,
+                              breakF.imageUrl,
+                              () => context
+                                  .push("/mealDetails/${breakF.mealId}"));
                         })),
                     const SizedBox(height: 16),
                     _buildMealSection(
@@ -217,10 +229,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           var lunch = mealsHome.mealsData!.lunch[index];
 
                           return _buildMealCard(
-                            lunch.name,
-                            lunch.price,
-                            lunch.imageUrl,
-                          );
+                              lunch.name,
+                              lunch.price,
+                              lunch.imageUrl,
+                              () =>
+                                  context.push("/mealDetails/${lunch.mealId}"));
                         })),
                     const SizedBox(height: 16),
                     _buildMealSection(
@@ -231,10 +244,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           var dinner = mealsHome.mealsData!.dinner[index];
 
                           return _buildMealCard(
-                            dinner.name,
-                            dinner.price,
-                            dinner.imageUrl,
-                          );
+                              dinner.name,
+                              dinner.price,
+                              dinner.imageUrl,
+                              () => context
+                                  .push("/mealDetails/${dinner.mealId}"));
                         })),
                   ],
                 ),
@@ -300,7 +314,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     );
   }
 
-  Widget _buildMealSection(String title, String subtitle, List<Widget> cards) {
+  Widget _buildMealSection(
+    String title,
+    String subtitle,
+    List<Widget> cards,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -310,7 +328,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
             Text(title,
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const Text("View All", style: TextStyle(color: Colors.green)),
+            InkWell(
+                onTap: () {
+                  context.push("/lunch");
+                },
+                child: const Text("View All",
+                    style: TextStyle(color: Colors.green))),
           ],
         ),
         const SizedBox(height: 5),
@@ -324,7 +347,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     );
   }
 
-  Widget _buildMealCard(String title, String subtitle, String imagePath) {
+  Widget _buildMealCard(
+      String title, String subtitle, String imagePath, void Function()? onTap) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: Container(
@@ -335,9 +359,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
           color: Colors.white,
           boxShadow: const [],
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-          child: Image.network(imagePath, fit: BoxFit.cover),
+        child: InkWell(
+          onTap: onTap,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+            child: Image.network(imagePath, fit: BoxFit.cover),
+          ),
         ),
       ),
     );

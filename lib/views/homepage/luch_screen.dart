@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class LunchPage extends StatelessWidget {
+import '../../models/home/meal_model.dart';
+import '../../riverpod/providers/home.dart';
+import 'widgets/add_to_cart.dart';
+
+class LunchPage extends ConsumerStatefulWidget {
+  const LunchPage({super.key});
+
+  @override
+  ConsumerState<LunchPage> createState() => _LunchPageState();
+}
+
+class _LunchPageState extends ConsumerState<LunchPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(randomMealsProvider.notifier).fetchMeals(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var meals = ref.watch(randomMealsProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -26,57 +47,46 @@ class LunchPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: meals!.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildCategoryTab("All", isSelected: true),
-                _buildCategoryTab("For You"),
-                _buildCategoryTab("Recommended"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildCategoryTab("All", isSelected: true),
+                      _buildCategoryTab("For You"),
+                      _buildCategoryTab("Recommended"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemCount: meals.mealCategories.length,
+                      itemBuilder: (context, index) {
+                        var meal = meals.mealCategories[index];
+                        return _buildMealCard(context: context, meal: meal);
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return _buildMealCard(
-                    context: context,
-                    title: "Salad",
-                    subtitle: "For lunch",
-                    price: "RWF ${[
-                      5000,
-                      6200,
-                      3200,
-                      6000,
-                      400,
-                      5000,
-                      6000,
-                      5000
-                    ][index]}",
-                    imageUrl: "assets/images/salad.png",
-                    isSale: index == 4,
-                    saleText: "SALE 12%",
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -102,17 +112,12 @@ class LunchPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMealCard({
-    required BuildContext context,
-    required String title,
-    required String subtitle,
-    required String price,
-    required String imageUrl,
-    bool isSale = false,
-    String? saleText,
-  }) {
+  Widget _buildMealCard({required BuildContext context, required Meal meal
+      // bool isSale = false,
+      // String? saleText,
+      }) {
     return InkWell(
-      onTap: () => context.push('/mealDetails'),
+      onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -134,8 +139,8 @@ class LunchPage extends StatelessWidget {
                   ClipRRect(
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(7)),
-                    child: Image.asset(
-                      imageUrl,
+                    child: Image.network(
+                      meal.imageUrl,
                       height: 130,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -146,29 +151,6 @@ class LunchPage extends StatelessWidget {
                     right: 8,
                     child: Icon(Icons.favorite_border, color: Colors.grey),
                   ),
-                  if (isSale)
-                    Positioned(
-                      bottom: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          saleText!,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -178,20 +160,20 @@ class LunchPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    meal.name,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   // const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  const Text(
+                    "For lunch",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        price,
+                        "RWF ${meal.price}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,
@@ -205,7 +187,11 @@ class LunchPage extends StatelessWidget {
                         ),
                         child: InkWell(
                             onTap: () {
-                              context.push('/productDetails');
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => AddToCartModel(
+                                        productModel: meal,
+                                      ));
                             },
                             child: const Icon(
                               Icons.add_shopping_cart,
