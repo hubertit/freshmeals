@@ -130,7 +130,7 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
       path: '/newAddress',
       builder: (context, state) {
-        final addressModel = state.extra as Address;
+        final addressModel = state.extra as Address?;
         return AddressPickerScreen(address: addressModel);
       }),
   GoRoute(
