@@ -61,114 +61,114 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            color: Colors.white,
-            child: Column(
-              children: [
-                const Row(
-                  children: [
-                    Text(
-                      "History",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Text("clear")
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.only(bottom: 3),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey.shade100, // Choose your desired color
-                      width: 1.0, // Set the desired width
-                    ),
-                  )),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Eggs",
-                        style: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.bold),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                        size: 15,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.only(bottom: 3),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey.shade100, // Choose your desired color
-                      width: 1.0, // Set the desired width
-                    ),
-                  )),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Apple",
-                        style: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.bold),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                        size: 15,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  padding: const EdgeInsets.only(bottom: 3),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Banana",
-                        style: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.bold),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                        size: 15,
-                      )
-                    ],
-                  ),
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("Show More", style: TextStyle(color: Colors.green)),
-                  ],
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildCategoryTab("For You", isSelected: true),
-                      _buildCategoryTab("Popular"),
-                      _buildCategoryTab("Cheapest"),
-                      _buildCategoryTab("Discount"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 15),
+          //   color: Colors.white,
+          //   child: Column(
+          //     children: [
+          //       const Row(
+          //         children: [
+          //           Text(
+          //             "History",
+          //             style: TextStyle(fontWeight: FontWeight.bold),
+          //           ),
+          //           Spacer(),
+          //           Text("clear")
+          //         ],
+          //       ),
+          //       Container(
+          //         margin: EdgeInsets.only(top: 10),
+          //         padding: EdgeInsets.only(bottom: 3),
+          //         decoration: BoxDecoration(
+          //             border: Border(
+          //           bottom: BorderSide(
+          //             color: Colors.grey.shade100, // Choose your desired color
+          //             width: 1.0, // Set the desired width
+          //           ),
+          //         )),
+          //         child: const Row(
+          //           children: [
+          //             Text(
+          //               "Eggs",
+          //               style: TextStyle(
+          //                   color: Colors.grey, fontWeight: FontWeight.bold),
+          //             ),
+          //             Spacer(),
+          //             Icon(
+          //               Icons.close,
+          //               color: Colors.grey,
+          //               size: 15,
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //       Container(
+          //         margin: EdgeInsets.only(top: 10),
+          //         padding: EdgeInsets.only(bottom: 3),
+          //         decoration: BoxDecoration(
+          //             border: Border(
+          //           bottom: BorderSide(
+          //             color: Colors.grey.shade100, // Choose your desired color
+          //             width: 1.0, // Set the desired width
+          //           ),
+          //         )),
+          //         child: const Row(
+          //           children: [
+          //             Text(
+          //               "Apple",
+          //               style: TextStyle(
+          //                   color: Colors.grey, fontWeight: FontWeight.bold),
+          //             ),
+          //             Spacer(),
+          //             Icon(
+          //               Icons.close,
+          //               color: Colors.grey,
+          //               size: 15,
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //       Container(
+          //         margin: const EdgeInsets.only(top: 10),
+          //         padding: const EdgeInsets.only(bottom: 3),
+          //         child: const Row(
+          //           children: [
+          //             Text(
+          //               "Banana",
+          //               style: TextStyle(
+          //                   color: Colors.grey, fontWeight: FontWeight.bold),
+          //             ),
+          //             Spacer(),
+          //             Icon(
+          //               Icons.close,
+          //               color: Colors.grey,
+          //               size: 15,
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //       const Row(
+          //         mainAxisAlignment: MainAxisAlignment.end,
+          //         children: [
+          //           Text("Show More", style: TextStyle(color: Colors.green)),
+          //         ],
+          //       ),
+          //
+          //       Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 0),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             _buildCategoryTab("For You", isSelected: true),
+          //             _buildCategoryTab("Popular"),
+          //             _buildCategoryTab("Cheapest"),
+          //             _buildCategoryTab("Discount"),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const SizedBox(height: 16),
           Expanded(
             child: Padding(

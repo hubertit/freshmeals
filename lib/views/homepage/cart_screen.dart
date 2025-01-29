@@ -10,6 +10,8 @@ import '../../theme/colors.dart';
 import '../../utls/styles.dart';
 
 class ChartScreen extends ConsumerStatefulWidget {
+  const ChartScreen({super.key});
+
   @override
   ConsumerState<ChartScreen> createState() => _ChartScreenState();
 }

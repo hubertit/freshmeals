@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/meal_model.dart';
 import 'package:freshmeals/riverpod/notifiers/count.dart';
+import 'package:freshmeals/riverpod/notifiers/home/address_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/apointments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
@@ -42,6 +43,10 @@ final countProvider = StateNotifierProvider<CountNotifier, CountState?>((ref) {
 });
 
 final randomMealsProvider =
-    StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
+StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
   return RandomMealsNotifier();
+});
+final addressesProvider =
+StateNotifierProvider<AdressesNotifier, AddressState?>((ref) {
+  return AdressesNotifier();
 });

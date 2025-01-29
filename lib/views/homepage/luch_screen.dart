@@ -40,12 +40,12 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.search, color: Colors.black),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: meals!.isLoading
           ? const Center(
@@ -54,17 +54,17 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildCategoryTab("All", isSelected: true),
-                      _buildCategoryTab("For You"),
-                      _buildCategoryTab("Recommended"),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       _buildCategoryTab("All", isSelected: true),
+                //       _buildCategoryTab("For You"),
+                //       _buildCategoryTab("Recommended"),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 16),
                 Expanded(
                   child: Padding(

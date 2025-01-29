@@ -1,3 +1,4 @@
+import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/views/appointment/appointments_booking.dart';
 import 'package:freshmeals/views/appointment/booking_screen.dart';
 import 'package:freshmeals/views/appointment/my_appointments.dart';
@@ -122,10 +123,16 @@ final GoRouter router = GoRouter(routes: [
       return MealDetailScreen(mealId: mealId);
     },
   ),
+  // GoRoute(
+  //   path: '/newAddress',
+  //   builder: (context, state) => AddressPickerScreen(),
+  // ),
   GoRoute(
-    path: '/newAddress',
-    builder: (context, state) => AddressPickerScreen(),
-  ),
+      path: '/newAddress',
+      builder: (context, state) {
+        final addressModel = state.extra as Address;
+        return AddressPickerScreen(address: addressModel);
+      }),
   GoRoute(
     path: '/checkout',
     builder: (context, state) => const CheckOutScreen(),
