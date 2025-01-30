@@ -6,29 +6,29 @@ import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/_api_utls.dart';
+import '../../../models/home/order_model.dart';
+import '../../../views/homepage/widgets/success_model.dart';
 
-class AdressesNotifier extends StateNotifier<AddressState> {
-  AdressesNotifier() : super(AddressState.initial());
+class OderNotifier extends StateNotifier<OrderState> {
+  OderNotifier() : super(OrderState.initial());
 
   final Dio _dio = Dio();
 
-  Future<void> fetchAddress(BuildContext context, String token) async {
+  Future<void> fetchOrders(BuildContext context, String token) async {
     try {
       state = state.copyWith(isLoading: true);
 
       final response = await _dio.post(
-        '${baseUrl}addresses/retrieve',
+        '${baseUrl}orders/my_orders',
         data: {"token": token},
       );
-
       if (response.statusCode == 200) {
         final myList = response.data['data'];
 
         if (myList is List && myList.isNotEmpty) {
-
           // Convert response data to Address model list
           final addressList =
-              myList.map<Address>((json) => Address.fromJson(json)).toList();
+              myList.map<OrdersModel>((json) => OrdersModel.fromJson(json)).toList();
 
           // Update state
           state = state.copyWith(slotsData: addressList, isLoading: false);
@@ -46,24 +46,27 @@ class AdressesNotifier extends StateNotifier<AddressState> {
     }
   }
 
-  Future<void> addAddress(BuildContext context, json, WidgetRef ref) async {
+  Future<void> createOrder(BuildContext context, json, WidgetRef ref) async {
     try {
-      // state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
 
       final response = await _dio.post(
-        '$baseUrl/addresses/add',
+        '$baseUrl/orders/create',
         data: json,
       );
-
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
         // state = SlotsState(isLoading: false, slotsData: []);
-        ref
-            .read(addressesProvider.notifier)
-            .fetchAddress(context, json['token']);
+        // ref
+        //     .read(addressesProvider.notifier)
+        //     .fetchAddress(context, json['token']);
+        ref.read(cartProvider.notifier).myCart(context, json['token'], ref);
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.data['message'])),
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const SuccessModel();
+          },
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -78,6 +81,7 @@ class AdressesNotifier extends StateNotifier<AddressState> {
       state = state.copyWith(isLoading: false);
     }
   }
+
   Future<void> updateAddress(BuildContext context, json, WidgetRef ref) async {
     try {
       // state = state.copyWith(isLoading: true);
@@ -88,7 +92,6 @@ class AdressesNotifier extends StateNotifier<AddressState> {
       );
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
-
         // state = SlotsState(isLoading: false, slotsData: []);
         ref
             .read(addressesProvider.notifier)
@@ -177,52 +180,51 @@ class AdressesNotifier extends StateNotifier<AddressState> {
   }
 
 // Future<void> addAddress(BuildContext context, json, WidgetRef ref) async {
-  //   try {
-  //     // state = state.copyWith(isLoading: true);
-  //
-  //     final response = await _dio.post(
-  //       '$baseUrl/addresses/add',
-  //       data: json,
-  //     );
-  //
-  //     // Check response code and show Snackbar with message
-  //     if (response.data['code'] == 200) {
-  //       // state = SlotsState(isLoading: false, slotsData: []);
-  //       ref.read(addressesProvider.notifier).fetchAddress(context, json['token']);
-  //       context.pop();
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text(response.data['message'])),
-  //       );
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('${response.data['message']}')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(
-  //     //   SnackBar(content: Text('An error occurred: $e')),
-  //     // );
-  //   } finally {
-  //     state = state.copyWith(isLoading: false);
-  //   }
-  // }
+//   try {
+//     // state = state.copyWith(isLoading: true);
+//
+//     final response = await _dio.post(
+//       '$baseUrl/addresses/add',
+//       data: json,
+//     );
+//
+//     // Check response code and show Snackbar with message
+//     if (response.data['code'] == 200) {
+//       // state = SlotsState(isLoading: false, slotsData: []);
+//       ref.read(addressesProvider.notifier).fetchAddress(context, json['token']);
+//       context.pop();
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text(response.data['message'])),
+//       );
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('${response.data['message']}')),
+//       );
+//     }
+//   } catch (e) {
+//     // ScaffoldMessenger.of(context).showSnackBar(
+//     //   SnackBar(content: Text('An error occurred: $e')),
+//     // );
+//   } finally {
+//     state = state.copyWith(isLoading: false);
+//   }
+// }
 }
 
-class AddressState {
-  final List<Address> slotsData;
+class OrderState {
+  final List<OrdersModel> orders;
   final bool isLoading;
 
   // Constructor
-  AddressState({required this.slotsData, required this.isLoading});
+  OrderState({required this.orders, required this.isLoading});
 
   // Initial state factory
-  factory AddressState.initial() =>
-      AddressState(slotsData: [], isLoading: false);
+  factory OrderState.initial() => OrderState(orders: [], isLoading: false);
 
   // CopyWith method
-  AddressState copyWith({List<Address>? slotsData, bool? isLoading}) {
-    return AddressState(
-      slotsData: slotsData ?? this.slotsData,
+  OrderState copyWith({List<OrdersModel>? slotsData, bool? isLoading}) {
+    return OrderState(
+      orders: slotsData ?? this.orders,
       isLoading: isLoading ?? this.isLoading,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:freshmeals/utls/callbacks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
@@ -291,7 +292,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "RWF ${meal.price}",
+                        "RWF ${formatMoney(meal.price)}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,

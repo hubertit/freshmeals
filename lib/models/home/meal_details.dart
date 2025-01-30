@@ -56,7 +56,7 @@ class MealDetailsModel {
           ?.map((key, value) => MapEntry(key, value.toString())) ??
           {},
       imageUrl: json['image_url'] ?? '',
-      price: removeTrailingZerosFromString(json['price']) ?? '0',
+      price: json['price'] ?? '0',
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime(1970),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime(1970),
       contents: (json['contents'] as Map<String, dynamic>?)

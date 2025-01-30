@@ -5,6 +5,7 @@ import 'package:freshmeals/utls/styles.dart';
 import 'package:go_router/go_router.dart';
 import '../../riverpod/providers/home.dart';
 import '../../theme/colors.dart';
+import '../../utls/callbacks.dart';
 
 class OpportunitySearchDelegate extends SearchDelegate<Meal?> {
   final WidgetRef ref;
@@ -202,15 +203,15 @@ Widget buildMealCard({
                       fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 // const SizedBox(height: 4),
-                Text(
+                const Text(
                   "For lunch",
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      meal.price,
+                      "Rwf ${formatMoney(meal.price)}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.green,

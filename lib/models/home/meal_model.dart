@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class Meal {
   final String mealId;
   final String name;
@@ -18,7 +20,7 @@ class Meal {
       mealId: json['meal_id'] ?? '',
       name: json['name'] ?? '',
       description: json['description'] ?? '',
-      price: removeTrailingZerosFromString(json['price']) ?? '0',
+      price: json['price'] ?? '0',
       imageUrl: json['image_url'] ?? '',
     );
   }
@@ -53,13 +55,4 @@ class MealsData {
           .toList(),
     );
   }
-}
-
-
-// Function to remove trailing zeros from a string
-String removeTrailingZerosFromString(String value) {
-  if (double.tryParse(value) != null) {
-    return value.replaceAll(RegExp(r'\.?0+$'), '');
-  }
-  return value; // If the value isn't a valid number, return it as-is
 }

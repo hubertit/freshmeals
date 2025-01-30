@@ -1,3 +1,5 @@
+import 'meal_model.dart';
+
 class CartItem {
   final int cartId;
   final int mealId;

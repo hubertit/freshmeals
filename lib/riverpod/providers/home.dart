@@ -3,12 +3,15 @@ import 'package:freshmeals/models/home/meal_model.dart';
 import 'package:freshmeals/riverpod/notifiers/count.dart';
 import 'package:freshmeals/riverpod/notifiers/home/address_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/apointments.dart';
+import 'package:freshmeals/riverpod/notifiers/home/defaul_address.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
+import 'package:freshmeals/riverpod/notifiers/home/order_details_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 
 import '../notifiers/cart_notifier.dart';
 import '../notifiers/home/meal.dart';
+import '../notifiers/home/order_notifier.dart';
 import '../notifiers/home/search_notifier.dart';
 
 final homeMealsDataProvider =
@@ -43,10 +46,24 @@ final countProvider = StateNotifierProvider<CountNotifier, CountState?>((ref) {
 });
 
 final randomMealsProvider =
-StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
+    StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
   return RandomMealsNotifier();
 });
 final addressesProvider =
-StateNotifierProvider<AdressesNotifier, AddressState?>((ref) {
+    StateNotifierProvider<AdressesNotifier, AddressState?>((ref) {
   return AdressesNotifier();
+});
+
+final defaultAddressProvider =
+    StateNotifierProvider<DefaultAddressNotifier, DefaultAddressState?>((ref) {
+  return DefaultAddressNotifier();
+});
+
+final orderProvider = StateNotifierProvider<OderNotifier, OrderState?>((ref) {
+  return OderNotifier();
+});
+
+final orderDetailsProvider =
+    StateNotifierProvider<OrderDetailsNotifier, OrderDetailsState?>((ref) {
+  return OrderDetailsNotifier();
 });

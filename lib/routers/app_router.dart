@@ -123,10 +123,7 @@ final GoRouter router = GoRouter(routes: [
       return MealDetailScreen(mealId: mealId);
     },
   ),
-  // GoRoute(
-  //   path: '/newAddress',
-  //   builder: (context, state) => AddressPickerScreen(),
-  // ),
+
   GoRoute(
       path: '/newAddress',
       builder: (context, state) {
@@ -142,8 +139,11 @@ final GoRouter router = GoRouter(routes: [
     builder: (context, state) => ChangeAddress(),
   ),
   GoRoute(
-    path: '/myOrderDetails',
-    builder: (context, state) => MyOrderDetailsScreen(),
+    path: '/myOrderDetails/:orderId',
+    builder: (context, state) {
+      final orderId = state.pathParameters['orderId']!;
+      return MyOrderDetailsScreen(orderId: orderId);
+    },
   ),
   GoRoute(
     path: '/myOrder',

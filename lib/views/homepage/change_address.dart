@@ -44,6 +44,16 @@ class _ChangeAddressState extends ConsumerState<ChangeAddress> {
           ' Delivery Addresses',
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.push("/newAddress");
+              },
+              icon: const Icon(Icons.add_circle_outline)),
+          const SizedBox(
+            width: 5,
+          )
+        ],
       ),
       body: addresses!.isLoading
           ? const Center(
@@ -162,7 +172,8 @@ class _ChangeAddressState extends ConsumerState<ChangeAddress> {
                                         const Spacer(),
                                         InkWell(
                                           onTap: () {
-                                            context.push('/newAddress', extra: address);
+                                            context.push('/newAddress',
+                                                extra: address);
                                           },
                                           child: CircleAvatar(
                                             radius: 14,
@@ -189,12 +200,20 @@ class _ChangeAddressState extends ConsumerState<ChangeAddress> {
                                                     TextButton(
                                                       onPressed: () async {
                                                         var json = {
-                                                          "token": user.user!.token,
-                                                          "address_id": address.addressId
+                                                          "token":
+                                                              user.user!.token,
+                                                          "address_id":
+                                                              address.addressId
                                                         };
                                                         ref
-                                                            .read(addressesProvider.notifier)
-                                                            .deleteAddress(context, json, ref);                                                      },
+                                                            .read(
+                                                                addressesProvider
+                                                                    .notifier)
+                                                            .deleteAddress(
+                                                                context,
+                                                                json,
+                                                                ref);
+                                                      },
                                                       child: const Text(
                                                         'Delete',
                                                         style: TextStyle(
@@ -537,31 +556,31 @@ class _ChangeAddressState extends ConsumerState<ChangeAddress> {
                   // ],
                   ),
             ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(10),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                context.push("/newAddress");
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Add New Address',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: SafeArea(
+      //   child: Container(
+      //     color: Colors.white,
+      //     padding: const EdgeInsets.all(10),
+      //     child: SizedBox(
+      //       width: double.infinity,
+      //       child: ElevatedButton(
+      //         onPressed: () {
+      //           context.push("/newAddress");
+      //         },
+      //         style: ElevatedButton.styleFrom(
+      //           padding: EdgeInsets.symmetric(vertical: 16),
+      //           backgroundColor: Colors.green,
+      //           shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(8),
+      //           ),
+      //         ),
+      //         child: const Text(
+      //           'Add New Address',
+      //           style: TextStyle(fontSize: 16, color: Colors.white),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

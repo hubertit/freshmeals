@@ -46,7 +46,7 @@ class _HomepageState extends ConsumerState<Homepage> {
         currentIndex: _index,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.set_meal_sharp), label: "Merals"),
+              icon: Icon(Icons.set_meal_sharp), label: "Meals"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.AntDesign.search1), label: "Search"),
           BottomNavigationBarItem(

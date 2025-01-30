@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
 import '../../riverpod/providers/home.dart';
+import '../../utls/callbacks.dart';
 import 'widgets/add_to_cart.dart';
 
 class LunchPage extends ConsumerStatefulWidget {
@@ -173,7 +174,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "RWF ${meal.price}",
+                        "RWF ${formatMoney(meal.price)}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,

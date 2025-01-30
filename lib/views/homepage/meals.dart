@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
+import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/utls/styles.dart';
 import 'package:go_router/go_router.dart';
 
@@ -173,7 +174,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14)),
                                             const SizedBox(height: 5),
-                                            Text("${pick.price} Rwf ",
+                                            Text("${formatMoney(pick.price)} Rwf ",
                                                 style: const TextStyle(
                                                     color: primarySwatch,
                                                     fontSize: 16,

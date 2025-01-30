@@ -7,6 +7,7 @@ import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 import '../../../riverpod/providers/home.dart';
+import '../../../utls/callbacks.dart';
 import '../../../utls/styles.dart';
 
 class AddToCartModel extends ConsumerStatefulWidget {
@@ -98,7 +99,7 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                           ),
                           Spacer(),
                           Text(
-                            "Rwf ${meal.price}",
+                            "Rwf ${formatMoney(meal.price)}",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -119,7 +120,7 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                 ),
                 const Spacer(),
                 Text(
-                  "Rwf ${double.parse(meal.price) * productQt}",
+                  "Rwf ${formatMoney((double.parse(meal.price) * productQt).toString())}",
                   style: const TextStyle(
                       color: primarySwatch,
                       fontSize: 16,

@@ -7,6 +7,7 @@ import '../../constants/_assets.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/home.dart';
 import '../../theme/colors.dart';
+import '../../utls/callbacks.dart';
 import '../../utls/styles.dart';
 
 class ChartScreen extends ConsumerStatefulWidget {
@@ -147,7 +148,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                         Row(
                                           children: [
                                             Text(
-                                              "Rwf ${item.price}",
+                                              "Rwf ${formatMoney(item.price.toString())}",
                                               style: const TextStyle(
                                                   color: primarySwatch,
                                                   fontSize: 16,
@@ -324,7 +325,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                   child: Row(
                     children: [
                       Text(
-                        "Rwf ${count!.count.totalAmount}",
+                        "Rwf ${formatMoney(count!.count.totalAmount)}",
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
