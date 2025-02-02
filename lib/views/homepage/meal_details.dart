@@ -421,7 +421,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
 
   Widget _buildInfoItem(IconData icon, String text, bool isLast) {
     return Container(
-      padding: EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.only(right: 10),
       decoration: isLast
           ? null
           : BoxDecoration(

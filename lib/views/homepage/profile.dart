@@ -4,6 +4,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/constants/_assets.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import 'widgets/cover_container.dart';
 import 'widgets/profile_item.dart';
@@ -22,6 +24,7 @@ class _ProfileState extends ConsumerState<Profile> {
     super.initState();
   }
 
+  String webLink = "https://freshmeals.rw/";
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
@@ -138,6 +141,19 @@ class _ProfileState extends ConsumerState<Profile> {
                 title: 'Help Center',
                 iconSize: 18,
                 onPressed: () {
+                  final String email = "uyisaristide@gmail.com";
+                  Future<void> _sendEmail() async {
+                    final Uri emailUri = Uri(
+                      scheme: 'mailto',
+                      path: email,
+                    );
+
+                    if (await canLaunchUrl(emailUri)) {
+                      await launchUrl(emailUri);
+                    } else {
+                      throw 'Could not launch email';
+                    }
+                  }
                   // context.push('/myOrders');
                 },
                 leadingIcon: MaterialCommunityIcons.help,
@@ -153,7 +169,7 @@ class _ProfileState extends ConsumerState<Profile> {
               ProfileItemIcon(
                 title: 'About Us',
                 onPressed: () {
-                  // context.push('/cart');
+                  launchUrl(Uri.parse(webLink));
                 },
                 isLast: false,
                 leadingIcon: Icons.info_outline,
@@ -162,6 +178,8 @@ class _ProfileState extends ConsumerState<Profile> {
               ProfileItemIcon(
                 title: 'Share App',
                 onPressed: () {
+                  Share.share(webLink);
+
                   // context.push('/cart');
                 },
                 isLast: true,

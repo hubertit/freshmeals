@@ -39,7 +39,7 @@ class UserNotifier extends StateNotifier<UserState?> {
         User user = User.fromJson(response.data['data']);
         state = UserState(user: user, isLoading: false);
         print(response.data['data']);
-        await _saveUserToPreferences(user);
+        await saveUserToPreferences(user);
         context.go('/home');
       } else {
         throw Exception(' ${response.statusMessage}');
@@ -166,7 +166,7 @@ class UserNotifier extends StateNotifier<UserState?> {
   //   }
   // }
   //
-  Future<void> _saveUserToPreferences(User user) async {
+  Future<void> saveUserToPreferences(User user) async {
     final prefs = await SharedPreferences.getInstance();
     final userJson = jsonEncode(user.toJson());
     await prefs.setString('user', userJson);

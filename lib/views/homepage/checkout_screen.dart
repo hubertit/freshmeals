@@ -407,7 +407,9 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 ),
               ),
               child: orderState!.isLoading
-                  ? CircularProgressIndicator(color: Colors.white,)
+                  ? CircularProgressIndicator(
+                      color: Colors.white,
+                    )
                   : const Text(
                       'Confirm Order',
                       style: TextStyle(fontSize: 16, color: Colors.white),

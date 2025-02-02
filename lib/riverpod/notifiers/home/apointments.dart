@@ -20,18 +20,14 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
           "date": date,
         },
       );
-      // print(response.data);
-      if (response.statusCode == 200 && response.data['data']!=[]) {
-        final data = response.data['data'] as Map<String, dynamic>;
-        final slots = data.entries
-            .map((entry) => Slot(
-                  name: entry.key,
-                  startTime: entry.value['start_time'],
-                  endTime: entry.value['end_time'],
-                ))
-            .toList();
+      print(response);
 
-        state = SlotsState(isLoading: false, slotsData: slots);
+      if (response.statusCode == 200 && response.data['data'] != []) {
+        List<dynamic> data = response.data['data'];
+        // final slots =
+        state = SlotsState(
+            isLoading: false,
+            slotsData: data.map((json) => Slot.fromJson(json)).toList());
       } else {
         throw Exception('Failed: ${response.statusMessage}');
       }

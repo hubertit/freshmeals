@@ -49,5 +49,28 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+    <!-- Facebook Configuration -->
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb3943089325924740</string>
+        </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>3943089325924740</string>
+    <key>FacebookClientToken</key>
+    <string>54382507fff32c6bc68f84589238028c</string>
+    <key>FacebookDisplayName</key>
+    <string>freshmeals</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-share-api</string>
+    </array>
+
 </dict>
 </plist>

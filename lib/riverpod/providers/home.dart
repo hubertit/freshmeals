@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/meal_model.dart';
+import 'package:freshmeals/riverpod/notifiers/accoint_info_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/count.dart';
 import 'package:freshmeals/riverpod/notifiers/home/address_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/apointments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/defaul_address.dart';
+import 'package:freshmeals/riverpod/notifiers/home/favorite_meals.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
 import 'package:freshmeals/riverpod/notifiers/home/order_details_notifier.dart';
@@ -66,4 +68,13 @@ final orderProvider = StateNotifierProvider<OderNotifier, OrderState?>((ref) {
 final orderDetailsProvider =
     StateNotifierProvider<OrderDetailsNotifier, OrderDetailsState?>((ref) {
   return OrderDetailsNotifier();
+});
+
+final accountInfoProvider =
+StateNotifierProvider<AccountInfoNotifier, AccountInfoState?>((ref) {
+  return AccountInfoNotifier();
+});
+final favoritesProvider =
+StateNotifierProvider<FavoriteMealsNotifier, FavoriteMealsState?>((ref) {
+  return FavoriteMealsNotifier();
 });

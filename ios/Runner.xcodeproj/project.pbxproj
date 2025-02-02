@@ -114,7 +114,6 @@
 				F31A30E5F5CE5E13F15D32D4 /* Pods-RunnerTests.release.xcconfig */,
 				D25264DC7C216D0FBC3EF8DD /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -164,6 +163,7 @@
 			);
 			path = Runner;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 /* End PBXGroup section */
 

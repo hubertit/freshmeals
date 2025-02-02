@@ -54,6 +54,9 @@ dependencies:
   google_maps_flutter: ^2.2.5
   flutter_xlider: ^3.5.0
   date_field: ^6.0.0
+  flutter_facebook_auth: ^6.0.4
+  google_sign_in: ^6.2.2
+  share_plus: ^10.1.4
 
 
 dev_dependencies:
