@@ -261,7 +261,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
             ),
             const SizedBox(height: 15),
             Container(
-              margin: const EdgeInsets.only(left: 5,bottom: 10),
+              margin: const EdgeInsets.only(left: 5, bottom: 10),
               child: const Text(
                 'Items List',
                 style: TextStyle(
@@ -272,7 +272,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
             ),
 
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +311,8 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                               children: [
                                 Text(
                                   item.name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -337,7 +338,6 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                         fontSize: 12, color: primarySwatch),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
@@ -389,6 +389,4 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
       ),
     );
   }
-
-
 }

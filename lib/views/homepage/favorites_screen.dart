@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 import 'package:freshmeals/views/homepage/widgets/order_item.dart';
 import 'package:go_router/go_router.dart';
+import '../../models/home/meal_model.dart';
+import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/home.dart';
+import '../../utls/callbacks.dart';
+import 'widgets/add_to_cart.dart';
 import 'widgets/category_card.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
+  ConsumerState<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var user = ref.watch(userProvider);
+      if (user!.user != null) {
+        await ref
+            .read(favoritesProvider.notifier)
+            .fetchFavorites(context,user.user!.token);
+      }
+    });
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    var meals = ref.watch(favoritesProvider);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -18,50 +43,40 @@ class FavoritesScreen extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      body: Column(
+      body: meals!.isLoading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
+          : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildCategoryTab("Meals", isSelected: true),
-                ],
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       _buildCategoryTab("All", isSelected: true),
+          //       _buildCategoryTab("For You"),
+          //       _buildCategoryTab("Recommended"),
+          //     ],
+          //   ),
+          // ),
+          const SizedBox(height: 16),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   childAspectRatio: 0.8,
                 ),
-                itemCount: 8,
+                itemCount: meals.favoriteMeals!.length,
                 itemBuilder: (context, index) {
-                  return _buildMealCard(
-                    context: context,
-                    title: "Salad",
-                    subtitle: "For lunch",
-                    price: "RWF ${[
-                      5000,
-                      6200,
-                      3200,
-                      6000,
-                      400,
-                      5000,
-                      6000,
-                      5000
-                    ][index]}",
-                    imageUrl: "assets/images/salad.png",
-                    isSale: index == 4,
-                    saleText: "SALE 12%",
-                  );
+                  var meal = meals.favoriteMeals![index];
+                  return _buildMealCard(context: context, meal: meal);
                 },
               ),
             ),
@@ -70,17 +85,14 @@ class FavoritesScreen extends StatelessWidget {
       ),
     );
   }
-  Widget _buildMealCard({
-    required BuildContext context,
-    required String title,
-    required String subtitle,
-    required String price,
-    required String imageUrl,
-    bool isSale = false,
-    String? saleText,
+
+
+  Widget _buildMealCard({required BuildContext context, required Meal meal
+    // bool isSale = false,
+    // String? saleText,
   }) {
     return InkWell(
-      onTap: () => context.push('/mealDetails'),
+      onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -102,8 +114,8 @@ class FavoritesScreen extends StatelessWidget {
                   ClipRRect(
                     borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(7)),
-                    child: Image.asset(
-                      imageUrl,
+                    child: Image.network(
+                      meal.imageUrl,
                       height: 130,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -114,29 +126,6 @@ class FavoritesScreen extends StatelessWidget {
                     right: 8,
                     child: Icon(Icons.favorite_border, color: Colors.grey),
                   ),
-                  if (isSale)
-                    Positioned(
-                      bottom: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          saleText!,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -146,20 +135,20 @@ class FavoritesScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    meal.name,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   // const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  const Text(
+                    "For lunch",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        price,
+                        "RWF ${formatMoney(meal.price)}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,
@@ -173,7 +162,11 @@ class FavoritesScreen extends StatelessWidget {
                         ),
                         child: InkWell(
                             onTap: () {
-                              context.push('/productDetails');
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => AddToCartModel(
+                                    productModel: meal,
+                                  ));
                             },
                             child: const Icon(
                               Icons.add_shopping_cart,

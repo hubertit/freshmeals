@@ -100,7 +100,7 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                               },
                               child: CoverContainer(
                                 children: [
-                                  address("Appointment ID", appontment.name),
+                                  // address("Appointment ID", appontment.name),
                                   address("Start time", appontment.startTime),
                                   address("End time", appontment.endTime),
                                 ],

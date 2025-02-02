@@ -7,8 +7,5 @@ InputDecoration iDecoration({String? hint}) {
       hintText: hint,
       hintStyle: const TextStyle(color: Colors.grey),
       border: StyleUtls.dashInputBorder,
-
-      // filled: false,
-      // fillColor: Colors.grey.withOpacity(0.1),
     );
 }
