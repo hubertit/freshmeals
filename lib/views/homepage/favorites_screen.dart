@@ -25,11 +25,12 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
       if (user!.user != null) {
         await ref
             .read(favoritesProvider.notifier)
-            .fetchFavorites(context,user.user!.token);
+            .fetchFavorites(context, user.user!.token);
       }
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var meals = ref.watch(favoritesProvider);
@@ -45,52 +46,51 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
       ),
       body: meals!.isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       _buildCategoryTab("All", isSelected: true),
-          //       _buildCategoryTab("For You"),
-          //       _buildCategoryTab("Recommended"),
-          //     ],
-          //   ),
-          // ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView.builder(
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.8,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       _buildCategoryTab("All", isSelected: true),
+                //       _buildCategoryTab("For You"),
+                //       _buildCategoryTab("Recommended"),
+                //     ],
+                //   ),
+                // ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemCount: meals.favoriteMeals!.length,
+                      itemBuilder: (context, index) {
+                        var meal = meals.favoriteMeals![index];
+                        return _buildMealCard(context: context, meal: meal);
+                      },
+                    ),
+                  ),
                 ),
-                itemCount: meals.favoriteMeals!.length,
-                itemBuilder: (context, index) {
-                  var meal = meals.favoriteMeals![index];
-                  return _buildMealCard(context: context, meal: meal);
-                },
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
-
   Widget _buildMealCard({required BuildContext context, required Meal meal
-    // bool isSale = false,
-    // String? saleText,
-  }) {
+      // bool isSale = false,
+      // String? saleText,
+      }) {
     return InkWell(
       onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
@@ -113,7 +113,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                 children: [
                   ClipRRect(
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(7)),
+                        const BorderRadius.vertical(top: Radius.circular(7)),
                     child: Image.network(
                       meal.imageUrl,
                       height: 130,
@@ -121,10 +121,20 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  const Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Icon(Icons.favorite_border, color: Colors.grey),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                        onPressed: () {
+                          ref.read(favoritesProvider.notifier).removeFavorite(
+                              context,
+                              ref.watch(userProvider)!.user!.token,
+                              int.parse(meal.mealId));
+                        },
+                        icon: const CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.favorite, color: Colors.red),
+                        )),
                   ),
                 ],
               ),
@@ -165,8 +175,8 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) => AddToCartModel(
-                                    productModel: meal,
-                                  ));
+                                        productModel: meal,
+                                      ));
                             },
                             child: const Icon(
                               Icons.add_shopping_cart,

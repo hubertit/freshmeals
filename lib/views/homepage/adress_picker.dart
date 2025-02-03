@@ -11,7 +11,6 @@ import 'package:google_maps_webservice/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants/_api_utls.dart';
 import '../../theme/colors.dart';
-import '../auth/widgets/phone_field.dart';
 
 class AddressPickerScreen extends ConsumerStatefulWidget {
   final Address? address;
@@ -37,7 +36,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
   @override
   void initState() {
     country = CountryService().findByCode("RW")!;
-    if(widget.address!=null){
+    if (widget.address != null) {
       setState(() {
         selectedAddress = widget.address!.mapAddress;
       });
@@ -88,7 +87,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
       extendBodyBehindAppBar: true,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height / 1.3,
             child: GoogleMap(
               initialCameraPosition: const CameraPosition(
@@ -148,24 +147,24 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                       TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            var json = {
-                              "token": ref.watch(userProvider)!.user!.token,
-                              "street_number": "KG 41 Rd",
-                              "house_number": "20",
-                              "map_address": selectedAddress
-                            };
-                            var jsonUpdate = {
-                              "token": ref.watch(userProvider)!.user!.token,
-                              "address_id": widget.address!.addressId,
-                              "street_number": "KG 41 Rd",
-                              "house_number": "20",
-                              "map_address": selectedAddress
-                            };
                             if (widget.address == null) {
+                              var json = {
+                                "token": ref.watch(userProvider)!.user!.token,
+                                "street_number": "KG 41 Rd",
+                                "house_number": "20",
+                                "map_address": selectedAddress
+                              };
                               ref
                                   .read(addressesProvider.notifier)
                                   .addAddress(context, json, ref);
                             } else if (widget.address != null) {
+                              var jsonUpdate = {
+                                "token": ref.watch(userProvider)!.user!.token,
+                                "address_id": widget.address!.addressId,
+                                "street_number": "KG 41 Rd",
+                                "house_number": "20",
+                                "map_address": selectedAddress
+                              };
                               ref
                                   .read(addressesProvider.notifier)
                                   .updateAddress(context, jsonUpdate, ref);
@@ -187,9 +186,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                   ),
                   TextFormField(
                     readOnly: true,
-                    controller: TextEditingController(
-                        text:  selectedAddress
-                            ),
+                    controller: TextEditingController(text: selectedAddress),
                     validator: (s) => s?.trim().isNotEmpty == true
                         ? null
                         : 'Select Address On map',

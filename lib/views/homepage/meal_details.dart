@@ -5,7 +5,9 @@ import 'dart:math' as math;
 import 'package:freshmeals/constants/_assets.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:freshmeals/models/home/meal_model.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/views/homepage/widgets/contents_chart.dart';
 import 'package:freshmeals/views/homepage/widgets/ingredient_item.dart';
 
@@ -25,7 +27,6 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
   @override
   void initState() {
     var id = widget.mealId;
-    print(id);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref
           .read(mealDetailsDataProvider.notifier)
@@ -37,6 +38,9 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var meal = ref.watch(mealDetailsDataProvider);
+    var favorites = ref.watch(favoritesProvider);
+    bool isFavo = isFavorite(meal!.mealsData!.mealId, favorites!.favoriteMeals);
+    var user = ref.watch(userProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: meal!.isLoading
@@ -80,9 +84,21 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon: const Icon(Icons.favorite_border,
+                            icon:  Icon(isFavo?Icons.favorite:Icons.favorite_border,
                                 color: Colors.red),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (isFavo) {
+                                ref
+                                    .read(favoritesProvider.notifier)
+                                    .removeFavorite(context, user!.user!.token,
+                                        int.parse(meal.mealsData!.mealId));
+                              }else{
+                                ref
+                                    .read(favoritesProvider.notifier)
+                                    .addFavorite(context, user!.user!.token,
+                                    int.parse(meal.mealsData!.mealId));
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -371,16 +387,16 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  size: 30,
-                ),
-                onPressed: () {
-                  print(meal.mealsData!.ingredients);
-                },
-              ),
+              // IconButton(
+              //   icon: const Icon(
+              //     Icons.favorite,
+              //     color: Colors.red,
+              //     size: 30,
+              //   ),
+              //   onPressed: () {
+              //     print(meal.mealsData!.ingredients);
+              //   },
+              // ),
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

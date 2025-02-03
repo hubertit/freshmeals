@@ -25,7 +25,6 @@ class AdressesNotifier extends StateNotifier<AddressState> {
         final myList = response.data['data'];
 
         if (myList is List && myList.isNotEmpty) {
-
           // Convert response data to Address model list
           final addressList =
               myList.map<Address>((json) => Address.fromJson(json)).toList();
@@ -48,13 +47,19 @@ class AdressesNotifier extends StateNotifier<AddressState> {
 
   Future<void> addAddress(BuildContext context, json, WidgetRef ref) async {
     try {
-      // state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
 
       final response = await _dio.post(
-        '$baseUrl/addresses/add',
+        '${baseUrl}addresses/add',
         data: json,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
       );
-
+      print(response);
+      //
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
         // state = SlotsState(isLoading: false, slotsData: []);
@@ -72,12 +77,13 @@ class AdressesNotifier extends StateNotifier<AddressState> {
       }
     } catch (e) {
       // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('An error occurred: $e')),
+      //   SnackBar(content: Text("${e}")),
       // );
     } finally {
       state = state.copyWith(isLoading: false);
     }
   }
+
   Future<void> updateAddress(BuildContext context, json, WidgetRef ref) async {
     try {
       // state = state.copyWith(isLoading: true);
@@ -88,7 +94,6 @@ class AdressesNotifier extends StateNotifier<AddressState> {
       );
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
-
         // state = SlotsState(isLoading: false, slotsData: []);
         ref
             .read(addressesProvider.notifier)

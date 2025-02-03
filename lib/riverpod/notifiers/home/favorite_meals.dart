@@ -48,11 +48,10 @@ class FavoriteMealsNotifier extends StateNotifier<FavoriteMealsState?> {
     try {
       final response = await _dio.post(
         '${baseUrl}favorites/add',
-        data: {"meal_id": mealId},
+        data: {"token": token, "meal_id": mealId},
         options: Options(
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
           },
         ),
       );
@@ -60,7 +59,7 @@ class FavoriteMealsNotifier extends StateNotifier<FavoriteMealsState?> {
       if (response.statusCode == 200) {
         fetchFavorites(context, token); // Refresh favorites
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Meal added to favorites!')),
+          const SnackBar(content: Text('Meal added to favorites!')),
         );
       } else {
         throw Exception('Failed: ${response.statusMessage}');
@@ -78,11 +77,10 @@ class FavoriteMealsNotifier extends StateNotifier<FavoriteMealsState?> {
     try {
       final response = await _dio.delete(
         '${baseUrl}favorites/remove',
-        data: {"meal_id": mealId},
+        data: {"token": token, "meal_id": mealId},
         options: Options(
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
           },
         ),
       );
@@ -90,7 +88,7 @@ class FavoriteMealsNotifier extends StateNotifier<FavoriteMealsState?> {
       if (response.statusCode == 200) {
         fetchFavorites(context, token); // Refresh favorites
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Meal removed from favorites!')),
+          const SnackBar(content: Text('Meal removed from favorites!')),
         );
       } else {
         throw Exception('Failed: ${response.statusMessage}');
