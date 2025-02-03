@@ -46,11 +46,12 @@ class _ProfileState extends ConsumerState<Profile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Stack(
+                Stack(
                   children: [
                     CircleAvatar(
                       radius: 38,
-                      backgroundImage: AssetImage(AssetsUtils.profile),
+                      backgroundImage:
+                          NetworkImage("${userState.user!.profilePicture}"),
                     ),
                   ],
                 ),
@@ -141,7 +142,7 @@ class _ProfileState extends ConsumerState<Profile> {
                 title: 'Help Center',
                 iconSize: 18,
                 onPressed: () {
-                  final String email = "uyisaristide@gmail.com";
+                  const String email = "uyisaristide@gmail.com";
                   Future<void> _sendEmail() async {
                     final Uri emailUri = Uri(
                       scheme: 'mailto',

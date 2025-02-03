@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:freshmeals/views/appointment/widgets/empty_widget.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/_assets.dart';
 import '../../theme/colors.dart';
@@ -55,23 +56,13 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
                     ],
                   )
                 : appointments.appointments.isEmpty
-                    ? Column(
+                    ? const Column(
                         children: [
-                          const SizedBox(
+                          SizedBox(
                             height: 200,
                           ),
-                          Center(
-                            child: Center(
-                              child: Image.asset(
-                                AssetsUtils.emptyLogo,
-                                height: 90,
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            "You have  no appointments.",
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          )
+                          CustomEmptyWidget(
+                              message: "You have  no appointments.")
                         ],
                       )
                     : ListView.builder(
