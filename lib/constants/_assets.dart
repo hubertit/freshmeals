@@ -27,5 +27,6 @@ class AssetsUtils {
   static const profile = "assets/images/Screenshot 2024-12-27 at 2.46.10 PM.png";
   static const success = "assets/images/Group 721.png";
   static const emptyLogo = "assets/images/empty-folder.png";
+  static const location = "assets/images/location.png";
 }
 //

@@ -39,7 +39,7 @@ const MaterialColor primarySwatch = MaterialColor(
 
 
 // Color scaffold = const Color(0xffffffff);
-Color scaffold = const Color(0xfff5f8fe);
+Color scaffold = const Color(0xff5f5f9);
 Color primaryText = const Color(0xff202123);
 Color secondarTex = const Color(0xff8F9BB3);
 Color fieldsBackground = const Color(0xffFFFFFF);
@@ -47,4 +47,4 @@ Color fieldsBorder = Color(0xff051e32);
 Color errorColor = const Color(0xffD93025);
 Color successColor = const Color(0xff34A853);
 Color accentColor = const Color(0xff6DAA3C);
-
+// #f5f5f7

@@ -25,23 +25,28 @@ class CartNotifier extends StateNotifier<CartState?> {
           },
         ),
       );
+
       if (response.statusCode == 200 && response.data['data'] != null) {
-        final List<dynamic> myList = response.data['data'];
-        print(myList);
+        final List<dynamic> myList = response.data['data']['cart_items'] ?? [];
+        final Map<String, dynamic>? summaryJson =
+            response.data['data']['summary'];
 
         List<CartItem> products =
             myList.map((json) => CartItem.fromJson(json)).toList();
-        state = CartState(cartItems: products, isLoading: false);
+        CartSummary summary = CartSummary.fromJson(summaryJson);
+
+        state =
+            CartState(cartItems: products, summary: summary, isLoading: false);
         ref.read(countProvider.notifier).fetchCount(context, token);
       }
     } catch (e) {
-      // Handle the error
+      // Handle error
     } finally {
       state = state!.copyWith(isLoading: false);
     }
   }
 
-  Future<void> updateCart(WidgetRef ref,BuildContext context, var json) async {
+  Future<void> updateCart(WidgetRef ref, BuildContext context, var json) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.put(
@@ -54,10 +59,12 @@ class CartNotifier extends StateNotifier<CartState?> {
         ),
       );
 
-      if (response.statusCode == 200 ) {
+      if (response.statusCode == 200) {
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
+          await ref
+              .read(cartProvider.notifier)
+              .myCart(context, user.user!.token, ref);
         }
         // List<CartItem> products = (response.data['data'] as List)
         //     .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
@@ -90,15 +97,17 @@ class CartNotifier extends StateNotifier<CartState?> {
       if (response.statusCode == 200) {
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
+          await ref
+              .read(cartProvider.notifier)
+              .myCart(context, user.user!.token, ref);
         }
-      //   List<CartItem> products = (response.data['data'] as List)
-      //       .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
-      //       .toList();
-      //   state = CartState(cartItems: products, isLoading: false);
+        //   List<CartItem> products = (response.data['data'] as List)
+        //       .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
+        //       .toList();
+        //   state = CartState(cartItems: products, isLoading: false);
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text(response.data['message'])),
+          SnackBar(content: Text(response.data['message'])),
         );
       }
     } catch (e) {
@@ -108,7 +117,7 @@ class CartNotifier extends StateNotifier<CartState?> {
     }
   }
 
-  Future<void> remove(BuildContext context, WidgetRef ref,var json) async {
+  Future<void> remove(BuildContext context, WidgetRef ref, var json) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.put(
@@ -129,7 +138,9 @@ class CartNotifier extends StateNotifier<CartState?> {
         // context.pop();
         var user = ref.watch(userProvider);
         if (user!.user != null) {
-          await ref.read(cartProvider.notifier).myCart(context, user.user!.token,ref);
+          await ref
+              .read(cartProvider.notifier)
+              .myCart(context, user.user!.token, ref);
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
@@ -145,15 +156,29 @@ class CartNotifier extends StateNotifier<CartState?> {
 
 class CartState {
   final List<CartItem> cartItems;
+  final CartSummary summary;
   final bool isLoading;
 
-  CartState({required this.cartItems, required this.isLoading});
+  CartState({
+    required this.cartItems,
+    required this.summary,
+    required this.isLoading,
+  });
 
-  factory CartState.initial() => CartState(cartItems: [], isLoading: false);
+  factory CartState.initial() => CartState(
+        cartItems: [],
+        summary: CartSummary.initial(),
+        isLoading: false,
+      );
 
-  CartState copyWith({List<CartItem>? cartItems, bool? isLoading}) {
+  CartState copyWith({
+    List<CartItem>? cartItems,
+    CartSummary? summary,
+    bool? isLoading,
+  }) {
     return CartState(
       cartItems: cartItems ?? this.cartItems,
+      summary: summary ?? this.summary,
       isLoading: isLoading ?? this.isLoading,
     );
   }

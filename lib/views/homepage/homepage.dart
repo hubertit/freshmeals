@@ -67,7 +67,7 @@ class _HomepageState extends ConsumerState<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle_outline),
+              icon: Icon(Icons.calendar_month),
               label: "Booking"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.person_outline),

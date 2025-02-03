@@ -6,6 +6,7 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
+import '../appointment/widgets/empty_widget.dart';
 
 class ChangeAddress extends ConsumerStatefulWidget {
   const ChangeAddress({super.key});
@@ -59,7 +60,17 @@ class _ChangeAddressState extends ConsumerState<ChangeAddress> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
+          :  addresses.slotsData.isEmpty
+          ? const Column(
+        children: [
+          SizedBox(
+            height: 200,
+          ),
+          CustomEmptyWidget(
+              message: "No delivery address found.")
+        ],
+      )
+          :SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -39,6 +39,10 @@ class MyApp extends ConsumerWidget {
               color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
+          snackBarTheme: const SnackBarThemeData(
+              backgroundColor: primarySwatch,
+              contentTextStyle:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           bottomSheetTheme: const BottomSheetThemeData(
             elevation: 0,
             backgroundColor: Colors.white,
@@ -61,13 +65,12 @@ class MyApp extends ConsumerWidget {
             // filled: true,
             border: OutlineInputBorder(
               borderSide: const BorderSide(
-                width: 0.2,
+                  width: 0.2,
                   color: Colors.grey), // Set the default border color to grey
               borderRadius: BorderRadius.circular(3),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(
-
                   color: Colors.grey), // Set the focused border color to grey
               borderRadius: BorderRadius.circular(5),
             ),
@@ -80,7 +83,6 @@ class MyApp extends ConsumerWidget {
             errorBorder: OutlineInputBorder(
               borderSide: const BorderSide(
                   width: 0.2,
-
                   color: Colors.grey), // Set the error border color to red
               borderRadius: BorderRadius.circular(5),
             ),

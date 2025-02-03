@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../models/home/meal_model.dart';
 import '../../riverpod/providers/home.dart';
 import '../../utls/callbacks.dart';
+import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 
 class LunchPage extends ConsumerStatefulWidget {
@@ -52,6 +53,16 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
+          : meals.mealCategories.isEmpty
+          ? const Column(
+        children: [
+          SizedBox(
+            height: 200,
+          ),
+          CustomEmptyWidget(
+              message: "You have  no items.")
+        ],
+      )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

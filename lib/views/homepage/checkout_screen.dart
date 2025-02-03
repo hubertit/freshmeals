@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/constants/_assets.dart';
 import 'package:freshmeals/theme/colors.dart';
+import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/utls/styles.dart';
+import 'package:freshmeals/views/appointment/widgets/empty_widget.dart';
 import 'package:freshmeals/views/homepage/widgets/success_model.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,6 +39,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     var defaultAddress = ref.watch(defaultAddressProvider);
     var user = ref.watch(userProvider);
     var orderState = ref.watch(orderProvider);
+    var summary = ref.watch(cartProvider);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -96,96 +99,141 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                           child: CircularProgressIndicator(),
                         ),
                       )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Delivery Address',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: secondarTex),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  context.push('/changeAddress');
-                                },
-                                child: const Text(
-                                  'Change',
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Image.asset(
-                                AssetsUtils.rectangle,
-                                height: 80,
-                                width: 80,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    : defaultAddress.address == null
+                        ? Container(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            // height: 150,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 30,
-                                            child: Icon(
-                                              Icons.location_pin,
-                                              color: secondarTex,
-                                              size: 16,
-                                            )),
-                                        Text(
-                                          defaultAddress.address!.mapAddress,
-                                          style: TextStyle(
-                                              fontSize: 14, color: secondarTex),
-                                        ),
-                                      ],
+                                    Text(
+                                      'Delivery Address',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: secondarTex),
                                     ),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 30,
-                                            child: Icon(
-                                              Icons.person,
-                                              color: secondarTex,
-                                              size: 16,
-                                            )),
-                                        Text(
-                                          user!.user!.name,
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 30,
-                                            child: Icon(
-                                              Icons.call,
-                                              color: secondarTex,
-                                              size: 16,
-                                            )),
-                                        Text(
-                                          user.user!.phoneNumber,
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                      ],
+                                    TextButton(
+                                      onPressed: () {
+                                        context.push('/changeAddress');
+                                      },
+                                      child: const Text(
+                                        'Select',
+                                        style: TextStyle(color: Colors.green),
+                                      ),
                                     ),
                                   ],
                                 ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const CustomEmptyWidget(
+                                  iconSize: 60,
+                                  message: "Select delivered address first",
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Delivery Address',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: secondarTex),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      context.push('/changeAddress');
+                                    },
+                                    child: const Text(
+                                      'Change',
+                                      style: TextStyle(color: Colors.green),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    AssetsUtils.rectangle,
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                                width: 30,
+                                                child: Icon(
+                                                  Icons.location_pin,
+                                                  color: secondarTex,
+                                                  size: 16,
+                                                )),
+                                            Flexible(
+                                              child: Text(
+                                                defaultAddress
+                                                    .address!.mapAddress,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: secondarTex),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                                width: 30,
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: secondarTex,
+                                                  size: 16,
+                                                )),
+                                            Text(
+                                              user!.user!.name,
+                                              style: TextStyle(fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                                width: 30,
+                                                child: Icon(
+                                                  Icons.call,
+                                                  color: secondarTex,
+                                                  size: 16,
+                                                )),
+                                            Text(
+                                              user.user!.phoneNumber,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
               ),
               const SizedBox(height: 16),
 
@@ -243,7 +291,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
 
               // Order Bill Section
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -255,7 +303,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     ),
                   ],
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -267,38 +315,37 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Order List'),
-                        Text('12 Items'),
+                        const Text('Sub Total'),
+                        Text('Rwf ${formatMoney(summary!.summary.subtotal)}'),
                       ],
                     ),
                     SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Total Price'),
-                        Text('RWF 5,000'),
+                        const Text('Shipping Fee'),
+                        Text('Rwf ${formatMoney(summary.summary.shippingFee)}'),
                       ],
                     ),
                     SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Delivery Fee'),
-                        Text('RWF 1,200'),
+                        const Text('Tax'),
+                        Text('Rwf ${formatMoney(summary.summary.vat)}'),
                       ],
                     ),
                     Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Total Bill',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'RWF 6,200',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.green),
+                          'Rwf ${formatMoney(summary.summary.totalPrice)}',
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -407,11 +454,11 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 ),
               ),
               child: orderState!.isLoading
-                  ? CircularProgressIndicator(
+                  ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
                   : const Text(
-                      'Confirm Order',
+                      'Confirm Order and Pay',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
             ),

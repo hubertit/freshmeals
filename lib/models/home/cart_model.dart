@@ -49,3 +49,46 @@ class CartItem {
     };
   }
 }
+
+
+class CartSummary {
+  final String subtotal;
+  final String vat;
+  final String shippingFee;
+  final String totalPrice;
+
+  CartSummary({
+    required this.subtotal,
+    required this.vat,
+    required this.shippingFee,
+    required this.totalPrice,
+  });
+
+  factory CartSummary.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return CartSummary.initial();
+    }
+    return CartSummary(
+      subtotal: json['subtotal'] ?? '0.00',
+      vat: json['vat'] ?? '0.00',
+      shippingFee: json['shipping_fee'] ?? '0.00',
+      totalPrice: json['total_price'] ?? '0.00',
+    );
+  }
+
+  factory CartSummary.initial() => CartSummary(
+    subtotal: '0.00',
+    vat: '0.00',
+    shippingFee: '0.00',
+    totalPrice: '0.00',
+  );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'subtotal': subtotal,
+      'vat': vat,
+      'shipping_fee': shippingFee,
+      'total_price': totalPrice,
+    };
+  }
+}

@@ -23,7 +23,21 @@ class _ProfileState extends ConsumerState<Profile> {
     // TODO: implement initState
     super.initState();
   }
+  void sendEmail() async {
+    final Uri emailUri = Uri.parse(
+        "https://mail.google.com/mail/u/0/#inbox?compose=new&to=info@freshmeals.rw");
 
+    // final Uri emailUri = Uri(
+    //   scheme: 'mailto',
+    //   path: 'info@freshmeals.rw',
+    // );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      debugPrint("Could not launch email");
+    }
+  }
   String webLink = "https://freshmeals.rw/";
   @override
   Widget build(BuildContext context) {
@@ -100,14 +114,6 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: MaterialCommunityIcons.map_marker,
                 iconSize: 18,
               ),
-              ProfileItemIcon(
-                title: 'Account Information',
-                iconSize: 18,
-                onPressed: () {
-                  context.push('/accountInfo');
-                },
-                leadingIcon: Icons.search,
-              ),
 
               // ProfileItemIcon(
               //   title: 'Payment Methods',
@@ -131,30 +137,19 @@ class _ProfileState extends ConsumerState<Profile> {
             ]),
             CoverContainer(margin: 20, children: [
               ProfileItemIcon(
-                title: 'Settings',
+                title: 'Update Account Information',
                 iconSize: 18,
                 onPressed: () {
-                  // context.push('/stores');
+                  context.push('/accountInfo');
                 },
-                leadingIcon: Icons.settings,
+                leadingIcon: Icons.edit,
               ),
               ProfileItemIcon(
                 title: 'Help Center',
                 iconSize: 18,
                 onPressed: () {
-                  const String email = "uyisaristide@gmail.com";
-                  Future<void> _sendEmail() async {
-                    final Uri emailUri = Uri(
-                      scheme: 'mailto',
-                      path: email,
-                    );
-
-                    if (await canLaunchUrl(emailUri)) {
-                      await launchUrl(emailUri);
-                    } else {
-                      throw 'Could not launch email';
-                    }
-                  }
+                  const String email = "info@freshmeals.rw";
+                  sendEmail();
                   // context.push('/myOrders');
                 },
                 leadingIcon: MaterialCommunityIcons.help,

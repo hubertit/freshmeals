@@ -7,6 +7,7 @@ import '../../models/home/meal_model.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/home.dart';
 import '../../utls/callbacks.dart';
+import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 import 'widgets/category_card.dart';
 
@@ -48,6 +49,16 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
+          : meals.favoriteMeals!.isEmpty
+          ? const Column(
+        children: [
+          SizedBox(
+            height: 200,
+          ),
+          CustomEmptyWidget(
+              message: "There is no favorite items.")
+        ],
+      )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
