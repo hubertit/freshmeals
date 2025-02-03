@@ -68,10 +68,13 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
               margin: const EdgeInsets.only(bottom: 10),
               child: Row(
                 children: [
-                  SizedBox(
+                  Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6))),
                     width: 60,
                     height: 60,
-                    child: Image.asset(AssetsUtils.fruits),
+                    child: Image.network(meal.imageUrl),
                   ),
                   const SizedBox(
                     width: 10,
