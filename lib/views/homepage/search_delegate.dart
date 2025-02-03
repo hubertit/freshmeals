@@ -198,7 +198,7 @@ Widget buildMealCard({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  meal.name,
+                  trimm(17, meal.name),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 16),
                 ),

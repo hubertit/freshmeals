@@ -19,9 +19,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'RITCO',
+      title: 'FreshMeals',
       theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: primarySwatch,
           colorScheme: ColorScheme.fromSeed(seedColor: primarySwatch),
           primaryColor: primarySwatch,
           scaffoldBackgroundColor: scaffold,

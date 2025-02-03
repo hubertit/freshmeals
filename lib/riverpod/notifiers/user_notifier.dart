@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,15 +43,18 @@ class UserNotifier extends StateNotifier<UserState?> {
         await saveUserToPreferences(user);
         context.go('/home');
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor:redItaryana,content: Text('${response.data['message']}')),
+        );
         throw Exception(' ${response.statusMessage}');
       }
     } on DioError catch (e) {
       if (e.response != null) {
         print('${e.response?.statusCode} ${e.response?.data}');
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //       content: Text('Login failed: ${e.response?.data['message']}')),
-        // );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor: redItaryana,
+              content: Text(' ${e.response?.data['message']}')),
+        );
       } else {
         print('${e.response}');
         // ScaffoldMessenger.of(context).showSnackBar(

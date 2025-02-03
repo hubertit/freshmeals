@@ -64,6 +64,7 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
       print("Google Sign-In canceled");
     }
   }
+
   Future<void> logout() async {
     await FacebookAuth.instance.logOut();
     setState(() {

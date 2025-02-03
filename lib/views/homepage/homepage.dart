@@ -44,7 +44,7 @@ class _HomepageState extends ConsumerState<Homepage> {
         children:  [
           const MealsPage(),
           SearchPage(),
-          ChartScreen(),
+          const ChartScreen(),
           const AppointmentsScreen(),
           const Profile(),
         ],

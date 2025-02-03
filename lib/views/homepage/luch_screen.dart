@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/utls/styles.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
@@ -172,7 +173,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    meal.name,
+                    trimm(17, meal.name),
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),

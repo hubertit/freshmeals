@@ -20,7 +20,6 @@ MaterialColor createMaterialColor(Color color) {
 // const Color primaryColor = Color(0xFF0181C6);
 
 const int primaryColorValue = 0xff64BA02; // Updated primary color value
-
 const MaterialColor primarySwatch = MaterialColor(
   primaryColorValue,
   {
@@ -39,6 +38,8 @@ const MaterialColor primarySwatch = MaterialColor(
 
 
 // Color scaffold = const Color(0xffffffff);
+
+Color redItaryana = const Color(0xffDC3545);
 Color scaffold = const Color(0xffF5f5f7);
 Color primaryText = const Color(0xff202123);
 Color secondarTex = const Color(0xff8F9BB3);

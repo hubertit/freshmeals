@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
 import '../../theme/colors.dart';
+import '../../utls/styles.dart';
 import 'search_delegate.dart';
 import 'widgets/add_to_cart.dart';
 
@@ -279,7 +280,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    meal.name,
+                    trimm(17, meal.name),
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
