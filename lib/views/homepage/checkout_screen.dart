@@ -61,22 +61,22 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Order ID Section
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Order ID',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '#OD2204',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green),
-                  ),
-                ],
-              ),
+              // const Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       'Order ID',
+              //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              //     ),
+              //     Text(
+              //       '#OD2204',
+              //       style: TextStyle(
+              //           fontSize: 16,
+              //           fontWeight: FontWeight.bold,
+              //           color: Colors.green),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -114,7 +114,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: secondarTex),
+                                          ),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -144,12 +144,12 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Delivery Address',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: secondarTex),
+                                        ),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -188,9 +188,9 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                               child: Text(
                                                 defaultAddress
                                                     .address!.mapAddress,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 14,
-                                                    color: secondarTex),
+                                                    ),
                                               ),
                                             ),
                                           ],

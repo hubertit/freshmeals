@@ -134,6 +134,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                             //     .imageUrl)
                           )),
                     ),
+                    const SizedBox(height: 16,),
                     _buildSection(
                         "Take Your Pick",
                         List.generate(
