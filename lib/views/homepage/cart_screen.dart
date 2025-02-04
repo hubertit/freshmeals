@@ -75,7 +75,6 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                         var item = cart.cartItems[index];
                         return Stack(
                           children: [
-
                             Container(
                               color: Colors.white,
                               padding: const EdgeInsets.all(20),
@@ -100,8 +99,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                       child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(
                                         children: [
@@ -111,7 +109,6 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
                                           ),
-
                                         ],
                                       ),
                                       const SizedBox(
@@ -135,10 +132,8 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                           ),
                                           const Spacer(),
                                           Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 1,
-                                                    horizontal: 1),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 1),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color:
@@ -151,8 +146,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                   var user =
                                                       ref.watch(userProvider);
                                                   var json = {
-                                                    "token":
-                                                        user!.user!.token,
+                                                    "token": user!.user!.token,
                                                     "meal_id": item.mealId,
                                                     "quantity":
                                                         item.quantity - 1
@@ -161,8 +155,8 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                     ref
                                                         .read(cartProvider
                                                             .notifier)
-                                                        .updateCart(ref,
-                                                            context, json);
+                                                        .updateCart(
+                                                            ref, context, json);
                                                   }
                                                 },
                                                 child: const Icon(
@@ -171,20 +165,17 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                 )),
                                           ),
                                           Container(
-                                            margin:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 10),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Text(
                                               "${item.quantity}",
-                                              style: const TextStyle(
-                                                  fontSize: 16),
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             ),
                                           ),
                                           Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 1,
-                                                    horizontal: 1),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 1),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color:
@@ -197,15 +188,14 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                                   var user =
                                                       ref.watch(userProvider);
                                                   var json = {
-                                                    "token":
-                                                        user!.user!.token,
+                                                    "token": user!.user!.token,
                                                     "meal_id": item.mealId,
                                                     "quantity":
                                                         item.quantity + 1
                                                   };
                                                   ref
-                                                      .read(cartProvider
-                                                          .notifier)
+                                                      .read(
+                                                          cartProvider.notifier)
                                                       .updateCart(
                                                           ref, context, json);
                                                 },
@@ -246,7 +236,6 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                 ],
                               ),
                             ),
-
                           ],
                         );
                       },

@@ -35,8 +35,11 @@ class CartNotifier extends StateNotifier<CartState?> {
             myList.map((json) => CartItem.fromJson(json)).toList();
         CartSummary summary = CartSummary.fromJson(summaryJson);
 
-        state =
-            CartState(cartItems: products, summary: summary, isLoading: false);
+        state = CartState(
+            cartItems: products,
+            summary: summary,
+            isLoading: false,
+            isAddingItem: false);
         ref.read(countProvider.notifier).fetchCount(context, token);
       }
     } catch (e) {
@@ -48,7 +51,7 @@ class CartNotifier extends StateNotifier<CartState?> {
 
   Future<void> updateCart(WidgetRef ref, BuildContext context, var json) async {
     try {
-      state = state!.copyWith(isLoading: true);
+      state = state!.copyWith(isAddingItem: true);
       final response = await _dio.put(
         '${baseUrl}cart/update',
         data: json,
@@ -77,7 +80,7 @@ class CartNotifier extends StateNotifier<CartState?> {
     } catch (e) {
       // Handle the error
     } finally {
-      state = state!.copyWith(isLoading: false);
+      state = state!.copyWith(isAddingItem: false);
     }
   }
 
@@ -158,28 +161,28 @@ class CartState {
   final List<CartItem> cartItems;
   final CartSummary summary;
   final bool isLoading;
-
-  CartState({
-    required this.cartItems,
-    required this.summary,
-    required this.isLoading,
-  });
+  final bool isAddingItem;
+  CartState(
+      {required this.cartItems,
+      required this.summary,
+      required this.isLoading,
+      required this.isAddingItem});
 
   factory CartState.initial() => CartState(
-        cartItems: [],
-        summary: CartSummary.initial(),
-        isLoading: false,
-      );
+      cartItems: [],
+      summary: CartSummary.initial(),
+      isLoading: false,
+      isAddingItem: false);
 
-  CartState copyWith({
-    List<CartItem>? cartItems,
-    CartSummary? summary,
-    bool? isLoading,
-  }) {
+  CartState copyWith(
+      {List<CartItem>? cartItems,
+      CartSummary? summary,
+      bool? isLoading,
+      bool? isAddingItem}) {
     return CartState(
-      cartItems: cartItems ?? this.cartItems,
-      summary: summary ?? this.summary,
-      isLoading: isLoading ?? this.isLoading,
-    );
+        cartItems: cartItems ?? this.cartItems,
+        summary: summary ?? this.summary,
+        isLoading: isLoading ?? this.isLoading,
+        isAddingItem: isAddingItem ?? this.isAddingItem);
   }
 }

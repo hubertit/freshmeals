@@ -94,7 +94,7 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
       path: '/subscription',
       builder: (context, state) {
-        final userModel = state.extra as UserModel;
+        final userModel = state.extra as UserModel?;
         return SubscriptionScreen(user: userModel);
       }),
   GoRoute(

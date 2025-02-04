@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/_api_utls.dart';
 import '../../../models/home/order_model.dart';
@@ -61,6 +62,8 @@ class OderNotifier extends StateNotifier<OrderState> {
         //     .read(addressesProvider.notifier)
         //     .fetchAddress(context, json['token']);
         ref.read(cartProvider.notifier).myCart(context, json['token'], ref);
+        launchUrl(Uri.parse(response.data['payment_url']));
+
         context.pop();
         showDialog(
           context: context,

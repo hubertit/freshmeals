@@ -130,8 +130,16 @@ class _ProfileState extends ConsumerState<Profile> {
                 onPressed: () {
                   context.push('/favorites');
                 },
-                isLast: true,
                 leadingIcon: MaterialCommunityIcons.heart,
+                iconSize: 18,
+              ),
+              ProfileItemIcon(
+                title: 'Subscribe',
+                onPressed: () {
+                  context.push('/subscription');
+                },
+                isLast: true,
+                leadingIcon: MaterialCommunityIcons.submarine,
                 iconSize: 18,
               ),
             ]),
@@ -235,20 +243,20 @@ class _ProfileState extends ConsumerState<Profile> {
                     );
                   },
                   leadingIcon: Icons.logout,
-                  isLast: true,
                   iconColor: Colors.red,
                   avatarColor: const Color(0xfffcefef)),
-              // ProfileItemIcon(
-              //   title: "Delete account",
-              //   titleColor: Colors.red,
-              //   onPressed: () {},
-              //   leadingIcon: Icons.delete,
-              //   iconColor: Colors.red,
-              //   avatarColor: const Color(0xfffcefef),
-              //   arrowColor: Colors.red,
-              //   isLast: true,
-              // ),
+              ProfileItemIcon(
+                title: "Delete account",
+                titleColor: Colors.red,
+                onPressed: () {},
+                leadingIcon: Icons.delete,
+                iconColor: Colors.red,
+                avatarColor: const Color(0xfffcefef),
+                arrowColor: Colors.red,
+                isLast: true,
+              ),
             ]),
+            SizedBox(height: 20,)
           ],
         ),
       ),

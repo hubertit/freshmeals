@@ -39,7 +39,6 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
   Widget build(BuildContext context) {
     var meal = ref.watch(mealDetailsDataProvider);
     var favorites = ref.watch(favoritesProvider);
-    bool isFavo = isFavorite(meal!.mealsData!.mealId, favorites!.favoriteMeals);
     var user = ref.watch(userProvider);
     return Scaffold(
       body: SingleChildScrollView(
@@ -84,19 +83,24 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon:  Icon(isFavo?Icons.favorite:Icons.favorite_border,
+                            icon: Icon(
+                                isFavorite(meal.mealsData!.mealId,
+                                        favorites!.favoriteMeals)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: Colors.red),
                             onPressed: () {
-                              if (isFavo) {
+                              if (isFavorite(meal.mealsData!.mealId,
+                                  favorites.favoriteMeals)) {
                                 ref
                                     .read(favoritesProvider.notifier)
                                     .removeFavorite(context, user!.user!.token,
                                         int.parse(meal.mealsData!.mealId));
-                              }else{
+                              } else {
                                 ref
                                     .read(favoritesProvider.notifier)
                                     .addFavorite(context, user!.user!.token,
-                                    int.parse(meal.mealsData!.mealId));
+                                        int.parse(meal.mealsData!.mealId));
                               }
                             },
                           ),

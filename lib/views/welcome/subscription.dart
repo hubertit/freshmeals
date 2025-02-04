@@ -58,9 +58,9 @@ import '../../models/user_model.dart';
 // ];
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
-  final UserModel user;
+  final UserModel? user;
 
-  const SubscriptionScreen({Key? key, required this.user}) : super(key: key);
+  const SubscriptionScreen({Key? key, this.user}) : super(key: key);
 
   @override
   ConsumerState<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -78,7 +78,6 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    print(widget.user.phone);
     var subscriptions = ref.watch(subscriptionsProvider);
     return Scaffold(
       backgroundColor: const Color(0xfff5f8fe),

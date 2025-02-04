@@ -41,12 +41,12 @@ class _HomepageState extends ConsumerState<Homepage> {
     return Scaffold(
       body: IndexedStack(
         index: _index,
-        children:  [
-          const MealsPage(),
+        children:  const [
+          MealsPage(),
           SearchPage(),
-          const ChartScreen(),
-          const AppointmentsScreen(),
-          const Profile(),
+          ChartScreen(),
+          AppointmentsScreen(),
+          Profile(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -11,6 +11,8 @@ import 'search_delegate.dart';
 import 'widgets/add_to_cart.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
+  const SearchPage({super.key});
+
   @override
   ConsumerState<SearchPage> createState() => _SearchPageState();
 }

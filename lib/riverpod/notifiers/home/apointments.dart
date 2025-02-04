@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/_api_utls.dart';
 import '../../../models/general/slots.dart';
@@ -42,7 +44,7 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
 
   // Book appointment method
   Future<void> bookAppointment(BuildContext context, String token, String date,
-      String timeSlot, String duration) async {
+      String timeSlot, String duration, WidgetRef ref) async {
     try {
       // state = state.copyWith(isLoading: true);
       // Request body
@@ -59,11 +61,12 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
 
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
-        state = SlotsState(isLoading: false, slotsData: []);
-
+        // state = SlotsState(isLoading: false, slotsData: []);
+        ref.read(appointmentsProvider.notifier).fetchSlots(context, date);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );
+        context.pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
