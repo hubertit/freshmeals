@@ -79,7 +79,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     var mealType = types.mealCategories[index];
                     return _buildCategoryChip(mealType.name, mealType.imageUrl,
                         () {
-                      context.push('/lunch');
+                      context.push('/lunch/${mealType.name}');
                     });
                   })),
                 ),
@@ -301,7 +301,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
-                  context.push("/lunch");
+                  context.push("/lunch/${title}");
                 },
                 child: const Text("View All",
                     style: TextStyle(color: Colors.green))),
@@ -332,7 +332,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
-                  context.push("/lunch");
+                  context.push("/lunch/${title}");
                 },
                 child: const Text("View All",
                     style: TextStyle(color: Colors.green))),

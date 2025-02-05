@@ -10,7 +10,8 @@ import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 
 class LunchPage extends ConsumerStatefulWidget {
-  const LunchPage({super.key});
+  final String category;
+  const LunchPage({super.key, required this.category});
 
   @override
   ConsumerState<LunchPage> createState() => _LunchPageState();
@@ -38,9 +39,9 @@ class _LunchPageState extends ConsumerState<LunchPage> {
             context.pop();
           },
         ),
-        title: const Text(
-          "Lunch",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          widget.category,
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         // actions: [
@@ -55,51 +56,50 @@ class _LunchPageState extends ConsumerState<LunchPage> {
               child: CircularProgressIndicator(),
             )
           : meals.mealCategories.isEmpty
-          ? const Column(
-        children: [
-          SizedBox(
-            height: 200,
-          ),
-          CustomEmptyWidget(
-              message: "You have  no items.")
-        ],
-      )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       _buildCategoryTab("All", isSelected: true),
-                //       _buildCategoryTab("For You"),
-                //       _buildCategoryTab("Recommended"),
-                //     ],
-                //   ),
-                // ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.8,
-                      ),
-                      itemCount: meals.mealCategories.length,
-                      itemBuilder: (context, index) {
-                        var meal = meals.mealCategories[index];
-                        return _buildMealCard(context: context, meal: meal);
-                      },
+              ? const Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
                     ),
-                  ),
+                    CustomEmptyWidget(message: "You have  no items.")
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       _buildCategoryTab("All", isSelected: true),
+                    //       _buildCategoryTab("For You"),
+                    //       _buildCategoryTab("Recommended"),
+                    //     ],
+                    //   ),
+                    // ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.8,
+                          ),
+                          itemCount: meals.mealCategories.length,
+                          itemBuilder: (context, index) {
+                            var meal = meals.mealCategories[index];
+                            return _buildMealCard(context: context, meal: meal);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 
@@ -178,9 +178,9 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   // const SizedBox(height: 4),
-                  const Text(
-                    "For lunch",
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  Text(
+                    "For ${widget.category}",
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

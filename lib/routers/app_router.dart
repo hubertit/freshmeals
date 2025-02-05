@@ -107,9 +107,17 @@ final GoRouter router = GoRouter(routes: [
     path: '/home',
     builder: (context, state) => const Homepage(),
   ),
+  // GoRoute(
+  //   path: '/lunch',
+  //   builder: (context, state) => LunchPage(),
+  // ),
   GoRoute(
-    path: '/lunch',
-    builder: (context, state) => LunchPage(),
+    path: '/lunch/:category',
+    builder: (context, state) {
+      // Retrieve the mealId from the route parameters
+      final category = state.pathParameters['category']!;
+      return LunchPage(category: category);
+    },
   ),
   GoRoute(
     path: '/productDetails',
