@@ -17,6 +17,7 @@ class ChartScreen extends ConsumerStatefulWidget {
   ConsumerState<ChartScreen> createState() => _ChartScreenState();
 }
 
+
 class _ChartScreenState extends ConsumerState<ChartScreen> {
   int productQt = 1;
   @override
@@ -123,13 +124,22 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                       ),
                                       Row(
                                         children: [
-                                          Text(
-                                            "Rwf ${formatMoney((item.price * item.quantity).toString())}",
-                                            style: const TextStyle(
-                                                color: primarySwatch,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                          cart.isAddingItem
+                                              ? const SizedBox(
+                                                  height: 15,
+                                                  width: 15,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                  ))
+                                              : Text(
+                                                  "Rwf ${formatMoney((item.price * item.quantity).toString())}",
+                                                  style: const TextStyle(
+                                                      color: primarySwatch,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                           const Spacer(),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
@@ -167,7 +177,15 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                           Container(
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 10),
-                                            child: Text(
+                                            child:cart.isAddingItem
+                                                ? const SizedBox(
+                                                height: 15,
+                                                width: 15,
+                                                child:
+                                                CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                ))
+                                                : Text(
                                               "${item.quantity}",
                                               style:
                                                   const TextStyle(fontSize: 16),
@@ -258,7 +276,15 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                   },
                   child: Row(
                     children: [
-                      Text(
+                      cart.isAddingItem
+                          ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child:
+                          CircularProgressIndicator(
+                            strokeWidth: 2,color: Colors.white,
+                          ))
+                          : Text(
                         "Rwf ${formatMoney(count!.count.totalAmount)}",
                         style: const TextStyle(
                             color: Colors.white,
