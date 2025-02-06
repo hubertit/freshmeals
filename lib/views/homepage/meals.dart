@@ -134,7 +134,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                             //     .imageUrl)
                           )),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     _buildSection(
                         "Take Your Pick",
                         List.generate(
@@ -175,7 +177,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14)),
                                             const SizedBox(height: 5),
-                                            Text("${formatMoney(pick.price)} Rwf ",
+                                            Text(
+                                                "${formatMoney(pick.price)} Rwf ",
                                                 style: const TextStyle(
                                                     color: primarySwatch,
                                                     fontSize: 16,

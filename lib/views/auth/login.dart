@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:freshmeals/models/facebook_user.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
@@ -29,10 +30,11 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
 
     if (result.status == LoginStatus.success) {
       final userData = await FacebookAuth.instance.getUserData();
-      setState(() {
-        _userData = userData;
-        _isLoggedIn = true;
-      });
+      // setState(() {
+      //   _userData = userData;
+      //   _isLoggedIn = true;
+      // });
+      context.go('/facebookRegister', extra: FacebookUser.fromJson(userData));
       print("Facebook User: $_userData");
     } else {
       print("Facebook Login Failed: ${result.message}");
@@ -224,10 +226,12 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
             ),
             const SizedBox(height: 20),
             // Social Media Buttons
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // _buildSocialButton(Icons.facebook, Colors.blue),
+                InkWell(
+                    onTap: signInWithFacebook,
+                    child: _buildSocialButton(Icons.facebook, Colors.blue)),
                 // _buildSocialButton(Icons.apple, Colors.black),
                 // _buildSocialButton(Ionicons.logo_google, Colors.red),
               ],
@@ -258,7 +262,10 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon, Color color) {
+  Widget _buildSocialButton(
+    IconData icon,
+    Color color,
+  ) {
     return CircleAvatar(
       radius: 25,
       backgroundColor: Colors.grey[200],

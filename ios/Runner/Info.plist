@@ -53,7 +53,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
     <!-- Facebook Configuration -->
     <key>CFBundleURLTypes</key>
     <array>
@@ -61,9 +65,13 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>fb3943089325924740</string>
+          <string>691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
+
         </array>
       </dict>
     </array>
+    <key>GIDClientID</key>
+    <string>691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
     <key>FacebookAppID</key>
     <string>3943089325924740</string>
     <key>FacebookClientToken</key>

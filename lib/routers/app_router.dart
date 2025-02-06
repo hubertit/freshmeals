@@ -1,7 +1,9 @@
+import 'package:freshmeals/models/facebook_user.dart';
 import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/views/appointment/appointments_booking.dart';
 import 'package:freshmeals/views/appointment/booking_screen.dart';
 import 'package:freshmeals/views/appointment/my_appointments.dart';
+import 'package:freshmeals/views/auth/facebook_login.dart';
 import 'package:freshmeals/views/homepage/account_info.dart';
 import 'package:freshmeals/views/homepage/adress_picker.dart';
 import 'package:freshmeals/views/homepage/change_address.dart';
@@ -41,6 +43,13 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
     path: '/newUser',
     builder: (context, state) => const RegisterScreen(),
+  ),
+  GoRoute(
+    path: '/facebookRegister',
+    builder: (context, state) {
+      final facebookUser = state.extra as FacebookUser;
+      return FacebookRegisterScreen(facebookUser: facebookUser);
+    },
   ),
   GoRoute(
     path: '/forgetPassword',
