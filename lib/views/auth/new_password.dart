@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
 import '../../utls/styles.dart';
 import 'widgets/input_dec.dart';
 
+class Reset {
+  final String code;
+  final String identifier;
+
+  Reset({required this.code, required this.identifier});
+}
+
 class NewPasswordScreen extends ConsumerStatefulWidget {
-  const NewPasswordScreen({super.key});
+  final Reset resetData;
+  const NewPasswordScreen({super.key, required this.resetData});
 
   @override
   ConsumerState<NewPasswordScreen> createState() => _NewPasswordScreenState();
@@ -17,7 +26,6 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   final TextEditingController _newPassword = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
 
-  bool _loading = false;
 
   final _key = GlobalKey<FormState>();
 
@@ -47,6 +55,8 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   // }
   @override
   Widget build(BuildContext context) {
+    bool _loading = ref.watch(userProvider)!.isLoading;
+
     return Scaffold(
       body: Form(
         key: _key,
@@ -112,7 +122,13 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
                   )
                 : ElevatedButton(
                     style: StyleUtls.buttonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      ref.read(userProvider.notifier).resetPassword(
+                          context,
+                          widget.resetData.identifier,
+                          widget.resetData.code,
+                          _newPassword.text);
+                    },
                     child: const Text(
                       "Update password",
                       style: TextStyle(

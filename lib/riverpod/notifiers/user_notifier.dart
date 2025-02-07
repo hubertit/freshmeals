@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/_api_utls.dart';
 import '../../models/user_model.dart';
+import '../../views/auth/new_password.dart';
 
 class UserNotifier extends StateNotifier<UserState?> {
   UserNotifier() : super(UserState.initial());
@@ -44,7 +45,9 @@ class UserNotifier extends StateNotifier<UserState?> {
         context.go('/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(backgroundColor:redItaryana,content: Text('${response.data['message']}')),
+          SnackBar(
+              backgroundColor: redItaryana,
+              content: Text('${response.data['message']}')),
         );
         throw Exception(' ${response.statusMessage}');
       }
@@ -52,7 +55,8 @@ class UserNotifier extends StateNotifier<UserState?> {
       if (e.response != null) {
         print('${e.response?.statusCode} ${e.response?.data}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(backgroundColor: redItaryana,
+          SnackBar(
+              backgroundColor: redItaryana,
               content: Text(' ${e.response?.data['message']}')),
         );
       } else {
@@ -95,7 +99,6 @@ class UserNotifier extends StateNotifier<UserState?> {
         // await _saveUserToPreferences(user);
         // context.go("/login");
         context.push('/welcome');
-
       } else {
         throw Exception('${response.statusMessage}');
       }
@@ -175,6 +178,7 @@ class UserNotifier extends StateNotifier<UserState?> {
     final userJson = jsonEncode(user.toJson());
     await prefs.setString('user', userJson);
   }
+
   //
   // Future<void> _loadUserFromPreferences() async {
   //   final prefs = await SharedPreferences.getInstance();
@@ -190,6 +194,123 @@ class UserNotifier extends StateNotifier<UserState?> {
     await prefs.remove('user');
     state = UserState(user: null, isLoading: false);
     context.go('/login');
+  }
+
+  Future<void> forgotPassword(BuildContext context, String identifier) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}user/forgot_password',
+        data: {'identifier': identifier},
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+      context.go('/resetPassword/${identifier}');
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('${response.data['message']}')),
+      // );
+
+      print(response.data);
+    } on DioError catch (e) {
+      if (e.response != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${e.response?.data['message']}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Request failed: ${e.message}')),
+        );
+      }
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> verifyResetCode(
+      BuildContext context, String identifier, String resetCode) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}user/verify_code',
+        data: {
+          'identifier': identifier,
+          'reset_code': resetCode,
+        },
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        // Check if the request was successful
+        Reset reset = Reset(code: resetCode, identifier: identifier);
+        context.go('/newPassword',extra: reset);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${response.data['message']}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Unexpected response: ${response.statusCode}')),
+        );
+      }
+
+      print(response.data);
+    } on DioError catch (e) {
+      if (e.response != null) {
+        // Handle errors based on status code
+        int statusCode = e.response!.statusCode ?? 0;
+        String errorMessage =
+            e.response?.data['message'] ?? 'Something went wrong';
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error ($statusCode): $errorMessage')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Verification failed: ${e.message}')),
+        );
+      }
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String identifier,
+      String resetCode, String newPassword) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}user/reset_password',
+        data: {
+          'identifier': identifier,
+          'reset_code': resetCode,
+          'new_password': newPassword,
+        },
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${response.data['message']}')),
+      );
+
+      print(response.data);
+
+      // After resetting the password, navigate to the login page
+      context.go('/login');
+    } on DioError catch (e) {
+      if (e.response != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${e.response?.data['message']}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Reset failed: ${e.message}')),
+        );
+      }
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
   }
 }
 

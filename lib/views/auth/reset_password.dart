@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -9,7 +10,8 @@ import '../../constants/_assets.dart';
 import '../../utls/styles.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
-  const ResetPasswordScreen({super.key});
+  final String identifier;
+  const ResetPasswordScreen({super.key, required this.identifier});
 
   @override
   ConsumerState<ResetPasswordScreen> createState() =>
@@ -19,7 +21,6 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   final TextEditingController _usernameController = TextEditingController();
 
-  bool _loading = false;
 
   final _form = GlobalKey<FormState>();
   String otpCode = ''; // Variable to store the OTP code
@@ -78,6 +79,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool _loading = ref.watch(userProvider)!.isLoading;
+
     return Scaffold(
       body: Form(
         key: _form,
@@ -153,15 +156,15 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
               },
             ),
             // Countdown Timer Display
-            Text(
-                textAlign: TextAlign.center,
-                _remainingTime > 0
-                    ? "Resend OTP in $_remainingTime seconds"
-                    : "You can now resend the OTP",
-                style: const TextStyle(
-                    fontSize: 11,
-                    color: primarySwatch,
-                    fontWeight: FontWeight.bold)),
+            // Text(
+            //     textAlign: TextAlign.center,
+            //     _remainingTime > 0
+            //         ? "Resend OTP in $_remainingTime seconds"
+            //         : "You can now resend the OTP",
+            //     style: const TextStyle(
+            //         fontSize: 11,
+            //         color: primarySwatch,
+            //         fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
 
             _loading
@@ -171,7 +174,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                 : ElevatedButton(
                     style: StyleUtls.buttonStyle,
                     onPressed: () {
-                      context.go('/newPassword');
+                      ref
+                          .read(userProvider.notifier)
+                          .verifyResetCode(context, widget.identifier, otpCode);
+
                     },
                     child: const Text(
                       "Complete",

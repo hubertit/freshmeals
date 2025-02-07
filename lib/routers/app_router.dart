@@ -55,13 +55,28 @@ final GoRouter router = GoRouter(routes: [
     path: '/forgetPassword',
     builder: (context, state) => const ForgotPassword(),
   ),
+  // GoRoute(
+  //   path: '/resetPassword',
+  //   builder: (context, state) => const ResetPasswordScreen(),
+  // ),
   GoRoute(
-    path: '/resetPassword',
-    builder: (context, state) => const ResetPasswordScreen(),
+    path: '/resetPassword/:identifier',
+    builder: (context, state) {
+      // Retrieve the mealId from the route parameters
+      final category = state.pathParameters['identifier']!;
+      return  ResetPasswordScreen(identifier: category);
+    },
   ),
+  // GoRoute(
+  //   path: '/newPassword',
+  //   builder: (context, state) => const NewPasswordScreen(),
+  // ),
   GoRoute(
     path: '/newPassword',
-    builder: (context, state) => const NewPasswordScreen(),
+    builder: (context, state) {
+      final userModel = state.extra as Reset;
+      return NewPasswordScreen(resetData: userModel);
+    },
   ),
   GoRoute(
     path: '/age',

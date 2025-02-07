@@ -148,20 +148,20 @@ class CartNotifier extends StateNotifier<CartState?> {
       );
 
       if (response.statusCode == 200) {
-        // List<CartItem> products = (response.data['data'] as List)
-        //     .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
-        //     .toList();
-        // state = CartState(cartItems: products, isLoading: false);
-        // context.pop();
-        // var user = ref.watch(userProvider);
-        // if (user!.user != null) {
-        await ref
-            .read(cartProvider.notifier)
-            .myCart(context, json['token'], ref);
-        // }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.data['message'])),
-        );
+        final List<dynamic> myList = response.data['data']['cart_items'] ?? [];
+        final Map<String, dynamic>? summaryJson =
+        response.data['data']['summary'];
+
+        List<CartItem> products =
+        myList.map((json) => CartItem.fromJson(json)).toList();
+        CartSummary summary = CartSummary.fromJson(summaryJson);
+
+        state = CartState(
+            cartItems: products,
+            summary: summary,
+            isLoading: false,
+            isAddingItem: false);
+        // ref.read(countProvider.notifier).fetchCount(context, token);
       }
     } catch (e) {
       // Handle the error

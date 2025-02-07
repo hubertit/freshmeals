@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
+import '../../riverpod/providers/auth_providers.dart';
 import '../../utls/styles.dart';
 import 'widgets/input_dec.dart';
 
@@ -14,11 +14,9 @@ class ForgotPassword extends ConsumerStatefulWidget {
   ConsumerState<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgotPasswordState extends ConsumerState<ForgotPassword>  {
+class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
   final TextEditingController _usernameController = TextEditingController();
 
-
-  bool _loading = false;
 
   final _form = GlobalKey<FormState>();
 
@@ -47,6 +45,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>  {
   // }
   @override
   Widget build(BuildContext context) {
+    bool _loading = ref.watch(userProvider)!.isLoading;
     return Scaffold(
       body: Form(
         key: _form,
@@ -54,19 +53,26 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>  {
           padding: const EdgeInsets.all(20)
               .copyWith(top: MediaQuery.of(context).padding.top),
           children: [
-            Image.asset(AssetsUtils.logo,height: 150,),
+            Image.asset(
+              AssetsUtils.logo,
+              height: 150,
+            ),
             // Padding(
             //   padding: const EdgeInsets.all(0.0),
             //   child: Image.asset(AssetsUtils.logo),
             // ),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
 
             const Text(
               "Forgot your password?",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             // Center(
             //     child: Padding(
             //       padding: const EdgeInsets.only(bottom: 20),
@@ -77,40 +83,49 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>  {
             //     )),
             Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    "Please type your email or phone number below",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                )),
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                "Please type your email or phone number below",
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            )),
             Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: TextFormField(
-                validator: (s)=>s?.trim().isNotEmpty == true ? null : "Field is required !",
-                decoration: iDecoration(hint: "Email or Phone Number"),controller: _usernameController,),
-            ),
-            _loading ? const Center(
-              child: CircularProgressIndicator(),
-            ) :ElevatedButton(
-              style: StyleUtls.buttonStyle,
-              onPressed: (){
-                context.go('/resetPassword');
-              },
-              child: const Text(
-                "Send",
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                validator: (s) =>
+                    s?.trim().isNotEmpty == true ? null : "Field is required !",
+                decoration: iDecoration(hint: "Email or Phone Number"),
+                controller: _usernameController,
               ),
             ),
+            _loading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ElevatedButton(
+                    style: StyleUtls.buttonStyle,
+                    onPressed: () {
+                      ref
+                          .read(userProvider.notifier)
+                          .forgotPassword(context, _usernameController.text);
+                    },
+                    child: const Text(
+                      "Send",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
             Padding(
               padding: const EdgeInsets.only(top: 60),
-              child: OutlinedButton(onPressed: () =>context.go('/login'),style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.red),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  foregroundColor: Colors.red
-              ), child: const Text("Cancel")),
+              child: OutlinedButton(
+                  onPressed: () => context.go('/login'),
+                  style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      foregroundColor: Colors.red),
+                  child: const Text("Cancel")),
             )
           ],
         ),
