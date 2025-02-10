@@ -5,7 +5,6 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/utls/styles.dart';
 import 'package:freshmeals/views/appointment/widgets/empty_widget.dart';
-import 'package:freshmeals/views/homepage/widgets/success_model.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
@@ -323,11 +322,11 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Shipping Fee'),
+                        const Text('Delivery Fee'),
                         Text('Rwf ${formatMoney(summary.summary.shippingFee)}'),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

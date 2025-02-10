@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ritco_app/constants/_assets.dart';
-import 'package:ritco_app/theme/colors.dart';
+
+import '../../../constants/_assets.dart';
+import '../../../theme/colors.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
@@ -21,76 +22,66 @@ class _SuccessScreenState extends State<SuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("payment.successTitle".tr()),
-      ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 35,
-        ),
-        // height: MediaQuery.of(context).size.height / 1.2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // CoverContainer(children: [
-            const SizedBox(
-              height: 40,
-            ),
-            Image.asset(
-              AssetsUtils.success,
-              height: 60,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text("payment.successMessage".tr(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                )),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // const Text('Remember to pay for your tickets within 15 mins',
-            //     textAlign: TextAlign.center,
-            //     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            // ]),
 
-            // Spacer(),
-            const Spacer(),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
-                onPressed: () {
-                  // context.go("/failed");
-                  context.go("/home");
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: Center(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            width: MediaQuery.of(context).size.width / 1.1,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
                   children: [
-                    Text(
-                      "Ok",
-                      style: TextStyle(
-                          color: primarySwatch, fontWeight: FontWeight.bold),
-                    ),
+                    const Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          context.go('/');
+                        },
+                        icon: const Icon(Icons.close))
                   ],
                 ),
-              ),
+                const Text(
+                  "You've Ordered Successfully",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Your order has been received. Sit tight while we prepare your hearty meal.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: secondarTex),
+                ),
+                // const SizedBox(height: 10),
+                // RichText(
+                //   text: const TextSpan(
+                //     text: 'View Order',
+                //     style: TextStyle(
+                //       color: primarySwatch, // Set text color
+                //       fontSize: 16, // Set font size
+                //       decoration: TextDecoration.underline, // Underline the text
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(height: 10),
+                Image.asset(AssetsUtils.success)
+              ],
             ),
-            const SizedBox(
-              height: 30,
-            )
-          ],
+          ),
         ),
       ),
     );

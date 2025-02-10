@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ritco_app/constants/_assets.dart';
 
-import '../../theme/colors.dart';
-import '../auth/widgets/authentication_button.dart';
-import '../home/widgets/cover_container.dart';
+import '../../../constants/_assets.dart';
 
 class FailedScreen extends StatefulWidget {
   const FailedScreen({super.key});
@@ -25,7 +22,7 @@ class _FailedScreenState extends State<FailedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("payment.failedTitle".tr()),
+        title:  Text("Payment Failed".tr()),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(
@@ -47,7 +44,7 @@ class _FailedScreenState extends State<FailedScreen> {
             const SizedBox(
               height: 30,
             ),
-             Text("payment.failedMessage".tr(),
+             const Text("You have successfully payed for subscription",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
             const SizedBox(
@@ -62,15 +59,15 @@ class _FailedScreenState extends State<FailedScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
                 onPressed: () {
-                  context.go('/home');
+                  context.go('/');
                 },
-                child:  Row(
+                child:  const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "payment.tryAgain".tr(),
-                      style: const TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.bold),
+                      "Continue",
+                      style: TextStyle(
+                           fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

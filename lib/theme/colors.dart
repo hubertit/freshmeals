@@ -19,7 +19,7 @@ MaterialColor createMaterialColor(Color color) {
 // MaterialColor primarySwatch = createMaterialColor(const Color(0xff264E9A));
 // const Color primaryColor = Color(0xFF0181C6);
 
-const int primaryColorValue = 0xff64BA02; // Updated primary color value
+const int primaryColorValue = 0xff64BA02; // Updated primary color value (Green)
 const MaterialColor primarySwatch = MaterialColor(
   primaryColorValue,
   {
@@ -35,7 +35,6 @@ const MaterialColor primarySwatch = MaterialColor(
     900: Color(0xff306902),       // Darker shade
   },
 );
-
 
 // Color scaffold = const Color(0xffffffff);
 

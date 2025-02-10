@@ -30,12 +30,12 @@ class SuccessModel extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                       onPressed: () {
-                        context.pop();
+                        context.go('/');
                       },
-                      icon: Icon(Icons.close))
+                      icon: const Icon(Icons.close))
                 ],
               ),
               const Text(

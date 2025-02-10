@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,8 +27,9 @@ class OderNotifier extends StateNotifier<OrderState> {
 
         if (myList is List && myList.isNotEmpty) {
           // Convert response data to Address model list
-          final addressList =
-              myList.map<OrdersModel>((json) => OrdersModel.fromJson(json)).toList();
+          final addressList = myList
+              .map<OrdersModel>((json) => OrdersModel.fromJson(json))
+              .toList();
 
           // Update state
           state = state.copyWith(slotsData: addressList, isLoading: false);
@@ -64,13 +64,9 @@ class OderNotifier extends StateNotifier<OrderState> {
         ref.read(cartProvider.notifier).myCart(context, json['token'], ref);
         launchUrl(Uri.parse(response.data['payment_url']));
 
-        context.pop();
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const SuccessModel();
-          },
-        );
+        // context.pop();
+
+        context.go("/processing/${response.data['invoice_number']}");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
@@ -144,6 +140,43 @@ class OderNotifier extends StateNotifier<OrderState> {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('An error occurred: $e')),
       // );
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> checkOrderStatus(
+      BuildContext context, String invoiceNumber) async {
+    try {
+      state = state.copyWith(isLoading: true);
+
+      final response = await _dio.get(
+        '${baseUrl}payments/status?invoiceNumber=$invoiceNumber',
+      );
+      print(response);
+      if (response.statusCode == 200) {
+        final data = response.data['invoiceDetails'];
+        final status = data['paymentStatus'];
+        if (status == "PAID") {
+          // showDialog(
+          //   context: context,
+          //   builder: (context) {
+          //     return const SuccessModel();
+          //   },
+          // );
+          context.go("/success");
+        } else if (status == "FAILED") {
+          context.go("/failed");
+        }
+
+        // You can also store this data in the state if needed
+      } else {
+        throw Exception('Failed to fetch order status');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error checking order status: $e')),
+      );
     } finally {
       state = state.copyWith(isLoading: false);
     }

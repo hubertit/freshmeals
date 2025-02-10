@@ -23,7 +23,7 @@ class AdressesNotifier extends StateNotifier<AddressState> {
 
       if (response.statusCode == 200) {
         final myList = response.data['data'];
-        // print(response.data);
+        print(response.data);
         if (myList is List && myList.isNotEmpty) {
           // Convert response data to Address model list
           final addressList =

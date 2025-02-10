@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/models/facebook_user.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,58 +21,58 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // Map<String, dynamic>? _userData;
-  // bool _isLoggedIn = false;
+  Map<String, dynamic>? _userData;
+  bool _isLoggedIn = false;
 
-  // Future<void> signInWithFacebook() async {
-  //   final LoginResult result = await FacebookAuth.instance.login();
-  //
-  //   if (result.status == LoginStatus.success) {
-  //     final userData = await FacebookAuth.instance.getUserData();
-  //     // setState(() {
-  //     //   _userData = userData;
-  //     //   _isLoggedIn = true;
-  //     // });
-  //     context.go('/facebookRegister', extra: FacebookUser.fromJson(userData));
-  //     print("Facebook User: $_userData");
-  //   } else {
-  //     print("Facebook Login Failed: ${result.message}");
-  //   }
-  // }
+  Future<void> signInWithFacebook() async {
+    final LoginResult result = await FacebookAuth.instance.login();
 
-  // final GoogleAuthService _googleAuthService = GoogleAuthService();
-  // final AuthRepository _authRepository = AuthRepository();
+    if (result.status == LoginStatus.success) {
+      final userData = await FacebookAuth.instance.getUserData();
+      // setState(() {
+      //   _userData = userData;
+      //   _isLoggedIn = true;
+      // });
+      context.go('/facebookRegister', extra: FacebookUser.fromJson(userData));
+      print("Facebook User: $_userData");
+    } else {
+      print("Facebook Login Failed: ${result.message}");
+    }
+  }
 
-  // void _handleGoogleSignIn() async {
-  //   final googleUser = await _googleAuthService.signInWithGoogle();
-  //
-  //   if (googleUser != null) {
-  //     // Fetch ID Token
-  //     final googleAuth = await googleUser.authentication;
-  //     final idToken = googleAuth.idToken;
-  //
-  //     if (idToken != null) {
-  //       final userData = await _authRepository.authenticateUser(idToken);
-  //
-  //       if (userData != null) {
-  //         print("Login successful: $userData");
-  //         // Save user data in SharedPreferences
-  //       } else {
-  //         print("Authentication failed");
-  //       }
-  //     }
-  //   } else {
-  //     print("Google Sign-In canceled");
-  //   }
-  // }
+  final GoogleAuthService _googleAuthService = GoogleAuthService();
+  final AuthRepository _authRepository = AuthRepository();
 
-  // Future<void> logout() async {
-  //   await FacebookAuth.instance.logOut();
-  //   setState(() {
-  //     _userData = null;
-  //     _isLoggedIn = false;
-  //   });
-  // }
+  void _handleGoogleSignIn() async {
+    final googleUser = await _googleAuthService.signInWithGoogle();
+
+    if (googleUser != null) {
+      // Fetch ID Token
+      final googleAuth = await googleUser.authentication;
+      final idToken = googleAuth.idToken;
+
+      if (idToken != null) {
+        final userData = await _authRepository.authenticateUser(idToken);
+
+        if (userData != null) {
+          print("Login successful: $userData");
+          // Save user data in SharedPreferences
+        } else {
+          print("Authentication failed");
+        }
+      }
+    } else {
+      print("Google Sign-In canceled");
+    }
+  }
+
+  Future<void> logout() async {
+    await FacebookAuth.instance.logOut();
+    setState(() {
+      _userData = null;
+      _isLoggedIn = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +132,7 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
             //           ],
             //         )
             //       : ElevatedButton(
-            //           onPressed: _handleGoogleSignIn,
+            //           onPressed: signInWithFacebook,
             //           child: const Text("Login with Facebook"),
             //         ),
             // ),

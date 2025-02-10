@@ -1,0 +1,98 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../riverpod/providers/home.dart';
+class ProcessingScreen extends ConsumerStatefulWidget {
+  final String  invoiceNo;
+  const ProcessingScreen({super.key, required this.invoiceNo});
+
+  @override
+  ConsumerState<ProcessingScreen> createState() => _ProcessingScreenState();
+}
+
+class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
+  late Timer _timer;
+  int _executionCount = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+        _executionCount++; // Increment the execution count
+
+        if (_executionCount == 15) {
+          // Navigate to the "failed" page on the 15th execution
+          _timer.cancel(); // Stop the timer to avoid further executions
+          context.go("/failed");
+        } else {
+          // Perform other actions
+          ref
+              .read(orderProvider.notifier)
+              .checkOrderStatus(context, widget.invoiceNo);
+
+        }
+      });
+    });
+
+    super.initState();
+  }
+  nitState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+        ref
+            .read(orderProvider.notifier)
+            .checkOrderStatus(context,widget.invoiceNo);
+        // setState(() {
+        //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+        //     try {
+        //       final loggedUser = ref.watch(loggedUserProvider);
+        //       final response =
+        //       await userServices.getSummary(loggedUser!.userToken);
+        //       if (response['code'] == 200) {
+        //         ref.read(userSummaryProvider.notifier).state = response;
+        //         // print("User summar ${ref.watch(userSummaryProvider)}");
+        //       }
+        //     } catch (e) {
+        //       // print(e);
+        //     }
+        //     try {
+        //       final response =
+        //       await walletServices.getTransactions(ref.watch(tokenProvider));
+        //       if (response['code'] == 200) {
+        //         ref.read(transactionsProvider.notifier).state =
+        //         response['data']['transactions'];
+        //         ref.read(walletReportProvider.notifier).state = response['data'];
+        //       }
+        //     } catch (e) {
+        //       print(e);
+        //     }
+        //   });
+        // });
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:  const Text("Processing Payment"),
+
+      ),
+      body:const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}

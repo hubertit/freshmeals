@@ -6,7 +6,7 @@ import 'package:freshmeals/views/appointment/my_appointments.dart';
 import 'package:freshmeals/views/auth/facebook_login.dart';
 import 'package:freshmeals/views/homepage/account_info.dart';
 import 'package:freshmeals/views/homepage/adress_picker.dart';
-import 'package:freshmeals/views/homepage/change_address.dart';
+import 'package:freshmeals/views/homepage/delively_addresses.dart';
 import 'package:freshmeals/views/homepage/checkout_screen.dart';
 import 'package:freshmeals/views/homepage/favorites_screen.dart';
 import 'package:freshmeals/views/homepage/homepage.dart';
@@ -14,7 +14,11 @@ import 'package:freshmeals/views/homepage/location_track.dart';
 import 'package:freshmeals/views/homepage/luch_screen.dart';
 import 'package:freshmeals/views/homepage/meal_details.dart';
 import 'package:freshmeals/views/homepage/payment_method.dart';
+import 'package:freshmeals/views/homepage/payments/failed_screen.dart';
+import 'package:freshmeals/views/homepage/payments/processing_screen.dart';
+import 'package:freshmeals/views/homepage/payments/sucess_screen.dart';
 import 'package:freshmeals/views/homepage/product_details_add_to_cart.dart';
+import 'package:freshmeals/views/homepage/subscribe_screen.dart';
 import 'package:freshmeals/views/welcome/ages_screen.dart';
 import 'package:freshmeals/views/welcome/gender_screen.dart';
 import 'package:freshmeals/views/welcome/goal_screen.dart';
@@ -55,10 +59,7 @@ final GoRouter router = GoRouter(routes: [
     path: '/forgetPassword',
     builder: (context, state) => const ForgotPassword(),
   ),
-  // GoRoute(
-  //   path: '/resetPassword',
-  //   builder: (context, state) => const ResetPasswordScreen(),
-  // ),
+
   GoRoute(
     path: '/resetPassword/:identifier',
     builder: (context, state) {
@@ -67,10 +68,6 @@ final GoRouter router = GoRouter(routes: [
       return  ResetPasswordScreen(identifier: category);
     },
   ),
-  // GoRoute(
-  //   path: '/newPassword',
-  //   builder: (context, state) => const NewPasswordScreen(),
-  // ),
   GoRoute(
     path: '/newPassword',
     builder: (context, state) {
@@ -204,5 +201,24 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
     path: '/favorites',
     builder: (context, state) =>  const FavoritesScreen(),
+  ),
+  GoRoute(
+    path: '/success',
+    builder: (context, state) =>  const SuccessScreen(),
+  ),
+  GoRoute(
+    path: '/failed',
+    builder: (context, state) =>  const FailedScreen(),
+  ),
+  GoRoute(
+    path: '/subscribe',
+    builder: (context, state) =>  const SubscribeScreen(),
+  ),
+  GoRoute(
+    path: '/processing/:invoice',
+    builder: (context, state) {
+      final invoiceNo = state.pathParameters['invoice']!;
+      return ProcessingScreen(invoiceNo: invoiceNo);
+    },
   ),
 ]);

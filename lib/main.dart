@@ -51,11 +51,11 @@ class MyApp extends ConsumerWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(primarySwatch),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(14)),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            backgroundColor: WidgetStateProperty.all(primarySwatch),
+            padding: WidgetStateProperty.all(const EdgeInsets.all(14)),
+            shape: WidgetStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32))),
-            elevation: MaterialStateProperty.all(0),
+            elevation: WidgetStateProperty.all(0),
           )),
           inputDecorationTheme: InputDecorationTheme(
             contentPadding:

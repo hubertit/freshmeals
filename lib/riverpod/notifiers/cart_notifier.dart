@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../constants/_api_utls.dart';
@@ -124,7 +125,8 @@ class CartNotifier extends StateNotifier<CartState?> {
         //   state = CartState(cartItems: products, isLoading: false);
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.data['message'])),
+          SnackBar(backgroundColor: primarySwatch,
+              content: Text(response.data['message'])),
         );
       }
     } catch (e) {

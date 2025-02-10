@@ -87,7 +87,9 @@ class _MyOrderScreenState extends ConsumerState<MyOrderScreen>
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.go("/home");
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: Colors.green,
@@ -123,8 +125,10 @@ class _MyOrderScreenState extends ConsumerState<MyOrderScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(filteredOrders.length, (index) {
           var order = filteredOrders[index];
-          return MyOrderCard(order: order,);
-            Container(
+          return MyOrderCard(
+            order: order,
+          );
+          Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: InkWell(
               onTap: () {

@@ -23,6 +23,7 @@ class _ProfileState extends ConsumerState<Profile> {
     // TODO: implement initState
     super.initState();
   }
+
   void sendEmail() async {
     final Uri emailUri = Uri.parse(
         "https://mail.google.com/mail/u/0/#inbox?compose=new&to=info@freshmeals.rw");
@@ -38,6 +39,7 @@ class _ProfileState extends ConsumerState<Profile> {
       debugPrint("Could not launch email");
     }
   }
+
   String webLink = "https://freshmeals.rw/";
   @override
   Widget build(BuildContext context) {
@@ -136,7 +138,7 @@ class _ProfileState extends ConsumerState<Profile> {
               ProfileItemIcon(
                 title: 'Subscribe',
                 onPressed: () {
-                  context.push('/subscription');
+                  context.push('/subscribe');
                 },
                 isLast: true,
                 leadingIcon: MaterialCommunityIcons.submarine,
@@ -256,7 +258,9 @@ class _ProfileState extends ConsumerState<Profile> {
                 isLast: true,
               ),
             ]),
-            SizedBox(height: 20,)
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
