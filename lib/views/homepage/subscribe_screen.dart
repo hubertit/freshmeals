@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
+import 'package:freshmeals/utls/callbacks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/user_model.dart';
@@ -125,7 +126,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
-                                            "${subscription.price} Per ${subscription.duration} Days",
+                                            "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: primarySwatch,
@@ -271,7 +272,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
 
                           // Price & Duration
                           Text(
-                            "${subscriptions.activeSubscription!.price} RWF per ${subscriptions.activeSubscription!.duration} Days",
+                            "${formatMoney(subscriptions.activeSubscription!.price)} RWF per ${subscriptions.activeSubscription!.duration} Days",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: primarySwatch,
