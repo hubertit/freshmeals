@@ -124,71 +124,12 @@ class UserNotifier extends StateNotifier<UserState?> {
     }
   }
 
-  // Future<void> update(
-  //     BuildContext context, WidgetRef ref, Map<String, dynamic> json) async {
-  //   try {
-  //     state = state!.copyWith(isLoading: true);
-  //     final response = await _dio.post(
-  //       '${baseUrl}account/update',
-  //       data: json,
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       ),
-  //     );
-  //
-  //     if (response.statusCode == 200 && response.data['data'] != null) {
-  //       UserModel user = UserModel.fromJson(response.data['data']);
-  //       state = UserState(user: user, isLoading: false);
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Updated successfully')),
-  //       );
-  //       await _saveUserToPreferences(user);
-  //       context.pop();
-  //     } else {
-  //       throw Exception('Failed to Update');
-  //     }
-  //   } on DioError catch (e) {
-  //     if (e.response != null) {
-  //       print(
-  //           ' Failed to register: ${e.response?.statusCode} ${e.response?.data}');
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //             content: Text('register failed: ${e.response?.data['message']}')),
-  //       );
-  //     } else {
-  //       print('You Failed to register: ${e.message}');
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('register failed: ${e.message}')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('You Failed to register: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('register failed: $e')),
-  //     );
-  //   } finally {
-  //     state = state!.copyWith(isLoading: false);
-  //   }
-  // }
-  //
   Future<void> saveUserToPreferences(User user) async {
     final prefs = await SharedPreferences.getInstance();
     final userJson = jsonEncode(user.toJson());
     await prefs.setString('user', userJson);
   }
 
-  //
-  // Future<void> _loadUserFromPreferences() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final userData = prefs.getString('user');
-  //   if (userData != null) {
-  //     final userMap = jsonDecode(userData) as Map<String, dynamic>;
-  //     state = UserState(user: UserModel.fromJson(userMap), isLoading: false);
-  //   }
-  // }
-  //
   Future<void> logout(WidgetRef ref, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
@@ -243,7 +184,7 @@ class UserNotifier extends StateNotifier<UserState?> {
       if (response.statusCode == 200) {
         // Check if the request was successful
         Reset reset = Reset(code: resetCode, identifier: identifier);
-        context.go('/newPassword',extra: reset);
+        context.go('/newPassword', extra: reset);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
         );
@@ -308,6 +249,30 @@ class UserNotifier extends StateNotifier<UserState?> {
           SnackBar(content: Text('Reset failed: ${e.message}')),
         );
       }
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> verifyToken(
+      BuildContext context, String token, WidgetRef ref) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}token/verify',
+        data: {'token': token},
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        // Token is invalid, log the user out
+        await logout(ref, context);
+      }
+    } on DioError catch (e) {
+      await logout(ref, context);
     } finally {
       state = state!.copyWith(isLoading: false);
     }

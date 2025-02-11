@@ -44,7 +44,7 @@ class _FailedScreenState extends State<FailedScreen> {
             const SizedBox(
               height: 30,
             ),
-             const Text("You have successfully payed for subscription",
+             const Text("The payment process has failed, try again",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
             const SizedBox(

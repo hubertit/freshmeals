@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/_assets.dart';
@@ -38,13 +39,13 @@ class _SubscribedScreenState extends State<SubscribedScreen> {
               height: 40,
             ),
             Image.asset(
-              AssetsUtils.failed,
+              AssetsUtils.subscribed,
               height: 60,
             ),
             const SizedBox(
               height: 30,
             ),
-            const Text("The payment process has failed, try again",
+            const Text("You have successfully payed for subscription",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
             const SizedBox(
@@ -65,9 +66,9 @@ class _SubscribedScreenState extends State<SubscribedScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Try again",
+                      "Ok",
                       style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.bold),
+                          color: primarySwatch, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

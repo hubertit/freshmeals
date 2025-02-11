@@ -44,8 +44,6 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
-    print(userState!.user!.token);
-    // if(userState!.user!=null){
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(
@@ -67,7 +65,7 @@ class _ProfileState extends ConsumerState<Profile> {
                     CircleAvatar(
                       radius: 38,
                       backgroundImage:
-                          NetworkImage("${userState.user!.profilePicture}"),
+                          NetworkImage("${userState!.user!.profilePicture}"),
                     ),
                   ],
                 ),

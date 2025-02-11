@@ -66,7 +66,7 @@ class OderNotifier extends StateNotifier<OrderState> {
 
         // context.pop();
 
-        context.go("/processing/${response.data['invoice_number']}");
+        context.go("/processing/${response.data['invoice_number']}/false");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
@@ -146,7 +146,7 @@ class OderNotifier extends StateNotifier<OrderState> {
   }
 
   Future<void> checkOrderStatus(
-      BuildContext context, String invoiceNumber) async {
+      BuildContext context, String invoiceNumber, bool subscribing) async {
     try {
       state = state.copyWith(isLoading: true);
 
@@ -164,7 +164,11 @@ class OderNotifier extends StateNotifier<OrderState> {
           //     return const SuccessModel();
           //   },
           // );
-          context.go("/success");
+          if (subscribing) {
+            context.go("/subscribed");
+          } else {
+            context.go("/success");
+          }
         } else if (status == "FAILED") {
           context.go("/failed");
         }

@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../riverpod/providers/home.dart';
+
 class ProcessingScreen extends ConsumerStatefulWidget {
-  final String  invoiceNo;
-  const ProcessingScreen({super.key, required this.invoiceNo});
+  final String invoiceNo;
+  final bool subscribing;
+  const ProcessingScreen(
+      {super.key, required this.invoiceNo, required this.subscribing});
 
   @override
   ConsumerState<ProcessingScreen> createState() => _ProcessingScreenState();
@@ -31,51 +34,51 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
           // Perform other actions
           ref
               .read(orderProvider.notifier)
-              .checkOrderStatus(context, widget.invoiceNo);
-
+              .checkOrderStatus(context, widget.invoiceNo, widget.subscribing);
         }
       });
     });
 
     super.initState();
   }
-  nitState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-        ref
-            .read(orderProvider.notifier)
-            .checkOrderStatus(context,widget.invoiceNo);
-        // setState(() {
-        //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-        //     try {
-        //       final loggedUser = ref.watch(loggedUserProvider);
-        //       final response =
-        //       await userServices.getSummary(loggedUser!.userToken);
-        //       if (response['code'] == 200) {
-        //         ref.read(userSummaryProvider.notifier).state = response;
-        //         // print("User summar ${ref.watch(userSummaryProvider)}");
-        //       }
-        //     } catch (e) {
-        //       // print(e);
-        //     }
-        //     try {
-        //       final response =
-        //       await walletServices.getTransactions(ref.watch(tokenProvider));
-        //       if (response['code'] == 200) {
-        //         ref.read(transactionsProvider.notifier).state =
-        //         response['data']['transactions'];
-        //         ref.read(walletReportProvider.notifier).state = response['data'];
-        //       }
-        //     } catch (e) {
-        //       print(e);
-        //     }
-        //   });
-        // });
-      });
-    });
 
-    super.initState();
-  }
+  // nitState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+  //       ref
+  //           .read(orderProvider.notifier)
+  //           .checkOrderStatus(context, widget.invoiceNo);
+  //       // setState(() {
+  //       //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //       //     try {
+  //       //       final loggedUser = ref.watch(loggedUserProvider);
+  //       //       final response =
+  //       //       await userServices.getSummary(loggedUser!.userToken);
+  //       //       if (response['code'] == 200) {
+  //       //         ref.read(userSummaryProvider.notifier).state = response;
+  //       //         // print("User summar ${ref.watch(userSummaryProvider)}");
+  //       //       }
+  //       //     } catch (e) {
+  //       //       // print(e);
+  //       //     }
+  //       //     try {
+  //       //       final response =
+  //       //       await walletServices.getTransactions(ref.watch(tokenProvider));
+  //       //       if (response['code'] == 200) {
+  //       //         ref.read(transactionsProvider.notifier).state =
+  //       //         response['data']['transactions'];
+  //       //         ref.read(walletReportProvider.notifier).state = response['data'];
+  //       //       }
+  //       //     } catch (e) {
+  //       //       print(e);
+  //       //     }
+  //       //   });
+  //       // });
+  //     });
+  //   });
+  //
+  //   super.initState();
+  // }
 
   @override
   void dispose() {
@@ -87,10 +90,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  const Text("Processing Payment"),
-
+        title: const Text("Processing Payment"),
       ),
-      body:const Center(
+      body: const Center(
         child: CircularProgressIndicator(),
       ),
     );
