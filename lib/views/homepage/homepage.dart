@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
@@ -21,6 +23,8 @@ class Homepage extends ConsumerStatefulWidget {
 }
 
 class _HomepageState extends ConsumerState<Homepage> {
+  late Timer _timer;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -30,8 +34,20 @@ class _HomepageState extends ConsumerState<Homepage> {
             .read(favoritesProvider.notifier)
             .fetchFavorites(context, user.user!.token);
       }
+      _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
+        ref
+            .read(userProvider.notifier)
+            .verifyToken(context, user.user!.token, ref);
+      });
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   int _index = 0;
@@ -41,7 +57,7 @@ class _HomepageState extends ConsumerState<Homepage> {
     return Scaffold(
       body: IndexedStack(
         index: _index,
-        children:  const [
+        children: const [
           MealsPage(),
           SearchPage(),
           ChartScreen(),
@@ -67,8 +83,7 @@ class _HomepageState extends ConsumerState<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month),
-              label: "Booking"),
+              icon: Icon(Icons.calendar_month), label: "Booking"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.person_outline),
               label: "Account"),

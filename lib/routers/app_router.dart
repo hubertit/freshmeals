@@ -16,6 +16,7 @@ import 'package:freshmeals/views/homepage/meal_details.dart';
 import 'package:freshmeals/views/homepage/payment_method.dart';
 import 'package:freshmeals/views/homepage/payments/failed_screen.dart';
 import 'package:freshmeals/views/homepage/payments/processing_screen.dart';
+import 'package:freshmeals/views/homepage/payments/subscribed.dart';
 import 'package:freshmeals/views/homepage/payments/sucess_screen.dart';
 import 'package:freshmeals/views/homepage/product_details_add_to_cart.dart';
 import 'package:freshmeals/views/homepage/subscribe_screen.dart';
@@ -65,7 +66,7 @@ final GoRouter router = GoRouter(routes: [
     builder: (context, state) {
       // Retrieve the mealId from the route parameters
       final category = state.pathParameters['identifier']!;
-      return  ResetPasswordScreen(identifier: category);
+      return ResetPasswordScreen(identifier: category);
     },
   ),
   GoRoute(
@@ -180,45 +181,52 @@ final GoRouter router = GoRouter(routes: [
   ),
   GoRoute(
     path: '/trackLocation',
-    builder: (context, state) =>  LocationTrackScreen(),
+    builder: (context, state) => LocationTrackScreen(),
   ),
   GoRoute(
     path: '/accountInfo',
-    builder: (context, state) =>  const AccountInfoScreen(),
+    builder: (context, state) => const AccountInfoScreen(),
   ),
   GoRoute(
     path: '/paymentMethod',
-    builder: (context, state) =>  const PaymentMethodScreen(),
+    builder: (context, state) => const PaymentMethodScreen(),
   ),
   GoRoute(
     path: '/booking',
-    builder: (context, state) =>  const AppointmentsScreen(),
+    builder: (context, state) => const AppointmentsScreen(),
   ),
   GoRoute(
     path: '/myAppointments',
-    builder: (context, state) =>  const MyAppointmentsScreen(),
+    builder: (context, state) => const MyAppointmentsScreen(),
   ),
   GoRoute(
     path: '/favorites',
-    builder: (context, state) =>  const FavoritesScreen(),
+    builder: (context, state) => const FavoritesScreen(),
   ),
   GoRoute(
     path: '/success',
-    builder: (context, state) =>  const SuccessScreen(),
+    builder: (context, state) => const SuccessScreen(),
   ),
   GoRoute(
     path: '/failed',
-    builder: (context, state) =>  const FailedScreen(),
+    builder: (context, state) => const FailedScreen(),
   ),
   GoRoute(
     path: '/subscribe',
-    builder: (context, state) =>  const SubscribeScreen(),
+    builder: (context, state) => const SubscribeScreen(),
   ),
   GoRoute(
-    path: '/processing/:invoice',
+    path: '/subscribed',
+    builder: (context, state) => const SubscribedScreen(),
+  ),
+  GoRoute(
+    path: '/processing/:invoice/:subscribing',
     builder: (context, state) {
       final invoiceNo = state.pathParameters['invoice']!;
-      return ProcessingScreen(invoiceNo: invoiceNo);
+      final subscribingString = state.pathParameters['subscribing'] ?? 'false';
+      final subscribing = subscribingString.toLowerCase() == 'true';
+
+      return ProcessingScreen(invoiceNo: invoiceNo, subscribing: subscribing);
     },
   ),
 ]);
