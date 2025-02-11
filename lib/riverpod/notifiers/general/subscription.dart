@@ -34,9 +34,9 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
             'Failed to fetch subscription plans: ${response.statusMessage}');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error: $e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }
@@ -104,9 +104,9 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
             'Failed to fetch active subscription: ${response.statusMessage}');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error: $e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }
@@ -138,9 +138,9 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('$e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }

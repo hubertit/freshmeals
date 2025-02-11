@@ -116,9 +116,9 @@ class UserNotifier extends StateNotifier<UserState?> {
       }
     } catch (e) {
       print(' $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(' $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text(' $e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }
@@ -132,8 +132,8 @@ class UserNotifier extends StateNotifier<UserState?> {
 
   Future<void> logout(WidgetRef ref, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user');
     state = UserState(user: null, isLoading: false);
+    await prefs.remove('user');
     context.go('/login');
   }
 
@@ -159,7 +159,7 @@ class UserNotifier extends StateNotifier<UserState?> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Request failed: ${e.message}')),
+          SnackBar(content: Text(' ${e.message}')),
         );
       }
     } finally {
@@ -204,11 +204,11 @@ class UserNotifier extends StateNotifier<UserState?> {
             e.response?.data['message'] ?? 'Something went wrong';
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error ($statusCode): $errorMessage')),
+          SnackBar(content: Text(errorMessage)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Verification failed: ${e.message}')),
+          SnackBar(content: Text('${e.message}')),
         );
       }
     } finally {
@@ -239,14 +239,14 @@ class UserNotifier extends StateNotifier<UserState?> {
 
       // After resetting the password, navigate to the login page
       context.go('/login');
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${e.response?.data['message']}')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Reset failed: ${e.message}')),
+          SnackBar(content: Text(' ${e.message}')),
         );
       }
     } finally {

@@ -46,9 +46,9 @@ class CountNotifier extends StateNotifier<CountState?> {
         throw Exception('Failed: ${response.statusMessage}');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error: $e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }

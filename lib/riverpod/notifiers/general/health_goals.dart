@@ -38,9 +38,9 @@ class HealthGoalsNotifier extends StateNotifier<HealthGoalState?> {
       }
     } catch (e) {
       // Handle error appropriately, e.g., show a snackbar or log the error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error: $e')),
+      // );
     } finally {
       state = state!.copyWith(isLoading: false);
     }

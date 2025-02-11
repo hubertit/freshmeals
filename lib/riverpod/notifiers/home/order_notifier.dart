@@ -178,9 +178,9 @@ class OderNotifier extends StateNotifier<OrderState> {
         throw Exception('Failed to fetch order status');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error checking order status: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error checking order status: $e')),
+      // );
     } finally {
       state = state.copyWith(isLoading: false);
     }
