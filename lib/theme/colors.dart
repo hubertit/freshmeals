@@ -20,21 +20,22 @@ MaterialColor createMaterialColor(Color color) {
 // const Color primaryColor = Color(0xFF0181C6);
 
 const int primaryColorValue = 0xff64BA02; // Updated primary color value (Green)
-const MaterialColor primarySwatch = MaterialColor(
-  primaryColorValue,
-  {
-    50: Color(0xfff2fbe7),  // Lighter shade
-    100: Color(0xffdef4bf), // Lighter shade
-    200: Color(0xffc6ec94), // Lighter shade
-    300: Color(0xffafe36a), // Lighter shade
-    400: Color(0xff99db46), // Lighter shade
-    500: Color(primaryColorValue), // Primary color
-    600: Color(0xff5caf02),       // Darker shade
-    700: Color(0xff509b02),       // Darker shade
-    800: Color(0xff438702),       // Darker shade
-    900: Color(0xff306902),       // Darker shade
-  },
-);
+const MaterialColor primarySwatch = Colors.green;
+// MaterialColor(
+//   primaryColorValue,
+//   {
+//     50: Color(0xfff2fbe7),  // Lighter shade
+//     100: Color(0xffdef4bf), // Lighter shade
+//     200: Color(0xffc6ec94), // Lighter shade
+//     300: Color(0xffafe36a), // Lighter shade
+//     400: Color(0xff99db46), // Lighter shade
+//     500: Color(primaryColorValue), // Primary color
+//     600: Color(0xff5caf02),       // Darker shade
+//     700: Color(0xff509b02),       // Darker shade
+//     800: Color(0xff438702),       // Darker shade
+//     900: Color(0xff306902),       // Darker shade
+//   },
+// );
 
 // Color scaffold = const Color(0xffffffff);
 

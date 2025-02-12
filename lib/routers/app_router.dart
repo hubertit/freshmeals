@@ -15,6 +15,7 @@ import 'package:freshmeals/views/homepage/luch_screen.dart';
 import 'package:freshmeals/views/homepage/meal_details.dart';
 import 'package:freshmeals/views/homepage/payment_method.dart';
 import 'package:freshmeals/views/homepage/payments/failed_screen.dart';
+import 'package:freshmeals/views/homepage/payments/my_payments.dart';
 import 'package:freshmeals/views/homepage/payments/processing_screen.dart';
 import 'package:freshmeals/views/homepage/payments/subscribed.dart';
 import 'package:freshmeals/views/homepage/payments/sucess_screen.dart';
@@ -36,6 +37,7 @@ import '../views/auth/register.dart';
 import '../views/auth/reset_password.dart';
 import '../views/homepage/my_order.dart';
 import '../views/homepage/my_order_details.dart';
+import '../views/homepage/progress_tracker.dart';
 import '../views/splash/splash.dart';
 import '../views/welcome/weight_input.dart';
 
@@ -220,6 +222,10 @@ final GoRouter router = GoRouter(routes: [
     builder: (context, state) => const SubscribedScreen(),
   ),
   GoRoute(
+    path: '/trackCalories',
+    builder: (context, state) => const CalorieTrackerPage(),
+  ),
+  GoRoute(
     path: '/processing/:invoice/:subscribing',
     builder: (context, state) {
       final invoiceNo = state.pathParameters['invoice']!;
@@ -228,5 +234,9 @@ final GoRouter router = GoRouter(routes: [
 
       return ProcessingScreen(invoiceNo: invoiceNo, subscribing: subscribing);
     },
+  ),
+  GoRoute(
+    path: '/payments',
+    builder: (context, state) => const PaymentsScreen(),
   ),
 ]);

@@ -1,7 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
@@ -126,9 +124,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                       height: 200,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          image: const DecorationImage(
+                          image:  DecorationImage(
                             fit: BoxFit.fill,
-                            image: AssetImage(AssetsUtils.banner),
+                            image: NetworkImage(mealsHome.mealsData!.featured.imageUrl),
                             // NetworkImage(categories
                             //     .mealCategories[index]
                             //     .imageUrl)
@@ -353,12 +351,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
   }
 
   Widget _buildMealCard(
-      String title, String subtitle, String imagePath, void Function()? onTap) {
+      String title, String price, String imagePath, void Function()? onTap) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: Container(
-        height: 220,
-        width: 340,
+        // height: 220,
+        width: MediaQuery.of(context).size.width/1.7,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -366,9 +364,38 @@ class _MealsPageState extends ConsumerState<MealsPage> {
         ),
         child: InkWell(
           onTap: onTap,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-            child: Image.network(imagePath, fit: BoxFit.cover),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                child: Image.network(imagePath, fit: BoxFit.cover,
+                  width: double.infinity, // Makes the image fill the container width
+                  height: 200, // Set a fixed height to ensure uniformity
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Text(trimm(25, title),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14)),
+                    const SizedBox(height: 5),
+                    Text(
+                        "${formatMoney(price)} Rwf ",
+                        style: const TextStyle(
+                            color: primarySwatch,
+                            fontSize: 16,
+                            fontWeight:
+                            FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
