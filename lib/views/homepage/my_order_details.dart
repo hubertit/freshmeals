@@ -106,25 +106,25 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.maxFinite,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Add order tracking logic
-                            context.push("/trackLocation");
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Text(
-                            'Track Order',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: double.maxFinite,
+                      //   child: ElevatedButton(
+                      //     onPressed: () {
+                      //       // Add order tracking logic
+                      //       context.push("/trackLocation");
+                      //     },
+                      //     style: ElevatedButton.styleFrom(
+                      //       backgroundColor: Colors.green,
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //       ),
+                      //     ),
+                      //     child: const Text(
+                      //       'Track Order',
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

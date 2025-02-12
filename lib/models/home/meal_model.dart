@@ -31,12 +31,14 @@ class MealsData {
   final List<Meal> breakfast;
   final List<Meal> lunch;
   final List<Meal> dinner;
+  final Meal featured;
 
   MealsData({
     required this.yourPick,
     required this.breakfast,
     required this.lunch,
     required this.dinner,
+    required this.featured
   });
 
   factory MealsData.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class MealsData {
       dinner: (json['Dinner'] as List<dynamic>)
           .map((mealJson) => Meal.fromJson(mealJson))
           .toList(),
+      featured: Meal.fromJson(json['Featured Meal'])
     );
   }
 }
