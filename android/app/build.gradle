@@ -29,10 +29,10 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-android {
-    namespace = "rw.freshmeals.freshmeals"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    android {
+        namespace = "rw.freshmeals.freshmeals"
+        compileSdk = flutter.compileSdkVersion
+        ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
