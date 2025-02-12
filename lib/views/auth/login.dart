@@ -145,7 +145,7 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                     ? null
                     : 'Enter a valid email or phone number',
                 decoration: iDecoration(
-                  hint: "Email or Phone Number",
+                  hint: "Email or Phone(Begin with code ex: +250)",
                 ),
                 style: const TextStyle(
                   fontSize: 16,

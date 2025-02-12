@@ -77,35 +77,42 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                           Text('Done'),
                         ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildStep('Order', true),
-                            Expanded(
-                                child: Container(
-                              color: primarySwatch,
-                              height: 3,
-                            )),
-                            _buildStep('Arrange', true),
-                            Expanded(
-                                child: Container(
-                              color: primarySwatch,
-                              height: 3,
-                            )),
-                            _buildStep('Delivering', true),
-                            Expanded(
-                                child: Container(
-                              color: Colors.grey[300],
-                              height: 3,
-                            )),
-                            _buildStep('Done', false),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   margin: const EdgeInsets.symmetric(
+                      //       horizontal: 10, vertical: 20),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       _buildStep('Order', true),
+                      //       Expanded(
+                      //           child: Container(
+                      //         color: primarySwatch,
+                      //         height: 3,
+                      //       )),
+                      //       _buildStep('Arrange', true),
+                      //       Expanded(
+                      //           child: Container(
+                      //         color: primarySwatch,
+                      //         height: 3,
+                      //       )),
+                      //       _buildStep('Delivering', true),
+                      //       Expanded(
+                      //           child: Container(
+                      //         color: Colors.grey[300],
+                      //         height: 3,
+                      //       )),
+                      //       _buildStep('Done', false),
+                      //     ],
+                      //   ),
+                      // ),
                       const SizedBox(height: 16),
+                      LinearProgressIndicator(
+                        value: 70 / 100,
+                        backgroundColor: Colors.grey[300],
+                        color: 40 > 100 ? Colors.red : Colors.green,
+                        minHeight: 15,
+                      ),
+
                       // SizedBox(
                       //   width: double.maxFinite,
                       //   child: ElevatedButton(

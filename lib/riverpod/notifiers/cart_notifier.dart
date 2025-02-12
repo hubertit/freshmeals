@@ -135,6 +135,9 @@ class CartNotifier extends StateNotifier<CartState?> {
       state = state!.copyWith(isLoading: false);
     }
   }
+  void clearCart() {
+    state = state!.copyWith(cartItems: [], summary: null,isLoading: false);
+  }
 
   Future<void> remove(BuildContext context, WidgetRef ref, var json) async {
     try {
