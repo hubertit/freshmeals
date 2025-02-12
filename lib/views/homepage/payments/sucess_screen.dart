@@ -22,65 +22,66 @@ class _SuccessScreenState extends State<SuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          "Thank You for Your Order!",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Center(
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            width: MediaQuery.of(context).size.width / 1.1,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    const Spacer(),
-                    IconButton(
-                        onPressed: () {
-                          context.go('/');
-                        },
-                        icon: const Icon(Icons.close))
-                  ],
-                ),
-                const Text(
-                  "You've Ordered Successfully",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 1.1,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            // boxShadow: const [
+            //   BoxShadow(
+            //     color: Colors.black26,
+            //     blurRadius: 10,
+            //     offset: Offset(0, 4),
+            //   ),
+            // ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              SizedBox(height: 100),
+              const Text(
+                "Thank you! We've received your order and are preparing your delicious meal. Hang tight, it’ll be ready soon!",
+                textAlign: TextAlign.center,
+              ),
+              Image.asset(AssetsUtils.success),
+              const Spacer(),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: scaffold,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                  onPressed: () {
+                    context.go('/');
+                  },
+                  child:  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Ok",
+                        style: TextStyle(
+                            color: primarySwatch, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Your order has been received. Sit tight while we prepare your hearty meal.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: secondarTex),
-                ),
-                // const SizedBox(height: 10),
-                // RichText(
-                //   text: const TextSpan(
-                //     text: 'View Order',
-                //     style: TextStyle(
-                //       color: primarySwatch, // Set text color
-                //       fontSize: 16, // Set font size
-                //       decoration: TextDecoration.underline, // Underline the text
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(height: 10),
-                Image.asset(AssetsUtils.success)
-              ],
-            ),
+              ),
+              const SizedBox(height: 30),
+
+            ],
           ),
         ),
       ),

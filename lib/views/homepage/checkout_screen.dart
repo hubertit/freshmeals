@@ -444,6 +444,8 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 ref
                     .read(orderProvider.notifier)
                     .createOrder(context, json, ref);
+                ref.read(cartProvider.notifier).clearCart();
+
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),

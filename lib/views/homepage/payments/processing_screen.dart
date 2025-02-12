@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../riverpod/providers/auth_providers.dart';
 import '../../../riverpod/providers/home.dart';
 
 class ProcessingScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,15 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var user = ref.watch(userProvider);
+      if (user!.user != null) {
+        await ref
+            .read(cartProvider.notifier)
+            .myCart(context, user.user!.token, ref);
+        await ref
+            .read(countProvider.notifier)
+            .fetchCount(context, user.user!.token);
+      }
       _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
         _executionCount++; // Increment the execution count
 

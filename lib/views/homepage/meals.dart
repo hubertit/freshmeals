@@ -120,17 +120,22 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     //           milliseconds: 500), // Half-second animation
                     //       autoPlayCurve: Curves.easeInOut, // Smooth transition
                     //     )),
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          image:  DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(mealsHome.mealsData!.featured.imageUrl),
-                            // NetworkImage(categories
-                            //     .mealCategories[index]
-                            //     .imageUrl)
-                          )),
+                    InkWell(
+                      onTap: () => context.push(
+                          "/mealDetails/${mealsHome.mealsData!.featured.mealId}"),
+                      child: Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: NetworkImage(
+                                  mealsHome.mealsData!.featured.imageUrl),
+                              // NetworkImage(categories
+                              //     .mealCategories[index]
+                              //     .imageUrl)
+                            )),
+                      ),
                     ),
                     const SizedBox(
                       height: 16,
@@ -356,7 +361,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       padding: const EdgeInsets.only(right: 10.0),
       child: Container(
         // height: 220,
-        width: MediaQuery.of(context).size.width/1.7,
+        width: MediaQuery.of(context).size.width / 1.7,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -368,30 +373,29 @@ class _MealsPageState extends ConsumerState<MealsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                child: Image.network(imagePath, fit: BoxFit.cover,
-                  width: double.infinity, // Makes the image fill the container width
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
+                child: Image.network(
+                  imagePath, fit: BoxFit.cover,
+                  width: double
+                      .infinity, // Makes the image fill the container width
                   height: 200, // Set a fixed height to ensure uniformity
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(trimm(25, title),
                         style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14)),
+                            fontWeight: FontWeight.w500, fontSize: 14)),
                     const SizedBox(height: 5),
-                    Text(
-                        "${formatMoney(price)} Rwf ",
+                    Text("${formatMoney(price)} Rwf ",
                         style: const TextStyle(
                             color: primarySwatch,
                             fontSize: 16,
-                            fontWeight:
-                            FontWeight.bold)),
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
