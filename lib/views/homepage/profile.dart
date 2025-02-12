@@ -44,6 +44,7 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
+    // print(userState!.user!.token);
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(
@@ -70,7 +71,7 @@ class _ProfileState extends ConsumerState<Profile> {
                   ],
                 ),
                 Text(
-                  userState!.user!.name,
+                  userState.user!.name,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -107,6 +108,22 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: MaterialCommunityIcons.book_information_variant,
               ),
               ProfileItemIcon(
+                title: 'My Payments',
+                iconSize: 18,
+                onPressed: () {
+                  context.push('/payments');
+                },
+                leadingIcon: MaterialCommunityIcons.contactless_payment,
+              ),
+              ProfileItemIcon(
+                title: 'Calorie Tracker',
+                iconSize: 18,
+                onPressed: () {
+                  context.push('/trackCalories');
+                },
+                leadingIcon: MaterialCommunityIcons.trackpad,
+              ),
+              ProfileItemIcon(
                 title: 'Delivery Address',
                 onPressed: () {
                   context.push('/changeAddress');
@@ -134,7 +151,7 @@ class _ProfileState extends ConsumerState<Profile> {
                 iconSize: 18,
               ),
               ProfileItemIcon(
-                title: 'Subscribe',
+                title: 'Subscriptions',
                 onPressed: () {
                   context.push('/subscribe');
                 },
@@ -145,7 +162,7 @@ class _ProfileState extends ConsumerState<Profile> {
             ]),
             CoverContainer(margin: 20, children: [
               ProfileItemIcon(
-                title: 'Update Account Information',
+                title: 'Account Information',
                 iconSize: 18,
                 onPressed: () {
                   context.push('/accountInfo');
@@ -155,10 +172,22 @@ class _ProfileState extends ConsumerState<Profile> {
               ProfileItemIcon(
                 title: 'Help Center',
                 iconSize: 18,
-                onPressed: () {
+                onPressed: () async {
                   const String email = "info@freshmeals.rw";
-                  sendEmail();
-                  // context.push('/myOrders');
+                  final Uri emailLaunchUri = Uri(
+                    scheme: 'mailto',
+                    path: email,
+                    queryParameters: {
+                      'subject': 'Support Request', // Optional subject
+                    },
+                  );
+
+                  if (await canLaunchUrl(emailLaunchUri)) {
+                    await launchUrl(emailLaunchUri);
+                  } else {
+                    // Handle error (optional)
+                    print("Could not launch email client");
+                  }
                 },
                 leadingIcon: MaterialCommunityIcons.help,
               ),
