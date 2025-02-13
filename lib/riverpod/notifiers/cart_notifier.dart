@@ -130,7 +130,13 @@ class CartNotifier extends StateNotifier<CartState?> {
               backgroundColor: response.data['code'] == 400
                   ? const Color(0xffFFF3CD)
                   : primarySwatch,
-              content: Text(response.data['message'],style: TextStyle(color:response.data['code'] == 400?primarySwatch:null ),)),
+              content: Text(
+                response.data['message'],
+                style: TextStyle(
+                    color: response.data['code'] == 400
+                        ? const Color(0xff664d03)
+                        : null),
+              )),
         );
       }
     } catch (e) {
