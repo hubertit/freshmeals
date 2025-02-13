@@ -88,7 +88,7 @@ class _MyOrderScreenState extends ConsumerState<MyOrderScreen>
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                context.go("/home");
+                context.go("/");
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),

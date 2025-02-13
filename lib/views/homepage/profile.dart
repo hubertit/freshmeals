@@ -285,7 +285,7 @@ class _ProfileState extends ConsumerState<Profile> {
                 isLast: true,
               ),
             ]),
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ],

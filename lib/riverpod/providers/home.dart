@@ -13,6 +13,7 @@ import 'package:freshmeals/riverpod/notifiers/home/payments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 
 import '../notifiers/cart_notifier.dart';
+import '../notifiers/home/calorie_notifier.dart';
 import '../notifiers/home/meal.dart';
 import '../notifiers/home/order_notifier.dart';
 import '../notifiers/home/search_notifier.dart';
@@ -83,3 +84,6 @@ final favoritesProvider =
     StateNotifierProvider<FavoriteMealsNotifier, FavoriteMealsState?>((ref) {
   return FavoriteMealsNotifier();
 });
+final calorieProvider = StateNotifierProvider<CalorieNotifier, CalorieState>(
+  (ref) => CalorieNotifier(),
+);

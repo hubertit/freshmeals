@@ -119,14 +119,18 @@ class CartNotifier extends StateNotifier<CartState?> {
               .read(cartProvider.notifier)
               .myCart(context, user.user!.token, ref);
         }
+        print(response.data);
         //   List<CartItem> products = (response.data['data'] as List)
         //       .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
         //       .toList();
         //   state = CartState(cartItems: products, isLoading: false);
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(backgroundColor: primarySwatch,
-              content: Text(response.data['message'])),
+          SnackBar(
+              backgroundColor: response.data['code'] == 400
+                  ? const Color(0xffFFF3CD)
+                  : primarySwatch,
+              content: Text(response.data['message'],style: TextStyle(color:response.data['code'] == 400?primarySwatch:null ),)),
         );
       }
     } catch (e) {
@@ -135,8 +139,9 @@ class CartNotifier extends StateNotifier<CartState?> {
       state = state!.copyWith(isLoading: false);
     }
   }
+
   void clearCart() {
-    state = state!.copyWith(cartItems: [], summary: null,isLoading: false);
+    state = state!.copyWith(cartItems: [], summary: null, isLoading: false);
   }
 
   Future<void> remove(BuildContext context, WidgetRef ref, var json) async {
@@ -155,10 +160,10 @@ class CartNotifier extends StateNotifier<CartState?> {
       if (response.statusCode == 200) {
         final List<dynamic> myList = response.data['data']['cart_items'] ?? [];
         final Map<String, dynamic>? summaryJson =
-        response.data['data']['summary'];
+            response.data['data']['summary'];
 
         List<CartItem> products =
-        myList.map((json) => CartItem.fromJson(json)).toList();
+            myList.map((json) => CartItem.fromJson(json)).toList();
         CartSummary summary = CartSummary.fromJson(summaryJson);
 
         state = CartState(

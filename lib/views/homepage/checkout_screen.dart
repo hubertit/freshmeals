@@ -459,7 +459,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                       color: Colors.white,
                     )
                   : const Text(
-                      'Confirm and Pay',
+                      'Confirm Order',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
             ),
