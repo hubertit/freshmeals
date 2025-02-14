@@ -66,7 +66,7 @@ class AdressesNotifier extends StateNotifier<AddressState> {
         ref
             .read(addressesProvider.notifier)
             .fetchAddress(context, json['token']);
-        context.pop();
+        context.go('/');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );

@@ -10,6 +10,7 @@ import 'package:freshmeals/views/homepage/profile.dart';
 import 'package:freshmeals/views/homepage/search_screen.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
 import '../appointment/appointments_booking.dart';
 
@@ -28,6 +29,7 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(firstTimeProvider.notifier).state =false;
       var user = ref.watch(userProvider);
       if (user!.user != null) {
         await ref

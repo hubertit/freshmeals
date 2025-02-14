@@ -58,8 +58,8 @@ class User {
   final double? bmi;
   final String? activityLevel;
   final List<int>? dietaryPreferences;
-  final String? healthConditions;
-  final String? healthGoal;
+  final List<dynamic>? healthConditions;
+  final List<dynamic>? healthGoal;
   final String? profilePicture;
   final DateTime? createdAt;
   final DateTime? updatedAt;

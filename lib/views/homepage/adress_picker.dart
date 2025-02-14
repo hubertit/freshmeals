@@ -139,7 +139,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                       ),
                       Text(
                         widget.address == null
-                            ? "Add New Address"
+                            ? "Add Delivery Address"
                             : "Update Address",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),

@@ -96,9 +96,11 @@ class UserNotifier extends StateNotifier<UserState?> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registered successfully')),
         );
-        // await _saveUserToPreferences(user);
-        // context.go("/login");
-        context.push('/welcome');
+        User user = User.fromJson(response.data['data']);
+        state = UserState(user: user, isLoading: false);
+        print(response.data['data']);
+        await saveUserToPreferences(user);
+        context.push('/subscribe');
       } else {
         throw Exception('${response.statusMessage}');
       }

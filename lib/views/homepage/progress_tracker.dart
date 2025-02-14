@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/styles.dart';
+import 'package:freshmeals/views/auth/widgets/input_dec.dart';
 import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
 
@@ -95,43 +98,149 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: 10),
-                  CoverContainer(
+                  Stack(
                     children: [
-                      Stack(
-                        alignment: Alignment
-                            .center, // Centers the text inside the progress bar
+                      CoverContainer(
                         children: [
-                          Center(
-                            child: SizedBox(
-                              width: 150, // Adjust this to your desired width
-                              height:
-                                  150, // Ensure height is the same to keep it circular
-                              child: CircularProgressIndicator(
-                                strokeWidth: 10,
-                                value:
-                                    calorisState.calorieData!.averageProgress! /
+                          Stack(
+                            alignment: Alignment
+                                .center, // Centers the text inside the progress bar
+                            children: [
+                              Center(
+                                child: SizedBox(
+                                  width:
+                                      150, // Adjust this to your desired width
+                                  height:
+                                      150, // Ensure height is the same to keep it circular
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 10,
+                                    value: calorisState
+                                            .calorieData!.averageProgress! /
                                         100,
-                                backgroundColor: Colors.grey[300],
-                                color:
-                                    calorisState.calorieData!.averageProgress! >
+                                    backgroundColor: Colors.grey[300],
+                                    color: calorisState
+                                                .calorieData!.averageProgress! >
                                             100
                                         ? Colors.red
                                         : Colors.green,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Text(
-                            '${calorisState.calorieData!.averageProgress}%', // Display percentage with 1 decimal place
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                              Text(
+                                '${calorisState.calorieData!.averageProgress}%', // Display percentage with 1 decimal place
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                      Positioned(
+                          top: 5,
+                          right: 10,
+                          child: Row(
+                            children: [
+                              Text(
+                                '${calorisState.calorieData!.target}',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled:
+                                        true, // Allows bottom sheet to go full height if needed
+                                    builder: (context) {
+                                      final TextEditingController
+                                          targetController =
+                                          TextEditingController(
+                                              text: calorisState
+                                                      .calorieData!.target
+                                                      ?.toString() ??
+                                                  '');
+
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom +
+                                              16,
+                                          top: 16,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                    onTap: () => context.pop(),
+                                                    child: const Text(
+                                                      "Cancel",
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                                const Text(
+                                                  'Set Calorie Target/day',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      var user = ref
+                                                          .watch(userProvider)!
+                                                          .user;
+                                                      ref
+                                                          .read(calorieProvider
+                                                              .notifier)
+                                                          .setCalorieTarget(
+                                                              context,
+                                                              user!.token,
+                                                              double.parse(
+                                                                  targetController
+                                                                      .text));
+
+                                                    },
+                                                    child: const Text(
+                                                      "Done",
+                                                      style: TextStyle(
+                                                          color: primarySwatch,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 25),
+                                            TextFormField(
+                                              controller: targetController,
+                                              decoration: iDecoration(),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
+                                            const SizedBox(height: 50),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.settings),
+                              ),
+                            ],
+                          ))
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text.rich(
                     TextSpan(
                       children: [
@@ -145,7 +254,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text.rich(
                     TextSpan(
                       children: [
@@ -159,8 +268,8 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Daily Entries',
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),

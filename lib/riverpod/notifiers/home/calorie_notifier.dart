@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/_api_utls.dart';
 import '../../../models/home/calories.dart';
@@ -14,21 +15,19 @@ class CalorieNotifier extends StateNotifier<CalorieState> {
     try {
       state = state.copyWith(isLoading: true);
 
-      final response = await _dio.post('${baseUrl}tracker/calories',
+      final response = await _dio.post(
+        '${baseUrl}tracker/calories',
         data: {"token": token},
         options: Options(
           headers: {
             'Content-Type': 'application/json',
           },
-        ),);
+        ),
+      );
 
       if (response.statusCode == 200) {
         final data = response.data;
-        print(data);
-
         final calorieData = CalorieData.fromJson(data);
-        print(calorieData);
-
         state = state.copyWith(calorieData: calorieData, isLoading: false);
       } else {
         throw Exception('Failed: ${response.statusMessage}');
@@ -39,6 +38,44 @@ class CalorieNotifier extends StateNotifier<CalorieState> {
       );
     } finally {
       state = state.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> setCalorieTarget(
+      BuildContext context, String token, double target) async {
+    try {
+      state = state.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}tracker/set_target',
+        data: {
+          "token": token,
+          "calorie_target": target,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Calorie target updated successfully.')),
+        );
+
+        // Call fetchCalorieData() to update the state after setting the target
+        await fetchCalorieData(context, token);
+      } else {
+        throw Exception('Failed to set target: ${response.statusMessage}');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      state = state.copyWith(isLoading: false);
+      context.pop();
     }
   }
 }

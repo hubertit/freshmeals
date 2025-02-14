@@ -91,7 +91,9 @@ class _HeightInputScreenState extends State<WeightInputScreen> {
                     ),
                     onPressed: () {
                       widget.user.weight = _weight;
-                      context.push('/subscription', extra: widget.user);
+                      context.push('/preferences',extra: widget.user);
+
+                      // context.push('/subscription', extra: widget.user);
                     },
                     child: const Text(
                       "NEXT",

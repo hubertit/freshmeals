@@ -162,16 +162,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     onPressed: () {
                       widget.user.dietaryPreferences = selPref;
                       context.push("/additional",extra: widget.user);
-                      // ref
-                      //     .read(userProvider.notifier)
-                      //     .register(context, ref, widget.user.toJson());
+
                       // context.push('/welcome');
                     },
-                    child: user!.isLoading
-                        ? CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : const Text(
+                    child: const Text(
                             "Continue",
                             style: TextStyle(
                               fontSize: 16,

@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../constants/_assets.dart';
 import '../../riverpod/providers/auth_providers.dart';
-import 'widgets/my_order_card.dart';
 
 class MyOrderDetailsScreen extends ConsumerStatefulWidget {
   final String orderId;
@@ -19,6 +17,7 @@ class MyOrderDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -38,6 +37,18 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     var order = ref.watch(orderDetailsProvider);
     var user = ref.watch(userProvider);
+
+    final List<String> statuses = ["order", "pending", "delivering", "delivered"];
+    // Helper function to determine if a step is completed or active
+    bool isCompleted(int index) {
+      if(order!.order !=null){
+
+        final currentIndex = statuses.indexOf(order.order!.status);
+        return index <= currentIndex;
+      }
+      return false;
+    }
+    print(order!.order!.status);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -72,71 +83,39 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Order'),
-                          Text('Arrange'),
+                          Text('Pending'),
                           Text('Delivering'),
                           Text('Done'),
                         ],
                       ),
-                      // Container(
-                      //   margin: const EdgeInsets.symmetric(
-                      //       horizontal: 10, vertical: 20),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       _buildStep('Order', true),
-                      //       Expanded(
-                      //           child: Container(
-                      //         color: primarySwatch,
-                      //         height: 3,
-                      //       )),
-                      //       _buildStep('Arrange', true),
-                      //       Expanded(
-                      //           child: Container(
-                      //         color: primarySwatch,
-                      //         height: 3,
-                      //       )),
-                      //       _buildStep('Delivering', true),
-                      //       Expanded(
-                      //           child: Container(
-                      //         color: Colors.grey[300],
-                      //         height: 3,
-                      //       )),
-                      //       _buildStep('Done', false),
-                      //     ],
-                      //   ),
-                      // ),
-                      const SizedBox(height: 16),
-                      LinearProgressIndicator(
-                        value: 70 / 100,
-                        backgroundColor: Colors.grey[300],
-                        color: 40 > 100 ? Colors.red : Colors.green,
-                        minHeight: 15,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            for (int i = 0; i < statuses.length; i++) ...[
+                              _buildStep(
+                                statuses[i],
+                                isCompleted(i),
+                              ),
+                              if (i != statuses.length - 1)
+                                Expanded(
+                                  child: Container(
+                                    color: isCompleted(i + 1)
+                                        ? Colors.green
+                                        : Colors.grey[300],
+                                    height: 3,
+                                  ),
+                                ),
+                            ],
+                          ],
+                        ),
                       ),
-
-                      // SizedBox(
-                      //   width: double.maxFinite,
-                      //   child: ElevatedButton(
-                      //     onPressed: () {
-                      //       // Add order tracking logic
-                      //       context.push("/trackLocation");
-                      //     },
-                      //     style: ElevatedButton.styleFrom(
-                      //       backgroundColor: Colors.green,
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //       ),
-                      //     ),
-                      //     child: const Text(
-                      //       'Track Order',
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
+              ),              const SizedBox(height: 16),
               // Order Bill Section
               Card(
                 shape: RoundedRectangleBorder(
@@ -164,7 +143,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       ),
                       // _buildOrderDetailRow('Total Price',
                       //     "Rwf ${formatMoney(order.order!.totalPrice)}"),
-        
+
                       _buildOrderDetailRow(
                           'Address', order.order!.deliveryAddress.mapAddress),
                       const Divider(
@@ -280,7 +259,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                   ),
                 ),
               ),
-        
+
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 color: Colors.white,
@@ -298,7 +277,8 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                             padding: const EdgeInsets.all(1),
                             decoration: const BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
                               border: Border(
                                 right: BorderSide(
                                   color: Colors.grey, // Border color
@@ -364,13 +344,26 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
       ),
     );
   }
-
-  Widget _buildStep(String title, bool isActive) {
-    return CircleAvatar(
-      radius: 7,
-      backgroundColor: isActive ? Colors.green : Colors.grey[300],
+  Widget _buildStep(String label, bool isCompleted) {
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isCompleted ? Colors.green : Colors.grey[300],
+      ),
+      child: Icon(
+        Icons.check,
+        color: isCompleted ? Colors.white : Colors.grey,
+        size: 16,
+      ),
     );
   }
+  // Widget _buildStep(String title, bool isActive) {
+  //   return CircleAvatar(
+  //     radius: 7,
+  //     backgroundColor: isActive ? Colors.green : Colors.grey[300],
+  //   );
+  // }
 
   // SizedBox(height: 4),
   Widget _buildOrderDetailRow(String title, String value,

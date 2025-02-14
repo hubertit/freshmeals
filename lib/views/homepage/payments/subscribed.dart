@@ -1,18 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/_assets.dart';
 
-class SubscribedScreen extends StatefulWidget {
+class SubscribedScreen extends ConsumerStatefulWidget {
   const SubscribedScreen({super.key});
 
   @override
-  State<SubscribedScreen> createState() => _SubscribedScreenState();
+  ConsumerState<SubscribedScreen> createState() => _SubscribedScreenState();
 }
 
-class _SubscribedScreenState extends State<SubscribedScreen> {
+class _SubscribedScreenState extends ConsumerState<SubscribedScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
@@ -23,7 +25,7 @@ class _SubscribedScreenState extends State<SubscribedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  const Text("Subscribed"),
+        title: const Text("Subscribed"),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(
@@ -60,9 +62,14 @@ class _SubscribedScreenState extends State<SubscribedScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
                 onPressed: () {
-                  context.go('/');
+                  var firstTime = ref.watch(firstTimeProvider);
+                  if (firstTime) {
+                    context.push('/newAddress');
+                  } else {
+                    context.go('/');
+                  }
                 },
-                child:  const Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(

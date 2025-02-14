@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 
 import '../../models/user_model.dart';
+import '../../riverpod/providers/auth_providers.dart';
 import '../../utls/styles.dart';
 import '../auth/widgets/input_dec.dart';
 
@@ -28,6 +30,7 @@ class _AdditionalInformationScreenState
 
   @override
   Widget build(BuildContext context) {
+    var user = ref.watch(userProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Additional Information')),
       body: SingleChildScrollView(
@@ -53,9 +56,12 @@ class _AdditionalInformationScreenState
                 keyboardType: TextInputType.number,
                 // onChanged: (value) => targetWeight = double.tryParse(value),
               ),
-              SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               TextFormField(
-                decoration: iDecoration(hint: 'Calories Target Limit (Optional)'),
+                decoration:
+                    iDecoration(hint: 'Calories Target/Limit (Optional)'),
                 keyboardType: TextInputType.number,
                 // onChanged: (value) => targetWeight = double.tryParse(value),
               ),
@@ -120,30 +126,30 @@ class _AdditionalInformationScreenState
                     )),
               ]),
               const SizedBox(height: 16),
-              const Text(
-                'Your Main Dietary Goal',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              CoverContainer(children: [
-                ...[
-                  "Weight loss",
-                  "Weight gain",
-                  "Muscle building",
-                  "Improving overall health",
-                  "Managing a medical condition",
-                  "Improving athletic performance",
-                  "Other"
-                ].map((goal) => RadioListTile<String>(
-                      title: Text(goal),
-                      value: goal,
-                      groupValue: dietaryGoal,
-                      onChanged: (value) {
-                        setState(() {
-                          dietaryGoal = value;
-                        });
-                      },
-                    )),
-              ]),
+              // const Text(
+              //   'Your Main Dietary Goal',
+              //   style: TextStyle(fontWeight: FontWeight.bold),
+              // ),
+              // CoverContainer(children: [
+              //   ...[
+              //     "Weight loss",
+              //     "Weight gain",
+              //     "Muscle building",
+              //     "Improving overall health",
+              //     "Managing a medical condition",
+              //     "Improving athletic performance",
+              //     "Other"
+              //   ].map((goal) => RadioListTile<String>(
+              //         title: Text(goal),
+              //         value: goal,
+              //         groupValue: dietaryGoal,
+              //         onChanged: (value) {
+              //           setState(() {
+              //             dietaryGoal = value;
+              //           });
+              //         },
+              //       )),
+              // ]),
               const SizedBox(height: 16),
               // SizedBox(width: double.maxFinite,
               //   child: ElevatedButton(
@@ -192,19 +198,25 @@ class _AdditionalInformationScreenState
                     ),
                   ),
                   onPressed: () {
-
+                    ref
+                        .read(userProvider.notifier)
+                        .register(context, ref, widget.user.toJson());
+                    ref.read(firstTimeProvider.notifier).state =true;
                   },
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
+                  child: user!.isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text(
+                          "Confirm",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
                 ),
               ),
             ],
           ),
         ),
       ),
-
     );
   }
 }
