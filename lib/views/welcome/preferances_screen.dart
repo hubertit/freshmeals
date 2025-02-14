@@ -79,7 +79,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                         PreferenceModel preference =
                             preferences.preferances[index];
                         bool isSelected = selPref
-                            .contains(int.parse(preference.preferenceId));
+                            .contains(preference.preferenceId);
 
                         return GestureDetector(
                           onTap: () {
@@ -104,17 +104,17 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                             // }
 
                             if (selPref
-                                .contains(int.parse(preference.preferenceId))) {
+                                .contains(preference.preferenceId)) {
 
                               setState(() {
                                 selPref = List.from(selPref)
-                                  ..remove(int.parse(preference.preferenceId));                              });
+                                  ..remove(preference.preferenceId);                              });
                             } else {
 
                               setState(() {
                                 selPref =
                                 List.from(selPref)
-                                  ..add(int.parse(preference.preferenceId));                              });
+                                  ..add(preference.preferenceId);                              });
                             }
                           },
                           child: Container(
@@ -161,9 +161,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     ),
                     onPressed: () {
                       widget.user.dietaryPreferences = selPref;
-                      ref
-                          .read(userProvider.notifier)
-                          .register(context, ref, widget.user.toJson());
+                      context.push("/additional",extra: widget.user);
+                      // ref
+                      //     .read(userProvider.notifier)
+                      //     .register(context, ref, widget.user.toJson());
                       // context.push('/welcome');
                     },
                     child: user!.isLoading
@@ -171,7 +172,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                             color: Colors.white,
                           )
                         : const Text(
-                            "Done",
+                            "Continue",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

@@ -25,6 +25,7 @@ import 'package:freshmeals/views/welcome/ages_screen.dart';
 import 'package:freshmeals/views/welcome/gender_screen.dart';
 import 'package:freshmeals/views/welcome/goal_screen.dart';
 import 'package:freshmeals/views/welcome/height_input.dart';
+import 'package:freshmeals/views/welcome/other_information.dart';
 import 'package:freshmeals/views/welcome/preferances_screen.dart';
 import 'package:freshmeals/views/welcome/subscription.dart';
 import 'package:freshmeals/views/welcome/welcome.dart';
@@ -126,6 +127,12 @@ final GoRouter router = GoRouter(routes: [
       builder: (context, state) {
         final userModel = state.extra as UserModel;
         return PreferencesScreen(user: userModel);
+      }),
+  GoRoute(
+      path: '/additional',
+      builder: (context, state) {
+        final userModel = state.extra as UserModel;
+        return AdditionalInformationScreen(user: userModel);
       }),
   GoRoute(
     path: '/home',
@@ -234,6 +241,10 @@ final GoRouter router = GoRouter(routes: [
 
       return ProcessingScreen(invoiceNo: invoiceNo, subscribing: subscribing);
     },
+  ),
+  GoRoute(
+    path: '/payments',
+    builder: (context, state) => const PaymentsScreen(),
   ),
   GoRoute(
     path: '/payments',

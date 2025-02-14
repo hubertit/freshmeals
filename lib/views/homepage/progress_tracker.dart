@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/utls/styles.dart';
+import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
 
@@ -94,25 +95,39 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: 10),
-                  Stack(
-                    alignment: Alignment
-                        .center, // Centers the text inside the progress bar
+                  CoverContainer(
                     children: [
-                      LinearProgressIndicator(
-                        value: calorisState.calorieData!.averageProgress! / 100,
-                        backgroundColor: Colors.grey[300],
-                        color: calorisState.calorieData!.averageProgress! > 100
-                            ? Colors.red
-                            : Colors.green,
-                        minHeight: 15,
-                      ),
-                      Text(
-                        '${calorisState.calorieData!.averageProgress}%', // Display percentage with 1 decimal place
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white, // Change to match your theme
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Stack(
+                        alignment: Alignment
+                            .center, // Centers the text inside the progress bar
+                        children: [
+                          Center(
+                            child: SizedBox(
+                              width: 150, // Adjust this to your desired width
+                              height:
+                                  150, // Ensure height is the same to keep it circular
+                              child: CircularProgressIndicator(
+                                strokeWidth: 10,
+                                value:
+                                    calorisState.calorieData!.averageProgress! /
+                                        100,
+                                backgroundColor: Colors.grey[300],
+                                color:
+                                    calorisState.calorieData!.averageProgress! >
+                                            100
+                                        ? Colors.red
+                                        : Colors.green,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${calorisState.calorieData!.averageProgress}%', // Display percentage with 1 decimal place
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -160,7 +175,10 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: ListTile(
-                            leading: Text('${entry.date}',style: TextStyle(fontSize: 16),),
+                            leading: Text(
+                              '${entry.date}',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             title: Text('${entry.calories} kcal'),
                             trailing: Text(
                               '(${entry.percentage}%)',

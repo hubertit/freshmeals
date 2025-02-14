@@ -1,5 +1,5 @@
 class PreferenceModel {
-  final String preferenceId;
+  final int preferenceId;
   final String name;
   final String description;
   final String imageUrl;
@@ -14,7 +14,7 @@ class PreferenceModel {
   // Factory constructor to parse from JSON
   factory PreferenceModel.fromJson(Map<String, dynamic> json) {
     return PreferenceModel(
-      preferenceId: json['preference_id'] ?? '',
+      preferenceId: int.parse(json['preference_id']) ?? 0,
       name: json['name'] ?? '',
       description: json['description'] ?? '',
       imageUrl: json['image_url'] ?? '',
