@@ -24,6 +24,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       ref.read(mealCategoriesProvider.notifier).mealCategories(context);
       ref.read(mealTypesProvider.notifier).mealTypes(context);
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
+      ref.read(recommendedMealsProvider.notifier).subscriptions(context);
     });
     super.initState();
   }
@@ -33,6 +34,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     var categories = ref.watch(mealCategoriesProvider);
     var types = ref.watch(mealTypesProvider);
     var mealsHome = ref.watch(homeMealsDataProvider);
+    var recommendations = ref.watch(recommendedMealsProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -143,9 +145,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     _buildSection(
                         "Recommended",
                         List.generate(
-                          mealsHome.mealsData!.yourPick.length,
+                          recommendations.recomendations.length,
                           (index) {
-                            var pick = mealsHome.mealsData!.yourPick[index];
+                            var pick = recommendations.recomendations[index];
                             return InkWell(
                               onTap: () =>
                                   context.push("/mealDetails/${pick.mealId}"),
@@ -153,6 +155,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Container(
                                   width: 140,
+                                  height: 210,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
@@ -162,12 +165,14 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            const BorderRadius.vertical(
-                                                top: Radius.circular(10)),
-                                        child: Image.network(pick.imageUrl,
-                                            fit: BoxFit.cover),
+                                      Expanded(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                  top: Radius.circular(10)),
+                                          child: Image.network(pick.imageUrl,
+                                              fit: BoxFit.cover),
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -198,20 +203,36 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           },
                         )),
                     const SizedBox(height: 16),
+                    // _buildMealSection(
+                    //   "Recommended",
+                    //   "These are the meals recommended for you",
+                    //   List.generate(recommendations.recomendations.length,
+                    //           (index) {
+                    //         var recom = recommendations.recomendations[index];
+                    //
+                    //         return _buildMealCard(
+                    //             recom.name,
+                    //             recom.price,
+                    //             recom.imageUrl,
+                    //                 () =>
+                    //                 context.push("/mealDetails/${recom.mealId}"));
+                    //       }),
+                    // ),
+                    // const SizedBox(height: 16),
                     _buildMealSection(
                       "Breakfast",
                       "Start your day with wholesome and nutritious meals",
                       List.generate(mealsHome.mealsData!.breakfast.length,
-                          (index) {
-                        var breakF = mealsHome.mealsData!.breakfast[index];
+                              (index) {
+                            var breakF = mealsHome.mealsData!.breakfast[index];
 
-                        return _buildMealCard(
-                            breakF.name,
-                            breakF.price,
-                            breakF.imageUrl,
-                            () =>
-                                context.push("/mealDetails/${breakF.mealId}"));
-                      }),
+                            return _buildMealCard(
+                                breakF.name,
+                                breakF.price,
+                                breakF.imageUrl,
+                                    () =>
+                                    context.push("/mealDetails/${breakF.mealId}"));
+                          }),
                     ),
                     const SizedBox(height: 16),
                     _buildMealSection(

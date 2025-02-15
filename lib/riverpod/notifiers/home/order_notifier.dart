@@ -65,8 +65,11 @@ class OderNotifier extends StateNotifier<OrderState> {
         launchUrl(Uri.parse(response.data['payment_url']));
 
         // context.pop();
-
-        context.go("/processing/${response.data['invoice_number']}/false");
+        if (response.data['invoice_number'] != null) {
+          context.go("/processing/${response.data['invoice_number']}/false");
+        } else {
+          context.go('/success');
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
