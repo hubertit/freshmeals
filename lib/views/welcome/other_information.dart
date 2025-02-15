@@ -20,6 +20,9 @@ class AdditionalInformationScreen extends ConsumerStatefulWidget {
 class _AdditionalInformationScreenState
     extends ConsumerState<AdditionalInformationScreen> {
   final _formKey = GlobalKey<FormState>();
+  var targetWeightController = TextEditingController();
+  var targetCaloriesController = TextEditingController();
+
 
   double? currentWeight;
   double? height;
@@ -30,6 +33,7 @@ class _AdditionalInformationScreenState
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user.toJson());
     var user = ref.watch(userProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Additional Information')),
@@ -52,6 +56,7 @@ class _AdditionalInformationScreenState
               //   onChanged: (value) => height = double.tryParse(value),
               // ),
               TextFormField(
+                controller: targetWeightController,
                 decoration: iDecoration(hint: 'Target Weight (Optional)'),
                 keyboardType: TextInputType.number,
                 // onChanged: (value) => targetWeight = double.tryParse(value),
@@ -60,6 +65,8 @@ class _AdditionalInformationScreenState
                 height: 10,
               ),
               TextFormField(
+                controller: targetCaloriesController
+                ,
                 decoration:
                     iDecoration(hint: 'Calories Target/Limit (Optional)'),
                 keyboardType: TextInputType.number,
@@ -198,10 +205,17 @@ class _AdditionalInformationScreenState
                     ),
                   ),
                   onPressed: () {
+                    widget.user.preExistingConditions = preExistingConditions;
+                    widget.user.foodAllergies = foodAllergies;
+                    widget.user.targetWeight = double.parse(targetWeightController.text);
+                    widget.user.calLimit = int.parse(targetCaloriesController.text);
+
+                    // context.push('/preferences',extra: widget.user);
+
                     ref
                         .read(userProvider.notifier)
                         .register(context, ref, widget.user.toJson());
-                    ref.read(firstTimeProvider.notifier).state =true;
+                    ref.read(firstTimeProvider.notifier).state = true;
                   },
                   child: user!.isLoading
                       ? const CircularProgressIndicator(

@@ -141,7 +141,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                       height: 16,
                     ),
                     _buildSection(
-                        "Take Your Pick",
+                        "Recommended",
                         List.generate(
                           mealsHome.mealsData!.yourPick.length,
                           (index) {

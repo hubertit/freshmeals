@@ -173,7 +173,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                         },
                         child: Text(
                           widget.address == null ? "Save" : "Update",
-                          style: TextStyle(color: primarySwatch),
+                          style: const TextStyle(color: primarySwatch),
                         ),
                       ),
                     ],

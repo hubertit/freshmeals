@@ -118,19 +118,23 @@ class _RegisterScreenState extends ConsumerState<FacebookRegisterScreen> {
                     style: StyleUtls.buttonStyle,
                     onPressed: () {
                       UserModel user = UserModel(
-                        names: namesController.text ?? "",
-                        phone: "+${country.phoneCode}${phoneController.text}" ??
-                            "",
-                        email: emailController.text ?? "",
-                        password: passwordController.text ?? "",
-                        age: 0,
-                        gender: '',
-                        healthStatus: 'Good',
-                        height: 0,
-                        weight: 0,
-                        activityLevel: "Moderately Active",
-                        dietaryPreferences: [],
-                      );
+                          names: namesController.text ?? "",
+                          phone:
+                              "+${country.phoneCode}${phoneController.text}" ??
+                                  "",
+                          email: emailController.text ?? "",
+                          password: passwordController.text ?? "",
+                          age: 0,
+                          gender: 'male',
+                          healthStatus: '',
+                          height: 0,
+                          weight: 0,
+                          targetWeight: 0,
+                          calLimit: 0,
+                          activityLevel: "Moderately Active",
+                          dietaryPreferences: [],
+                          preExistingConditions: [],
+                          foodAllergies: []);
                       if (key.currentState!.validate()) {
                         context.push("/goal", extra: user);
                       }
