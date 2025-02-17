@@ -49,53 +49,53 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: double.maxFinite, // Adjust width
-                    height: 50, // Adjust height
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10), // Add padding if needed
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Set background color
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
-                      border:
-                          Border.all(color: Colors.white), // Optional border
-                    ),
-                    child: Align(
-                      alignment:
-                          Alignment.centerLeft, // Align text inside dropdown
-                      child: DropdownButtonHideUnderline(
-                        // Removes default underline
-                        child: DropdownButton<String>(
-                          value: selectedTimeframe,
-                          isExpanded:
-                              true, // Ensures it fills the container width
-                          dropdownColor:
-                              Colors.white, // Background color of dropdown menu
-                          onChanged: (String? newValue) {
-                            // setState(() {
-                            //   selectedTimeframe = newValue!;
-                            //   fetchCalories();
-                            // });
-                          },
-                          items: <String>['week', 'month']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value == 'week' ? 'This Week' : 'This Month',
-                                style: const TextStyle(
-                                    color: Colors.black54), // Change text color
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  // Container(
+                  //   width: double.maxFinite, // Adjust width
+                  //   height: 50, // Adjust height
+                  //   padding: const EdgeInsets.symmetric(
+                  //       horizontal: 10), // Add padding if needed
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white, // Set background color
+                  //     borderRadius: BorderRadius.circular(8), // Rounded corners
+                  //     border:
+                  //         Border.all(color: Colors.white), // Optional border
+                  //   ),
+                  //   child: Align(
+                  //     alignment:
+                  //         Alignment.centerLeft, // Align text inside dropdown
+                  //     child: DropdownButtonHideUnderline(
+                  //       // Removes default underline
+                  //       child: DropdownButton<String>(
+                  //         value: selectedTimeframe,
+                  //         isExpanded:
+                  //             true, // Ensures it fills the container width
+                  //         dropdownColor:
+                  //             Colors.white, // Background color of dropdown menu
+                  //         onChanged: (String? newValue) {
+                  //           // setState(() {
+                  //           //   selectedTimeframe = newValue!;
+                  //           //   fetchCalories();
+                  //           // });
+                  //         },
+                  //         items: <String>['week', 'month']
+                  //             .map<DropdownMenuItem<String>>((String value) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: value,
+                  //             child: Text(
+                  //               value == 'week' ? 'This Week' : 'This Month',
+                  //               style: const TextStyle(
+                  //                   color: Colors.black54), // Change text color
+                  //             ),
+                  //           );
+                  //         }).toList(),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20),
                   const Text(
                     'Average Progress',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Stack(
@@ -212,7 +212,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
 
                                                     },
                                                     child: const Text(
-                                                      "Done",
+                                                      "Set",
                                                       style: TextStyle(
                                                           color: primarySwatch,
                                                           fontWeight:
