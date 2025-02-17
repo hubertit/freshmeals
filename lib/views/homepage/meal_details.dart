@@ -221,7 +221,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                                 return _buildNutritionValue(
                                   contentName,
                                   '${contentDetails.percentage}%', // You can adjust to the right format if needed
-                                  '${contentDetails.amount}', // Assuming `amount` is the value in grams
+                                  contentDetails.amount, // Assuming `amount` is the value in grams
                                   _getColorForContent(contentName),
                                 );
                               }).toList(),

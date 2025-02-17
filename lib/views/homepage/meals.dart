@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
@@ -24,7 +25,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       ref.read(mealCategoriesProvider.notifier).mealCategories(context);
       ref.read(mealTypesProvider.notifier).mealTypes(context);
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
-      ref.read(recommendedMealsProvider.notifier).subscriptions(context);
+      var user = ref.watch(userProvider)!.user;
+      ref.read(recommendedMealsProvider.notifier).subscriptions(context,user!.token );
     });
     super.initState();
   }
@@ -35,6 +37,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     var types = ref.watch(mealTypesProvider);
     var mealsHome = ref.watch(homeMealsDataProvider);
     var recommendations = ref.watch(recommendedMealsProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

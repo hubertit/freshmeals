@@ -35,8 +35,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
       }
       _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
         _executionCount++; // Increment the execution count
+        print(_executionCount);
 
-        if (_executionCount == 60) {
+        if (_executionCount == 12) {
           // Navigate to the "failed" page on the 15th execution
           _timer.cancel(); // Stop the timer to avoid further executions
           context.go("/failed");

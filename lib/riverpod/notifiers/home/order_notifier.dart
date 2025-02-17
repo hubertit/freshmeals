@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
@@ -62,11 +63,13 @@ class OderNotifier extends StateNotifier<OrderState> {
         //     .read(addressesProvider.notifier)
         //     .fetchAddress(context, json['token']);
         ref.read(cartProvider.notifier).myCart(context, json['token'], ref);
-        launchUrl(Uri.parse(response.data['payment_url']));
+        // launchUrl(Uri.parse(response.data['payment_url']));
 
-        // context.pop();
-        if (response.data['invoice_number'] != null) {
-          context.go("/processing/${response.data['invoice_number']}/false");
+        final paymentUrl = response.data['payment_url'];
+        final invoiceNumber = response.data['invoice_number'];
+
+        if (paymentUrl != null && invoiceNumber != null) {
+          launchPaymentUrl(context, paymentUrl, invoiceNumber);
         } else {
           context.go('/success');
         }
@@ -271,4 +274,20 @@ class OrderState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
+}
+
+
+void launchPaymentUrl(BuildContext context, String paymentUrl, String invoiceNumber) async {
+  // Launch the external URL
+  await launchUrl(Uri.parse(paymentUrl));
+
+  // Listen for app resuming
+  AppLifecycleListener(
+    onResume: () {
+      // Navigate to processing when the app comes back from background
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        context.go('/processing/$invoiceNumber/false');
+      });
+    },
+  );
 }

@@ -10,6 +10,7 @@ class PaymentsModel {
   final String status;
   final String transactionDate;
   final String? description;
+  final String paymentUrl;
 
   PaymentsModel({
     required this.paymentId,
@@ -22,7 +23,9 @@ class PaymentsModel {
     required this.paymentType,
     required this.status,
     required this.transactionDate,
+    required this.paymentUrl,
     this.description,
+
   });
 
   // Factory constructor to create a Payment instance from JSON
@@ -39,6 +42,7 @@ class PaymentsModel {
       status: json['status'] ?? 'Unknown', // Default status
       transactionDate: json['transaction_date'] ?? '1970-01-01 00:00:00', // Default date if null
       description: json['description'], // Nullable, no default needed
+      paymentUrl: json['payment_url']
     );
   }
 

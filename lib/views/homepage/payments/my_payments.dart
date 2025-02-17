@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/notifiers/home/order_notifier.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/theme/colors.dart';
@@ -71,21 +72,32 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                         itemBuilder: (context, index) {
                           final appontment = appointments.payments[index];
                           return InkWell(
-                            onTap: () {},
+                            onTap: appontment.status == "pending"
+                                ? () {
+                                    Uri uri = Uri.parse(appontment.paymentUrl);
+
+                                    String? invoiceNumber =
+                                        uri.queryParameters['invoiceNumber'];
+                                    launchPaymentUrl(context,
+                                        appontment.paymentUrl, invoiceNumber!);
+                                  }
+                                : null,
                             child: CoverContainer(
                               children: [
                                 Row(
                                   children: [
                                     Text(
                                       "No: #${appontment.paymentReference}",
-                                      style: const TextStyle(color: Colors.green,
+                                      style: const TextStyle(
+                                          color: Colors.green,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14),
                                     ),
                                     const Spacer(),
                                     Container(
                                       width: 70,
-                                      padding: const EdgeInsets.symmetric(vertical: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
                                       decoration: BoxDecoration(
                                           color: appontment.status == "FAILED"
                                               ? Colors.red
@@ -98,7 +110,8 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                                         child: Text(
                                           appontment.status.toUpperCase(),
                                           style: const TextStyle(
-                                              color: Colors.white,fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         ),
                                       ),
                                     )
@@ -120,7 +133,9 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                                       width: 150,
                                       child: Text(
                                         "Total Amount:",
-                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14),
                                       ),
                                     ),
                                     Text(
@@ -131,7 +146,6 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                           );
