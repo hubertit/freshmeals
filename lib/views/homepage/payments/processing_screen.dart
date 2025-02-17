@@ -103,8 +103,38 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
       appBar: AppBar(
         title: const Text("Processing Payment"),
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
+      body: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height/3,),
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+          const Spacer(),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              onPressed: () {
+                context.go('/');
+              },
+              child:  const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 50,)
+
+        ],
       ),
     );
   }

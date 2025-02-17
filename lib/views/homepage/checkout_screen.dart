@@ -40,6 +40,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     var orderState = ref.watch(orderProvider);
     var summary = ref.watch(cartProvider);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -108,12 +109,12 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Delivery Address',
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          ),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -146,9 +147,9 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                   const Text(
                                     'Delivery Address',
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        ),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -188,8 +189,8 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                                 defaultAddress
                                                     .address!.mapAddress,
                                                 style: const TextStyle(
-                                                    fontSize: 14,
-                                                    ),
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -236,59 +237,6 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Delivery Time Settings
-              // Container(
-              //   padding: const EdgeInsets.all(16),
-              //   decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(8),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.grey.withOpacity(0.1),
-              //         blurRadius: 8,
-              //         spreadRadius: 2,
-              //       ),
-              //     ],
-              //   ),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         'Delivery Time Settings',
-              //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              //       ),
-              //       SizedBox(height: 8),
-              //       DropdownButtonFormField<String>(
-              //         items: ['Time Slot 1', 'Time Slot 2', 'Time Slot 3']
-              //             .map((slot) => DropdownMenuItem(
-              //                   child: Text(slot),
-              //                   value: slot,
-              //                 ))
-              //             .toList(),
-              //         onChanged: (value) {},
-              //         decoration: InputDecoration(
-              //           hintText: 'Time Slot',
-              //           border: OutlineInputBorder(
-              //             borderRadius: BorderRadius.circular(8),
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(height: 16),
-              //       TextFormField(
-              //         decoration: InputDecoration(
-              //           hintText: 'Jan 01, 2025',
-              //           suffixIcon: const Icon(Icons.calendar_today),
-              //           border: OutlineInputBorder(
-              //             borderRadius: BorderRadius.circular(8),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 16),
-
-              // Order Bill Section
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -352,58 +300,6 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Payment Method Section
-              // Container(
-              //   padding: EdgeInsets.all(16),
-              //   decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(8),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.grey.withOpacity(0.1),
-              //         blurRadius: 8,
-              //         spreadRadius: 2,
-              //       ),
-              //     ],
-              //   ),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           const Text(
-              //             'Payment Method',
-              //             style: TextStyle(
-              //                 fontSize: 16, fontWeight: FontWeight.bold),
-              //           ),
-              //           TextButton(
-              //             onPressed: () {},
-              //             child: Text(
-              //               'Add new Method',
-              //               style: TextStyle(color: Colors.green),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       SizedBox(height: 8),
-              //       ListTile(
-              //         leading: Icon(Icons.credit_card),
-              //         title: Text('**** **** **** *368'),
-              //         trailing:
-              //             Radio(value: 1, groupValue: 2, onChanged: (value) {}),
-              //       ),
-              //       ListTile(
-              //         leading: Icon(Icons.phone_android, color: Colors.yellow),
-              //         title: Text('0788 123 456'),
-              //         trailing:
-              //             Radio(value: 2, groupValue: 2, onChanged: (value) {}),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 16),
               const Text(
                 'Comment',
                 style: TextStyle(
@@ -421,51 +317,79 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     fillColor: Colors.white),
                 controller: commentController,
               ),
-              const SizedBox(height: 16),
-
               // Confirm Order Button
+              const SizedBox(height: 50),
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      var json = {
+                        "token": user!.user!.token,
+                        "address_id": defaultAddress.address!.addressId,
+                        "comment": commentController.text
+                      };
+                      ref
+                          .read(orderProvider.notifier)
+                          .createOrder(context, json, ref);
+                      ref.read(cartProvider.notifier).clearCart();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: orderState!.isLoading
+                        ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                        : const Text(
+                      'Confirm Order',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+
             ],
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(10),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                var json = {
-                  "token": user!.user!.token,
-                  "address_id": defaultAddress.address!.addressId,
-                  "comment": commentController.text
-                };
-                ref
-                    .read(orderProvider.notifier)
-                    .createOrder(context, json, ref);
-                ref.read(cartProvider.notifier).clearCart();
-
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: orderState!.isLoading
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : const Text(
-                      'Confirm Order',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: SafeArea(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(10),
+      //     child: ElevatedButton(
+      //       onPressed: () {
+      //         var json = {
+      //           "token": user!.user!.token,
+      //           "address_id": defaultAddress.address!.addressId,
+      //           "comment": commentController.text
+      //         };
+      //         ref.read(orderProvider.notifier).createOrder(context, json, ref);
+      //         ref.read(cartProvider.notifier).clearCart();
+      //       },
+      //       style: ElevatedButton.styleFrom(
+      //         padding: const EdgeInsets.symmetric(vertical: 16),
+      //         backgroundColor: Colors.green,
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(8),
+      //         ),
+      //       ),
+      //       child: orderState!.isLoading
+      //           ? const CircularProgressIndicator(
+      //         color: Colors.white,
+      //       )
+      //           : const Text(
+      //         'Confirm Order',
+      //         style: TextStyle(fontSize: 16, color: Colors.white),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

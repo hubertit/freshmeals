@@ -99,7 +99,7 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5),
                                       decoration: BoxDecoration(
-                                          color: appontment.status == "FAILED"
+                                          color: appontment.status == "failed"
                                               ? Colors.red
                                               : appontment.status == "paid"
                                                   ? primarySwatch
