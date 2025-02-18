@@ -50,7 +50,7 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
       key: key,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Book Appointment"),
+          title: const Text("Nutrition Appointments"),
         ),
         body: SingleChildScrollView(
           child: Column(

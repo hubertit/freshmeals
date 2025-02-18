@@ -37,11 +37,11 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
     var calorisState = ref.watch(calorieProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calorie Tracker'),
+        title: const Text('Calorie Tracker'),
         centerTitle: true,
       ),
       body: calorisState.isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(

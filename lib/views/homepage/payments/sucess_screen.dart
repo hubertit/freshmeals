@@ -50,7 +50,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
 
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
               const Text(
                 "Thank you! We've received your order and are preparing your delicious meal. Hang tight, it’ll be ready soon!",
                 textAlign: TextAlign.center,

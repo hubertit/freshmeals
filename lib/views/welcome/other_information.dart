@@ -171,66 +171,67 @@ class _AdditionalInformationScreenState
               //     ),
               //   ),
               // )
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          color: Colors.white,
-          padding: EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // IconButton(
-              //   icon: const Icon(
-              //     Icons.favorite,
-              //     color: Colors.red,
-              //     size: 30,
-              //   ),
-              //   onPressed: () {
-              //     print(meal.mealsData!.ingredients);
-              //   },
-              // ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    widget.user.preExistingConditions = preExistingConditions;
-                    widget.user.foodAllergies = foodAllergies;
-                    widget.user.targetWeight = double.parse(targetWeightController.text);
-                    widget.user.calLimit = int.parse(targetCaloriesController.text);
+              SafeArea(
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.favorite,
+                      //     color: Colors.red,
+                      //     size: 30,
+                      //   ),
+                      //   onPressed: () {
+                      //     print(meal.mealsData!.ingredients);
+                      //   },
+                      // ),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            widget.user.preExistingConditions = preExistingConditions;
+                            widget.user.foodAllergies = foodAllergies;
+                            widget.user.targetWeight = double.parse(targetWeightController.text);
+                            widget.user.calLimit = int.parse(targetCaloriesController.text);
 
-                    // context.push('/preferences',extra: widget.user);
+                            // context.push('/preferences',extra: widget.user);
 
-                    ref
-                        .read(userProvider.notifier)
-                        .register(context, ref, widget.user.toJson());
-                    ref.read(firstTimeProvider.notifier).state = true;
-                  },
-                  child: user!.isLoading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Text(
-                          "Confirm",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                            ref
+                                .read(userProvider.notifier)
+                                .register(context, ref, widget.user.toJson());
+                            ref.read(firstTimeProvider.notifier).state = true;
+                          },
+                          child: user!.isLoading
+                              ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                              : const Text(
+                            "Confirm",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
+      // bottomNavigationBar: ,
     );
   }
 }
