@@ -17,7 +17,6 @@ class MyOrderDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -37,18 +36,25 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     var order = ref.watch(orderDetailsProvider);
     var user = ref.watch(userProvider);
-
-    final List<String> statuses = ["order", "pending", "delivering", "delivered"];
+    final List<String> statuses = [
+      "pending",
+      "confirmed",
+      "processing",
+      "delivering",
+      "delivered",
+      "completed",
+      "cancelled",
+    ];
     // Helper function to determine if a step is completed or active
     bool isCompleted(int index) {
-      if(order!.order !=null){
-
+      if (order!.order != null) {
         final currentIndex = statuses.indexOf(order.order!.status);
         return index <= currentIndex;
       }
       return false;
     }
-    print(order!.order!.status);
+
+    // print(order!.order!.status);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,287 +69,330 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Stepper Section
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Order'),
-                          Text('Pending'),
-                          Text('Delivering'),
-                          Text('Done'),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            for (int i = 0; i < statuses.length; i++) ...[
-                              _buildStep(
-                                statuses[i],
-                                isCompleted(i),
-                              ),
-                              if (i != statuses.length - 1)
-                                Expanded(
-                                  child: Container(
-                                    color: isCompleted(i + 1)
-                                        ? Colors.green
-                                        : Colors.grey[300],
-                                    height: 3,
-                                  ),
-                                ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
-              ),              const SizedBox(height: 16),
-              // Order Bill Section
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Order Bill',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildOrderDetailRow(
-                          'Order List', '${order.order!.items.length} Items'),
-                      const Divider(
-                        thickness: 0.3,
-                      ),
-                      // _buildOrderDetailRow('Total Price',
-                      //     "Rwf ${formatMoney(order.order!.totalPrice)}"),
-
-                      _buildOrderDetailRow(
-                          'Address', order.order!.deliveryAddress.mapAddress),
-                      const Divider(
-                        thickness: 0.3,
-                      ),
-                      _buildOrderDetailRow(
-                        'Total Bill',
-                        'Rwf ${formatMoney(order.order!.totalPrice)}',
-                        isHighlighted: true,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                margin: EdgeInsets.only(left: 5),
-                child: const Text(
-                  'Delivery Address',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            AssetsUtils.rectangle,
-                            height: 80,
-                            width: 80,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                        width: 30,
-                                        child: Icon(
-                                          Icons.location_pin,
-                                          color: secondarTex,
-                                          size: 16,
-                                        )),
-                                    Flexible(
-                                      child: Text(
-                                        order.order!.deliveryAddress.mapAddress,
-                                        style: TextStyle(
-                                            fontSize: 14, color: secondarTex),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                        width: 30,
-                                        child: Icon(
-                                          Icons.person,
-                                          color: secondarTex,
-                                          size: 16,
-                                        )),
-                                    Text(
-                                      user!.user!.name,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                        width: 30,
-                                        child: Icon(
-                                          Icons.call,
-                                          color: secondarTex,
-                                          size: 16,
-                                        )),
-                                    Text(
-                                      user.user!.phoneNumber,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                margin: const EdgeInsets.only(left: 5, bottom: 10),
-                child: const Text(
-                  'Items List',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                color: Colors.white,
+      body: order.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(order.order!.items.length, (index) {
-                    var item = order.order!.items[index];
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 3),
-                      child: Row(
-                        children: [
-                          Container(
-                            // height: 100,
-                            width: 75,
-                            padding: const EdgeInsets.all(1),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              border: Border(
-                                right: BorderSide(
-                                  color: Colors.grey, // Border color
-                                  width: 0.2, // Border width
-                                ),
-                              ),
-                            ),
-                            child: Image.network(
-                              item.imageUrl,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 20),
-                              color: Colors.white,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
+                  children: [
+                    // Stepper Section
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Pending'),
                                   ),
-                                  const SizedBox(
-                                    height: 5,
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Confirmed'),
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.all(3),
-                                    // color: secondaryColor,
-                                    child: Text(
-                                      "Quantity: ${item.quantity}",
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                      ),
-                                    ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Processing'),
                                   ),
-                                  const SizedBox(
-                                    height: 3,
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Delivering'),
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.all(3),
-                                    child: Text(
-                                      "${item.price} Rwf",
-                                      style: const TextStyle(
-                                          fontSize: 12, color: primarySwatch),
-                                    ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Delivered'),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Completed'),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text('Cancelled'),
                                   ),
                                 ],
                               ),
-                            ),
-                          )
-                        ],
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (int i = 0;
+                                        i < statuses.length;
+                                        i++) ...[
+                                      _buildStep(
+                                        statuses[i],
+                                        isCompleted(i),
+                                      ),
+                                      if (i != statuses.length - 1)
+                                        Container(
+                                          width: 55,
+                                          color: isCompleted(i + 1)
+                                              ? Colors.green
+                                              : Colors.grey[300],
+                                          height: 3,
+                                        ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
+                        ),
                       ),
-                    );
-                  }),
+                    ),
+                    const SizedBox(height: 16),
+                    // Order Bill Section
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Order Bill',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            _buildOrderDetailRow('Order List',
+                                '${order.order!.items.length} Items'),
+                            const Divider(
+                              thickness: 0.3,
+                            ),
+                            // _buildOrderDetailRow('Total Price',
+                            //     "Rwf ${formatMoney(order.order!.totalPrice)}"),
+
+                            _buildOrderDetailRow('Address',
+                                order.order!.deliveryAddress.mapAddress),
+                            const Divider(
+                              thickness: 0.3,
+                            ),
+                            _buildOrderDetailRow(
+                              'Total Bill',
+                              'Rwf ${formatMoney(order.order!.totalPrice)}',
+                              isHighlighted: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: const Text(
+                        'Delivery Address',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  AssetsUtils.rectangle,
+                                  height: 80,
+                                  width: 80,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 30,
+                                              child: Icon(
+                                                Icons.location_pin,
+                                                color: secondarTex,
+                                                size: 16,
+                                              )),
+                                          Flexible(
+                                            child: Text(
+                                              order.order!.deliveryAddress
+                                                  .mapAddress,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: secondarTex),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 30,
+                                              child: Icon(
+                                                Icons.person,
+                                                color: secondarTex,
+                                                size: 16,
+                                              )),
+                                          Text(
+                                            user!.user!.name,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 30,
+                                              child: Icon(
+                                                Icons.call,
+                                                color: secondarTex,
+                                                size: 16,
+                                              )),
+                                          Text(
+                                            user.user!.phoneNumber,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      margin: const EdgeInsets.only(left: 5, bottom: 10),
+                      child: const Text(
+                        'Items List',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:
+                            List.generate(order.order!.items.length, (index) {
+                          var item = order.order!.items[index];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 3),
+                            child: Row(
+                              children: [
+                                Container(
+                                  // height: 100,
+                                  width: 75,
+                                  padding: const EdgeInsets.all(1),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    border: Border(
+                                      right: BorderSide(
+                                        color: Colors.grey, // Border color
+                                        width: 0.2, // Border width
+                                      ),
+                                    ),
+                                  ),
+                                  child: Image.network(
+                                    item.imageUrl,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    color: Colors.white,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          item.name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(3),
+                                          // color: secondaryColor,
+                                          child: Text(
+                                            "Quantity: ${item.quantity}",
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 3,
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(3),
+                                          child: Text(
+                                            "${item.price} Rwf",
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: primarySwatch),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
+
   Widget _buildStep(String label, bool isCompleted) {
     return Container(
       padding: const EdgeInsets.all(6),
