@@ -20,6 +20,7 @@ class MealDetailsNotifier extends StateNotifier<MealDetailsState> {
       // print(response);
       if (response.statusCode == 200) {
         final data = response.data['data'];
+        print(data);
         final mealsData = MealDetailsModel.fromJson(data);
         state = state.copyWith(mealsData: mealsData, isLoading: false);
       } else {

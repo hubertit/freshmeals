@@ -11,7 +11,7 @@ class UserModel {
   double targetWeight;
   int calLimit;
   String activityLevel;
-  List<int> dietaryPreferences;
+  List<String> dietaryPreferences;
   List<String> preExistingConditions;
   List<String> foodAllergies;
 

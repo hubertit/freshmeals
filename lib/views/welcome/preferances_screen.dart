@@ -24,7 +24,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     });
     super.initState();
   }
-  List<int> selPref = [];
+  List<String> selPref = [];
 
   final selectedPreferenceProvider = StateProvider<List<int>>((ref) => []);
 
@@ -104,17 +104,17 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                             // }
 
                             if (selPref
-                                .contains(preference.preferenceId)) {
+                                .contains(preference.name)) {
 
                               setState(() {
                                 selPref = List.from(selPref)
-                                  ..remove(preference.preferenceId);                              });
+                                  ..remove(preference.name);                              });
                             } else {
 
                               setState(() {
                                 selPref =
                                 List.from(selPref)
-                                  ..add(preference.preferenceId);                              });
+                                  ..add(preference.name);                              });
                             }
                           },
                           child: Container(

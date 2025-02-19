@@ -5,7 +5,6 @@ import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 
 import '../../models/user_model.dart';
 import '../../riverpod/providers/auth_providers.dart';
-import '../../utls/styles.dart';
 import '../auth/widgets/input_dec.dart';
 
 class AdditionalInformationScreen extends ConsumerStatefulWidget {
@@ -22,7 +21,8 @@ class _AdditionalInformationScreenState
   final _formKey = GlobalKey<FormState>();
   var targetWeightController = TextEditingController();
   var targetCaloriesController = TextEditingController();
-
+  var otherConditionController = TextEditingController();
+  var otherAllergyController = TextEditingController();
 
   double? currentWeight;
   double? height;
@@ -30,10 +30,11 @@ class _AdditionalInformationScreenState
   List<String> preExistingConditions = [];
   List<String> foodAllergies = [];
   String? dietaryGoal;
+  bool isOtherConditionChecked = false;
+  bool isOtherAllergyChecked = false;
 
   @override
   Widget build(BuildContext context) {
-    print(widget.user.toJson());
     var user = ref.watch(userProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Additional Information')),
@@ -44,33 +45,17 @@ class _AdditionalInformationScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TextFormField(
-              //   decoration:
-              //       const InputDecoration(labelText: 'Current Weight (kg)'),
-              //   keyboardType: TextInputType.number,
-              //   onChanged: (value) => currentWeight = double.tryParse(value),
-              // ),
-              // TextFormField(
-              //   decoration: const InputDecoration(labelText: 'Height (cm)'),
-              //   keyboardType: TextInputType.number,
-              //   onChanged: (value) => height = double.tryParse(value),
-              // ),
               TextFormField(
                 controller: targetWeightController,
                 decoration: iDecoration(hint: 'Target Weight (Optional)'),
                 keyboardType: TextInputType.number,
-                // onChanged: (value) => targetWeight = double.tryParse(value),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               TextFormField(
-                controller: targetCaloriesController
-                ,
+                controller: targetCaloriesController,
                 decoration:
-                    iDecoration(hint: 'Calories Target/Limit (Optional)'),
+                iDecoration(hint: 'Calories Target/Limit (Optional)'),
                 keyboardType: TextInputType.number,
-                // onChanged: (value) => targetWeight = double.tryParse(value),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -78,27 +63,31 @@ class _AdditionalInformationScreenState
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               CoverContainer(children: [
-                ...[
-                  "None",
-                  "Diabetes",
-                  "Hypertension",
-                  "Thyroid disease",
-                  "Autoimmune condition",
-                  "Cancer",
-                  "Other"
-                ].map((condition) => CheckboxListTile(
-                      title: Text(condition),
-                      value: preExistingConditions.contains(condition),
-                      onChanged: (isSelected) {
-                        setState(() {
-                          if (isSelected == true) {
-                            preExistingConditions.add(condition);
-                          } else {
-                            preExistingConditions.remove(condition);
-                          }
-                        });
-                      },
-                    )),
+                ...["None", "Diabetes", "Hypertension", "Thyroid disease", "Autoimmune condition", "Cancer", "Other"].map((condition) => CheckboxListTile(
+                  title: Text(condition),
+                  value: preExistingConditions.contains(condition),
+                  onChanged: (isSelected) {
+                    setState(() {
+                      if (isSelected == true) {
+                        preExistingConditions.add(condition);
+                        if (condition == 'Other') {
+                          isOtherConditionChecked = true;
+                        }
+                      } else {
+                        preExistingConditions.remove(condition);
+                        if (condition == 'Other') {
+                          isOtherConditionChecked = false;
+                          otherConditionController.clear();
+                        }
+                      }
+                    });
+                  },
+                )),
+                if (isOtherConditionChecked)
+                  TextFormField(
+                    controller: otherConditionController,
+                    decoration: iDecoration(hint: 'Specify other condition'),
+                  ),
               ]),
               const SizedBox(height: 16),
               const Text(
@@ -106,88 +95,39 @@ class _AdditionalInformationScreenState
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               CoverContainer(children: [
-                ...[
-                  "None",
-                  "Dairy",
-                  "Eggs",
-                  "Peanuts",
-                  "Tree nuts",
-                  "Shellfish",
-                  "Fish",
-                  "Gluten",
-                  "Soy",
-                  "Sesame",
-                  "Other"
-                ].map((allergy) => CheckboxListTile(
-                      title: Text(allergy),
-                      value: foodAllergies.contains(allergy),
-                      onChanged: (isSelected) {
-                        setState(() {
-                          if (isSelected == true) {
-                            foodAllergies.add(allergy);
-                          } else {
-                            foodAllergies.remove(allergy);
-                          }
-                        });
-                      },
-                    )),
+                ...["None", "Dairy", "Eggs", "Peanuts", "Tree nuts", "Shellfish", "Fish", "Gluten", "Soy", "Sesame", "Other"].map((allergy) => CheckboxListTile(
+                  title: Text(allergy),
+                  value: foodAllergies.contains(allergy),
+                  onChanged: (isSelected) {
+                    setState(() {
+                      if (isSelected == true) {
+                        foodAllergies.add(allergy);
+                        if (allergy == 'Other') {
+                          isOtherAllergyChecked = true;
+                        }
+                      } else {
+                        foodAllergies.remove(allergy);
+                        if (allergy == 'Other') {
+                          isOtherAllergyChecked = false;
+                          otherAllergyController.clear();
+                        }
+                      }
+                    });
+                  },
+                )),
+                if (isOtherAllergyChecked)
+                  TextFormField(
+                    controller: otherAllergyController,
+                    decoration: iDecoration(hint: 'Specify other allergy'),
+                  ),
               ]),
               const SizedBox(height: 16),
-              // const Text(
-              //   'Your Main Dietary Goal',
-              //   style: TextStyle(fontWeight: FontWeight.bold),
-              // ),
-              // CoverContainer(children: [
-              //   ...[
-              //     "Weight loss",
-              //     "Weight gain",
-              //     "Muscle building",
-              //     "Improving overall health",
-              //     "Managing a medical condition",
-              //     "Improving athletic performance",
-              //     "Other"
-              //   ].map((goal) => RadioListTile<String>(
-              //         title: Text(goal),
-              //         value: goal,
-              //         groupValue: dietaryGoal,
-              //         onChanged: (value) {
-              //           setState(() {
-              //             dietaryGoal = value;
-              //           });
-              //         },
-              //       )),
-              // ]),
-              const SizedBox(height: 16),
-              // SizedBox(width: double.maxFinite,
-              //   child: ElevatedButton(
-              //     style: StyleUtls.buttonStyle,
-              //     onPressed: () {
-              //
-              //     },
-              //     child: const Text(
-              //       "Confirm",
-              //       style: TextStyle(
-              //           color: Colors.white, fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              // )
               SafeArea(
                 child: Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // IconButton(
-                      //   icon: const Icon(
-                      //     Icons.favorite,
-                      //     color: Colors.red,
-                      //     size: 30,
-                      //   ),
-                      //   onPressed: () {
-                      //     print(meal.mealsData!.ingredients);
-                      //   },
-                      // ),
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -201,22 +141,24 @@ class _AdditionalInformationScreenState
                             ),
                           ),
                           onPressed: () {
+                            if (isOtherConditionChecked && otherConditionController.text.isNotEmpty) {
+                              preExistingConditions.add(otherConditionController.text);
+                            }
+
+                            if (isOtherAllergyChecked && otherAllergyController.text.isNotEmpty) {
+                              foodAllergies.add(otherAllergyController.text);
+                            }
+
                             widget.user.preExistingConditions = preExistingConditions;
                             widget.user.foodAllergies = foodAllergies;
-                            widget.user.targetWeight = double.parse(targetWeightController.text);
-                            widget.user.calLimit = int.parse(targetCaloriesController.text);
+                            widget.user.targetWeight = double.tryParse(targetWeightController.text)!;
+                            widget.user.calLimit = int.tryParse(targetCaloriesController.text)!;
 
-                            // context.push('/preferences',extra: widget.user);
-
-                            ref
-                                .read(userProvider.notifier)
-                                .register(context, ref, widget.user.toJson());
+                            ref.read(userProvider.notifier).register(context, ref, widget.user.toJson());
                             ref.read(firstTimeProvider.notifier).state = true;
                           },
                           child: user!.isLoading
-                              ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                              ? const CircularProgressIndicator(color: Colors.white)
                               : const Text(
                             "Confirm",
                             style: TextStyle(fontSize: 16, color: Colors.white),
@@ -231,7 +173,6 @@ class _AdditionalInformationScreenState
           ),
         ),
       ),
-      // bottomNavigationBar: ,
     );
   }
 }
