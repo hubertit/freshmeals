@@ -12,7 +12,7 @@ class MealDetailsModel {
   final int sugar;
   final String sodium;
   final String minerals;
-  final Map<String, String> ingredients;
+  // final Map<String, String> ingredients;
   final String imageUrl;
   final String price;
   final DateTime createdAt;
@@ -32,7 +32,7 @@ class MealDetailsModel {
     required this.sugar,
     required this.sodium,
     required this.minerals,
-    required this.ingredients,
+    // required this.ingredients,
     required this.imageUrl,
     required this.price,
      this.allergens,
@@ -54,9 +54,9 @@ class MealDetailsModel {
       sugar: json['sugar'] ?? 0,
       sodium: json['sodium'] ?? '0',
       minerals: json['minerals'] ?? '',
-      ingredients: (json['ingredients'] as Map<String, dynamic>?)
-          ?.map((key, value) => MapEntry(key, value.toString())) ??
-          {},
+      // ingredients: (json['ingredients'] as Map<String, dynamic>?)
+      //     ?.map((key, value) => MapEntry(key, value.toString())) ??
+      //     {},
       imageUrl: json['image_url'] ?? '',
       price: json['price'] ?? '0',
       allergens: (json['allergens'] as List<dynamic>?)
