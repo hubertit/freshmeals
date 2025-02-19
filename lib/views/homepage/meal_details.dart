@@ -28,6 +28,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
   void initState() {
     var id = widget.mealId;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print(widget.mealId);
       ref
           .read(mealDetailsDataProvider.notifier)
           .fetchMealDetails(context, int.parse(id));
@@ -147,6 +148,14 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                           children: [
                             // Title Section
                             Text(
+                              "${meal.mealsData!.price} RWF",
+                              style: const TextStyle(
+                                  color: primarySwatch,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
                               meal.mealsData!.description,
                               style: const TextStyle(
                                 color: Colors.grey,
@@ -170,6 +179,57 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                           ],
                         ),
                       ),
+                      if (meal.mealsData!.allergens!.isNotEmpty)
+                        Container(
+                          width: double.maxFinite,
+                          margin: const EdgeInsets.all(10).copyWith(top: 20),
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 10),
+                              const Text(
+                                'Allergens',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: List.generate(
+                                      meal.mealsData!.allergens!.length,
+                                      (index) {
+                                    return Chip(
+                                      label: Text(
+                                          meal.mealsData!.allergens![index]),
+                                      color:
+                                          WidgetStateProperty.all(scaffold),
+                                      elevation: 0,
+                                      side: BorderSide.none,
+
+                                    );
+                                  })
+                                  // ...() [
+                                  //   Chip(label: Text('Lead')),
+                                  //   Chip(label: Text('UX Design')),
+                                  //   Chip(label: Text('Problem Solving')),
+                                  //   Chip(label: Text('Critical')),
+                                  // ],
+                                  ),
+                            ],
+                          ),
+                        ),
+
                       Container(
                         margin: const EdgeInsets.all(10).copyWith(top: 20),
                         padding: const EdgeInsets.all(10),
@@ -221,7 +281,8 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                                 return _buildNutritionValue(
                                   contentName,
                                   '${contentDetails.percentage}%', // You can adjust to the right format if needed
-                                  contentDetails.amount, // Assuming `amount` is the value in grams
+                                  contentDetails
+                                      .amount, // Assuming `amount` is the value in grams
                                   _getColorForContent(contentName),
                                 );
                               }).toList(),
