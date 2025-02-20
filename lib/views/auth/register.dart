@@ -35,7 +35,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   void initState() {
-    country = CountryService().findByCode("US")!;
+    country = CountryService().findByCode("RW")!;
     super.initState();
   }
 
