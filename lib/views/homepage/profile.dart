@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../riverpod/providers/auth_providers.dart';
+import 'widgets/choices_dialogue.dart';
 import 'widgets/cover_container.dart';
 import 'widgets/profile_item.dart';
 
@@ -100,10 +101,13 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: MaterialCommunityIcons.shopping,
               ),
               ProfileItemIcon(
-                title: 'My Appointments',
+                title: 'Nutrition consultation',
                 iconSize: 18,
                 onPressed: () {
-                  context.push('/myAppointments');
+                  showDialog<String>(
+                    context: context,
+                    builder: (context) => ChoiceDialog(),
+                  );
                 },
                 leadingIcon: MaterialCommunityIcons.book_information_variant,
               ),

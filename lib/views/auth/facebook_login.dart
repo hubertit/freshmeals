@@ -134,7 +134,8 @@ class _RegisterScreenState extends ConsumerState<FacebookRegisterScreen> {
                           activityLevel: "Moderately Active",
                           dietaryPreferences: [],
                           preExistingConditions: [],
-                          foodAllergies: []);
+                          foodAllergies: [],
+                      healthyGoals: []);
                       if (key.currentState!.validate()) {
                         context.push("/goal", extra: user);
                       }

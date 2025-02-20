@@ -8,6 +8,7 @@ import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
+import '../appointment/widgets/empty_widget.dart';
 
 class CalorieTrackerPage extends ConsumerStatefulWidget {
   const CalorieTrackerPage({super.key});
@@ -209,7 +210,6 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                                               double.parse(
                                                                   targetController
                                                                       .text));
-
                                                     },
                                                     child: const Text(
                                                       "Set",
@@ -273,36 +273,47 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     'Daily Entries',
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: calorisState.calorieData!.dailyEntries!.length,
-                      itemBuilder: (context, index) {
-                        final entry =
-                            calorisState.calorieData!.dailyEntries![index];
-                        // final entryPercentage =
-                        //     (entry['calories'] / targetCalories) * 100;
-                        return Card(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: ListTile(
-                            leading: Text(
-                              '${entry.date}',
-                              style: TextStyle(fontSize: 16),
+                  calorisState.calorieData!.dailyEntries!.isEmpty
+                      ? const Column(
+                          children: [
+                            SizedBox(
+                              height: 200,
                             ),
-                            title: Text('${entry.calories} kcal'),
-                            trailing: Text(
-                              '(${entry.percentage}%)',
-                              style: TextStyle(
-                                color: entry.percentage! > 100
-                                    ? Colors.red
-                                    : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            CustomEmptyWidget(
+                                message: "You had not yet consumed anything.")
+                          ],
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount:
+                                calorisState.calorieData!.dailyEntries!.length,
+                            itemBuilder: (context, index) {
+                              final entry = calorisState
+                                  .calorieData!.dailyEntries![index];
+                              // final entryPercentage =
+                              //     (entry['calories'] / targetCalories) * 100;
+                              return Card(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                child: ListTile(
+                                  leading: Text(
+                                    '${entry.date}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  title: Text('${entry.calories} kcal'),
+                                  trailing: Text(
+                                    '(${entry.percentage}%)',
+                                    style: TextStyle(
+                                      color: entry.percentage! > 100
+                                          ? Colors.red
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
                 ],
               ),
             ),

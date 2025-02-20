@@ -14,6 +14,7 @@ class UserModel {
   List<String> dietaryPreferences;
   List<String> preExistingConditions;
   List<String> foodAllergies;
+  List<String> healthyGoals;
 
   UserModel({
     required this.names,
@@ -31,6 +32,7 @@ class UserModel {
     required this.dietaryPreferences,
     required this.preExistingConditions,
     required this.foodAllergies,
+    required this.healthyGoals
   });
 
   Map<String, dynamic> toJson() {
@@ -42,6 +44,7 @@ class UserModel {
       "age": age,
       "gender": gender,
       "health_status": healthStatus,
+      "health_goal": healthyGoals,
       "height": height,
       "weight": weight,
       "target_weight": targetWeight,
@@ -49,6 +52,7 @@ class UserModel {
       "activity_level": activityLevel,
       "dietary_preferences": dietaryPreferences,
       "pre_existing_conditions": preExistingConditions,
+      "health_conditions": [],
       "food_allergies": foodAllergies,
     };
   }

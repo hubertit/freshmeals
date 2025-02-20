@@ -156,6 +156,13 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             ),
                             const SizedBox(height: 10),
                             Text(
+                              "${meal.mealsData!.calories} Cal",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
                               meal.mealsData!.description,
                               style: const TextStyle(
                                 color: Colors.grey,

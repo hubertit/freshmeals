@@ -140,7 +140,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           activityLevel: "Moderately Active",
                           dietaryPreferences: [],
                           preExistingConditions: [],
+                          healthyGoals: [],
                           foodAllergies: []);
+
                       if (key.currentState!.validate()) {
                         context.push("/goal", extra: user);
                       }

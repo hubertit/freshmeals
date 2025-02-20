@@ -25,6 +25,7 @@ class _GenderScreenState extends State<GenderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user.healthyGoals);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

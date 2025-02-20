@@ -62,7 +62,8 @@ class _AdditionalInformationScreenState
                 'Pre-existing Conditions',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              CoverContainer(children: [
+              CoverContainer(margin: 0,
+                  children: [
                 ...["None", "Diabetes", "Hypertension", "Thyroid disease", "Autoimmune condition", "Cancer", "Other"].map((condition) => CheckboxListTile(
                   title: Text(condition),
                   value: preExistingConditions.contains(condition),
@@ -94,7 +95,7 @@ class _AdditionalInformationScreenState
                 'Food Allergies',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              CoverContainer(children: [
+              CoverContainer(margin: 0,children: [
                 ...["None", "Dairy", "Eggs", "Peanuts", "Tree nuts", "Shellfish", "Fish", "Gluten", "Soy", "Sesame", "Other"].map((allergy) => CheckboxListTile(
                   title: Text(allergy),
                   value: foodAllergies.contains(allergy),
