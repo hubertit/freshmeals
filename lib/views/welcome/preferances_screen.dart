@@ -79,7 +79,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                         PreferenceModel preference =
                             preferences.preferances[index];
                         bool isSelected = selPref
-                            .contains(preference.preferenceId);
+                            .contains(preference.name);
 
                         return GestureDetector(
                           onTap: () {
