@@ -101,7 +101,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                   SizedBox(height: 10),
                   Stack(
                     children: [
-                      CoverContainer(
+                      CoverContainer(margin: 0,
                         children: [
                           Stack(
                             alignment: Alignment
@@ -274,15 +274,19 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   calorisState.calorieData!.dailyEntries!.isEmpty
-                      ? const Column(
-                          children: [
-                            SizedBox(
-                              height: 200,
+                      ? CoverContainer(margin: 0,
+                        children: [
+                          const Column(
+                              children: [
+                                SizedBox(
+                                  height: 200,
+                                ),
+                                CustomEmptyWidget(
+                                    message: "You haven’t consumed anything yet.")
+                              ],
                             ),
-                            CustomEmptyWidget(
-                                message: "You had not yet consumed anything.")
-                          ],
-                        )
+                        ],
+                      )
                       : Expanded(
                           child: ListView.builder(
                             itemCount:

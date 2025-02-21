@@ -139,6 +139,30 @@ class UserNotifier extends StateNotifier<UserState?> {
     context.go('/login');
   }
 
+  Future<void> verifyToken(
+      BuildContext context, String token, WidgetRef ref) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+
+      final response = await _dio.post(
+        '${baseUrl}token/verify',
+        data: {'token': token},
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        // Token is invalid, log the user out
+        await logout(ref, context);
+      }
+    } on DioError catch (e) {
+      await logout(ref, context);
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
+  }
+
   Future<void> forgotPassword(BuildContext context, String identifier) async {
     try {
       state = state!.copyWith(isLoading: true);
@@ -256,25 +280,27 @@ class UserNotifier extends StateNotifier<UserState?> {
     }
   }
 
-  Future<void> verifyToken(
+  Future<void> deleteAccount(
       BuildContext context, String token, WidgetRef ref) async {
     try {
       state = state!.copyWith(isLoading: true);
 
       final response = await _dio.post(
-        '${baseUrl}token/verify',
+        '${baseUrl}user/delete_account',
         data: {'token': token},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${response.data['message']}')),
+      );
       if (response.statusCode == 200) {
-        return;
-      } else {
-        // Token is invalid, log the user out
         await logout(ref, context);
+      } else {
+        context.pop();
+        // Token is invalid, log the user out
       }
     } on DioError catch (e) {
-      await logout(ref, context);
+      context.pop();
     } finally {
       state = state!.copyWith(isLoading: false);
     }

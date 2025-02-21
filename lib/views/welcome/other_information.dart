@@ -54,7 +54,7 @@ class _AdditionalInformationScreenState
               TextFormField(
                 controller: targetCaloriesController,
                 decoration:
-                iDecoration(hint: 'Calories Target/Limit (Optional)'),
+                    iDecoration(hint: 'Calories Target/Limit (Optional)'),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
@@ -62,28 +62,35 @@ class _AdditionalInformationScreenState
                 'Pre-existing Conditions',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              CoverContainer(margin: 0,
-                  children: [
-                ...["None", "Diabetes", "Hypertension", "Thyroid disease", "Autoimmune condition", "Cancer", "Other"].map((condition) => CheckboxListTile(
-                  title: Text(condition),
-                  value: preExistingConditions.contains(condition),
-                  onChanged: (isSelected) {
-                    setState(() {
-                      if (isSelected == true) {
-                        preExistingConditions.add(condition);
-                        if (condition == 'Other') {
-                          isOtherConditionChecked = true;
-                        }
-                      } else {
-                        preExistingConditions.remove(condition);
-                        if (condition == 'Other') {
-                          isOtherConditionChecked = false;
-                          otherConditionController.clear();
-                        }
-                      }
-                    });
-                  },
-                )),
+              CoverContainer(margin: 0, children: [
+                ...[
+                  "None",
+                  "Diabetes",
+                  "Hypertension",
+                  "Thyroid disease",
+                  "Autoimmune condition",
+                  "Cancer",
+                  "Other"
+                ].map((condition) => CheckboxListTile(
+                      title: Text(condition),
+                      value: preExistingConditions.contains(condition),
+                      onChanged: (isSelected) {
+                        setState(() {
+                          if (isSelected == true) {
+                            preExistingConditions.add(condition);
+                            if (condition == 'Other') {
+                              isOtherConditionChecked = true;
+                            }
+                          } else {
+                            preExistingConditions.remove(condition);
+                            if (condition == 'Other') {
+                              isOtherConditionChecked = false;
+                              otherConditionController.clear();
+                            }
+                          }
+                        });
+                      },
+                    )),
                 if (isOtherConditionChecked)
                   TextFormField(
                     controller: otherConditionController,
@@ -95,27 +102,39 @@ class _AdditionalInformationScreenState
                 'Food Allergies',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              CoverContainer(margin: 0,children: [
-                ...["None", "Dairy", "Eggs", "Peanuts", "Tree nuts", "Shellfish", "Fish", "Gluten", "Soy", "Sesame", "Other"].map((allergy) => CheckboxListTile(
-                  title: Text(allergy),
-                  value: foodAllergies.contains(allergy),
-                  onChanged: (isSelected) {
-                    setState(() {
-                      if (isSelected == true) {
-                        foodAllergies.add(allergy);
-                        if (allergy == 'Other') {
-                          isOtherAllergyChecked = true;
-                        }
-                      } else {
-                        foodAllergies.remove(allergy);
-                        if (allergy == 'Other') {
-                          isOtherAllergyChecked = false;
-                          otherAllergyController.clear();
-                        }
-                      }
-                    });
-                  },
-                )),
+              CoverContainer(margin: 0, children: [
+                ...[
+                  "None",
+                  "Dairy",
+                  "Eggs",
+                  "Peanuts",
+                  "Tree nuts",
+                  "Shellfish",
+                  "Fish",
+                  "Gluten",
+                  "Soy",
+                  "Sesame",
+                  "Other"
+                ].map((allergy) => CheckboxListTile(
+                      title: Text(allergy),
+                      value: foodAllergies.contains(allergy),
+                      onChanged: (isSelected) {
+                        setState(() {
+                          if (isSelected == true) {
+                            foodAllergies.add(allergy);
+                            if (allergy == 'Other') {
+                              isOtherAllergyChecked = true;
+                            }
+                          } else {
+                            foodAllergies.remove(allergy);
+                            if (allergy == 'Other') {
+                              isOtherAllergyChecked = false;
+                              otherAllergyController.clear();
+                            }
+                          }
+                        });
+                      },
+                    )),
                 if (isOtherAllergyChecked)
                   TextFormField(
                     controller: otherAllergyController,
@@ -142,28 +161,38 @@ class _AdditionalInformationScreenState
                             ),
                           ),
                           onPressed: () {
-                            if (isOtherConditionChecked && otherConditionController.text.isNotEmpty) {
-                              preExistingConditions.add(otherConditionController.text);
+                            if (isOtherConditionChecked &&
+                                otherConditionController.text.isNotEmpty) {
+                              preExistingConditions
+                                  .add(otherConditionController.text);
                             }
 
-                            if (isOtherAllergyChecked && otherAllergyController.text.isNotEmpty) {
+                            if (isOtherAllergyChecked &&
+                                otherAllergyController.text.isNotEmpty) {
                               foodAllergies.add(otherAllergyController.text);
                             }
 
-                            widget.user.preExistingConditions = preExistingConditions;
+                            widget.user.preExistingConditions =
+                                preExistingConditions;
                             widget.user.foodAllergies = foodAllergies;
-                            widget.user.targetWeight = double.tryParse(targetWeightController.text)!;
-                            widget.user.calLimit = int.tryParse(targetCaloriesController.text)!;
+                            widget.user.targetWeight =
+                                double.tryParse(targetWeightController.text);
+                            widget.user.calLimit =
+                                int.tryParse(targetCaloriesController.text);
 
-                            ref.read(userProvider.notifier).register(context, ref, widget.user.toJson());
+                            ref
+                                .read(userProvider.notifier)
+                                .register(context, ref, widget.user.toJson());
                             ref.read(firstTimeProvider.notifier).state = true;
                           },
                           child: user!.isLoading
-                              ? const CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
                               : const Text(
-                            "Confirm",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
+                                  "Confirm",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
                         ),
                       ),
                     ],

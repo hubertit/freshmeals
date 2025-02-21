@@ -38,12 +38,9 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
     var user = ref.watch(userProvider);
     final List<String> statuses = [
       "pending",
-      "confirmed",
-      "processing",
+      "preparing",
       "delivering",
-      "delivered",
       "completed",
-      "cancelled",
     ];
     // Helper function to determine if a step is completed or active
     bool isCompleted(int index) {
@@ -80,29 +77,26 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                     // Stepper Section
                     Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(7),
                       ),
                       elevation: 0,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
+                        // child:
+                        // SingleChildScrollView(
+                        //   scrollDirection: Axis.horizontal,
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
                                   Padding(
                                     padding: EdgeInsets.only(right: 8.0),
                                     child: Text('Pending'),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Confirmed'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Processing'),
+                                    child: Text('Preparing'),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 8.0),
@@ -110,15 +104,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Delivered'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
                                     child: Text('Completed'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Cancelled'),
                                   ),
                                 ],
                               ),
@@ -151,7 +137,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                               const SizedBox(height: 16),
                             ],
                           ),
-                        ),
+                        // ),
                       ),
                     ),
                     const SizedBox(height: 16),

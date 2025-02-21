@@ -281,7 +281,78 @@ class _ProfileState extends ConsumerState<Profile> {
               ProfileItemIcon(
                 title: "Delete account",
                 titleColor: Colors.red,
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text(
+                          'Delete Account',
+                          // style: TextStyle(color: Colors.red),
+                        ),
+                        content: const Text(
+                            'Do you want to delete your Freshmeals account?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () async {
+                              context.pop();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'Alert!!',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    content: const Text(
+                                        'Deleting your account is permanent and irreversible. Are you sure you want to proceed?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () async {
+                                          await ref
+                                              .read(userProvider.notifier)
+                                              .deleteAccount(context,
+                                                  userState.user!.token, ref);
+                                          //  context.go('/');
+                                        },
+                                        child: const Text(
+                                          'Delete',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                 leadingIcon: Icons.delete,
                 iconColor: Colors.red,
                 avatarColor: const Color(0xfffcefef),

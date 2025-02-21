@@ -8,8 +8,8 @@ class UserModel {
   String healthStatus;
   double height;
   double weight;
-  double targetWeight;
-  int calLimit;
+  double? targetWeight;
+  int? calLimit;
   String activityLevel;
   List<String> dietaryPreferences;
   List<String> preExistingConditions;
