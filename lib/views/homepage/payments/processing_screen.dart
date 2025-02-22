@@ -101,7 +101,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Processing Payment"),
+        title: const Text("Processing your order.."),
       ),
       body: Column(
         children: [
