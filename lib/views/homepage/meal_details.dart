@@ -135,7 +135,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                   // Content Container
                   Column(
                     children: [
-                      Container(
+                      Container(width: double.maxFinite,
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         padding: const EdgeInsets.all(10),
                         decoration: const BoxDecoration(
@@ -158,8 +158,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             Text(
                               "${meal.mealsData!.calories} Cal",
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                             const SizedBox(height: 10),
                             Text(
@@ -219,11 +218,9 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                                     return Chip(
                                       label: Text(
                                           meal.mealsData!.allergens![index]),
-                                      color:
-                                          WidgetStateProperty.all(scaffold),
+                                      color: WidgetStateProperty.all(scaffold),
                                       elevation: 0,
                                       side: BorderSide.none,
-
                                     );
                                   })
                                   // ...() [
