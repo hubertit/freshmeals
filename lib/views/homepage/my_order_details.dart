@@ -379,16 +379,18 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
 
   Widget _buildStep(String label, bool isCompleted) {
     return Container(
-      padding:  EdgeInsets.all(isCompleted?6:12),
+      padding: EdgeInsets.all(isCompleted ? 6 : 12),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isCompleted ? Colors.green : Colors.grey[300],
       ),
-      child:isCompleted? Icon(
-        Icons.check,
-        color: isCompleted ? Colors.white : Colors.grey,
-        size: 16,
-      ):null,
+      child: isCompleted
+          ? Icon(
+              Icons.check,
+              color: isCompleted ? Colors.white : Colors.grey,
+              size: 16,
+            )
+          : null,
     );
   }
   // Widget _buildStep(String title, bool isActive) {

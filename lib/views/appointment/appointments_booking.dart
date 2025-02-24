@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/constants/_assets.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:freshmeals/views/appointment/widgets/booking_model.dart';
+import 'package:go_router/go_router.dart';
 import '../homepage/widgets/cover_container.dart';
 import 'widgets/datetime_piker.dart';
 import 'widgets/empty_widget.dart';
@@ -28,6 +30,8 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
   String formatTime(DateTime dateTime) {
     return "${DateFormat('HH').format(dateTime)}H${DateFormat('mm').format(dateTime)}";
   }
+
+  String _meetingType = "Online"; // Default selection
 
   @override
   void initState() {
@@ -152,54 +156,224 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                 final appontment = slotsState.slotsData[index];
                                 return InkWell(
                                   onTap: () {
-                                    showDialog(
+                                    // showBookingSheet(BuildContext context) {
+                                    showModalBottomSheet(
                                       context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(10)),
+                                      ),
                                       builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Confirm Appointment'),
-                                          content: Text(
-                                            'You are about to book an appointment from ${appontment.startTime} to ${appontment.endTime}. Do you want to proceed?',
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () async {
-                                                ref
-                                                    .read(appointmentsProvider
-                                                        .notifier)
-                                                    .bookAppointment(
-                                                        context,
-                                                        user!.user!.token,
-                                                        "$_eventDate",
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 30,top: 10),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  InkWell(
+                                                      onTap: () {
+                                                        context.pop();
+                                                      },
+                                                      child: const Icon(Icons.close)),
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  const Text(
+                                                    "Confirm Booking",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 20),
+
+                                              // Time From & Time To Fields (Same Row)
+                                              const Row(
+                                                children: [
+                                                  Expanded(
+                                                      child:
+                                                          Text("Start-Time")),
+                                                  SizedBox(width: 20),
+                                                  Expanded(
+                                                      child: Text("End-Time")),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      child: Text(
                                                         appontment.startTime,
-                                                        "${calculateDuration(appontment.startTime, appontment.endTime)}",
-                                                        ref);
-                                              },
-                                              child: const Text(
-                                                'Confirm',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                        style: const TextStyle(
+                                                            fontSize: 16),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 20),
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      child: Text(
+                                                        appontment.endTime,
+                                                        style: const TextStyle(
+                                                            fontSize: 16),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              const SizedBox(height: 20),
+
+                                              // Online/In-person Dropdown
+                                              DropdownButtonFormField<String>(
+                                                value: _meetingType,
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                ),
+                                                items: ["Online", "In-person"]
+                                                    .map((String option) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: option,
+                                                    child: Text(option),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    _meetingType = newValue!;
+                                                  });
+                                                },
                                               ),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 20),
+
+                                              // Confirm Booking Button
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    ref
+                                                        .read(
+                                                            appointmentsProvider
+                                                                .notifier)
+                                                        .bookAppointment(
+                                                            context,
+                                                            user!.user!.token,
+                                                            "$_eventDate",
+                                                            appontment
+                                                                .startTime,
+                                                            "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                                            ref);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 14),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                  ),
+                                                  child: const Text(
+                                                    "Confirm Booking",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         );
                                       },
                                     );
+                                    // sh
                                   },
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     return AlertDialog(
+                                  //       title:
+                                  //           const Text('Confirm Appointment'),
+                                  //       content: Text(
+                                  //         'You are about to book an appointment from ${appontment.startTime} to ${appontment.endTime}. Do you want to proceed?',
+                                  //       ),
+                                  //       actions: <Widget>[
+                                  //         TextButton(
+                                  //           onPressed: () async {
+                                  //             ref
+                                  //                 .read(appointmentsProvider
+                                  //                     .notifier)
+                                  //                 .bookAppointment(
+                                  //                     context,
+                                  //                     user!.user!.token,
+                                  //                     "$_eventDate",
+                                  //                     appontment.startTime,
+                                  //                     "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                  //                     ref);
+                                  //           },
+                                  //           child: const Text(
+                                  //             'Confirm',
+                                  //             style: TextStyle(
+                                  //                 color: Colors.black,
+                                  //                 fontWeight:
+                                  //                     FontWeight.bold),
+                                  //           ),
+                                  //         ),
+                                  //         TextButton(
+                                  //           onPressed: () {
+                                  //             Navigator.of(context).pop();
+                                  //           },
+                                  //           child: const Text(
+                                  //             'Cancel',
+                                  //             style: TextStyle(
+                                  //                 color: Colors.red,
+                                  //                 fontWeight:
+                                  //                     FontWeight.bold),
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // );
+                                  // },
                                   child: CoverContainer(
                                     children: [
                                       // address("Appointment ID", appontment.name),

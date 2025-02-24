@@ -50,7 +50,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
   Widget build(BuildContext context) {
     var addressState = ref.watch(addressesProvider);
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      // backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
         leading: InkWell(
           child: Container(
@@ -141,7 +141,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(15),
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xfff4f4f4),
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15)),
                   ),
@@ -209,13 +209,26 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                             backgroundColor: Colors.white, // Green
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: BorderSide(color: Colors.grey)),
+                                borderRadius: BorderRadius.circular(0),
+                                // side: BorderSide(color: Colors.grey)
+                            ),
                           ),
                           onPressed: _getCurrentLocation,
-                          child: const Text(
-                            "Select your current location",
-                            style: TextStyle(color: Colors.black54),
+                          child: Row(
+                            children: [
+                              Container(padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+
+                                border: Border.all(color: primarySwatch),
+                                shape: BoxShape.circle
+                              ),
+                                  child: const Icon(Icons.my_location_rounded,color: primarySwatch,)),
+                              const SizedBox(width: 20,),
+                              const Text(
+                                "Use your current location",
+                                style: TextStyle(color: primarySwatch),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -235,14 +248,17 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                             : 'Select Address On map',
                         decoration: InputDecoration(
                           hintText: "Select Address on map",
-                          suffixIcon: Container(
-                              margin: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: primarySwatch,
-                              ),
-                              child: const Icon(Icons.location_pin,
-                                  color: Colors.white)),
+                          prefixIcon:
+                          // Container(width: 40,
+                          //     margin: const EdgeInsets.symmetric(vertical: 6,horizontal: 14),
+                          //     decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(5),
+                          //       color: primarySwatch,
+                          //     ),
+                          //     child:
+                              const Icon(Icons.location_pin,
+                                  color: primarySwatch,size: 30,),
+                          // ),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(

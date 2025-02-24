@@ -39,66 +39,59 @@ class _AgeScreenState extends State<AgeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // const SizedBox(height: 30),
           const Spacer(),
 
           GestureDetector(
             onHorizontalDragUpdate: (details) {
               setState(() {
-                if (details.delta.dx > 0) {
-                  // Swiping right (increment age)
-                  if (_selectedAge < 120) {
-                    _selectedAge++;
-                  }
-                } else if (details.delta.dx < 0) {
-                  // Swiping left (decrement age)
-                  if (_selectedAge > 1) {
-                    _selectedAge--;
-                  }
+                if (details.delta.dx > 0 && _selectedAge < 120) {
+                  _selectedAge++; // Swiping right to increase age
+                } else if (details.delta.dx < 0 && _selectedAge > 1) {
+                  _selectedAge--; // Swiping left to decrease age
                 }
               });
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  (_selectedAge > 1 ? _selectedAge - 1 : '').toString(),
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _selectedAge.toString(),
-                    style: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.remove_circle_outline, size: 30),
+                  onPressed: () {
+                    setState(() {
+                      if (_selectedAge > 1) _selectedAge--;
+                    });
+                  },
                 ),
                 const SizedBox(width: 20),
                 Text(
-                  (_selectedAge < 120 ? _selectedAge + 1 : '').toString(),
+                  _selectedAge.toString(),
                   style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.grey,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
+                ),
+                const SizedBox(width: 20),
+                IconButton(
+                  icon: const Icon(Icons.add_circle_outline, size: 30),
+                  onPressed: () {
+                    setState(() {
+                      if (_selectedAge < 120) _selectedAge++;
+                    });
+                  },
                 ),
               ],
             ),
           ),
+
           const Text(
             "YEARS OLD",
             style: TextStyle(
-              // fontSize: 16,
               color: Colors.grey,
             ),
           ),
           const Spacer(),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ElevatedButton(
@@ -113,8 +106,6 @@ class _AgeScreenState extends State<AgeScreen> {
                 var userM = widget.user;
                 userM.age = _selectedAge;
                 context.push('/gender', extra: userM);
-                // Handle the "Next" button press
-                // print('Selected Age: $_selectedAge');
               },
               child: const Text(
                 "NEXT",
