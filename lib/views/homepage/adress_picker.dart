@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -47,19 +48,26 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    var addressState = ref.watch(addressesProvider);
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
         leading: InkWell(
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
+          child: Container(
+            margin: EdgeInsets.all(5),
+            child: CircleAvatar(
+              backgroundColor: scaffold,
+              child: const Icon(
+                Icons.arrow_back_ios,
+                // color: Colors.white,
+              ),
+            ),
           ),
           onTap: () {
             context.pop();
           },
         ),
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         elevation: 0,
         title: TextField(
             controller: searchController,
@@ -84,208 +92,298 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
             ),
             onSubmitted: (value) => _searchLocation(value)),
       ),
-      extendBodyBehindAppBar: true,
-      body: Column(
+      // extendBodyBehindAppBar: true,
+      body: Stack(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 1.3,
-            child: GoogleMap(
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(-1.94995, 30.05885), // Default location (Kigali)
-                zoom: 12,
-              ),
-              onMapCreated: (controller) => _mapController = controller,
-              onTap: (position) async {
-                // _getAddressDetails(position);
-                setState(() {
-                  selectedLocation = position;
-                });
-                await _getAddressFromCoordinates(position);
-              },
-              markers: selectedLocation != null
-                  ? {
-                      Marker(
-                        markerId: const MarkerId('selectedLocation'),
-                        position: selectedLocation!,
-                      ),
-                    }
-                  : {},
-            ),
-          ),
-          Expanded(
-              child: Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              decoration: const BoxDecoration(
+          Column(
+            children: [
+              Container(
+                width: double.maxFinite,
+                height: 50,
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                child: Center(
+                  child: Text(
+                    widget.address == null
+                        ? "Add Delivery Address"
+                        : "Update Address",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
               ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Expanded(
+                child: GoogleMap(
+                  initialCameraPosition: const CameraPosition(
+                    target:
+                        LatLng(-1.94995, 30.05885), // Default location (Kigali)
+                    zoom: 12,
+                  ),
+                  onMapCreated: (controller) => _mapController = controller,
+                  onTap: (position) async {
+                    // _getAddressDetails(position);
+                    setState(() {
+                      selectedLocation = position;
+                    });
+                    await _getAddressFromCoordinates(position);
+                  },
+                  markers: selectedLocation != null
+                      ? {
+                          Marker(
+                            markerId: const MarkerId('selectedLocation'),
+                            position: selectedLocation!,
+                          ),
+                        }
+                      : {},
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(15)),
+                  ),
+                  child: Column(
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedAddress = '';
-                          });
-                        },
-                        child: Text(
-                          "Clear",
-                          style: TextStyle(color: secondarTex),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     TextButton(
+                      //       onPressed: () {
+                      //         setState(() {
+                      //           selectedAddress = '';
+                      //         });
+                      //       },
+                      //       child: Text(
+                      //         "Clear",
+                      //         style: TextStyle(color: secondarTex),
+                      //       ),
+                      //     ),
+                      //     Text(
+                      //       widget.address == null
+                      //           ? "Add Delivery Address"
+                      //           : "Update Address",
+                      //       style: const TextStyle(
+                      //           fontWeight: FontWeight.bold, fontSize: 16),
+                      //     ),
+                      //     TextButton(
+                      //       onPressed: () {
+                      //         if (_formKey.currentState!.validate()) {
+                      //           if (widget.address == null) {
+                      //             var json = {
+                      //               "token": ref.watch(userProvider)!.user!.token,
+                      //               "street_number": "KG 41 Rd",
+                      //               "house_number": "20",
+                      //               "map_address": selectedAddress
+                      //             };
+                      //             ref
+                      //                 .read(addressesProvider.notifier)
+                      //                 .addAddress(context, json, ref);
+                      //           } else if (widget.address != null) {
+                      //             var jsonUpdate = {
+                      //               "token": ref.watch(userProvider)!.user!.token,
+                      //               "address_id": widget.address!.addressId,
+                      //               "street_number": "KG 41 Rd",
+                      //               "house_number": "20",
+                      //               "map_address": selectedAddress
+                      //             };
+                      //             ref
+                      //                 .read(addressesProvider.notifier)
+                      //                 .updateAddress(context, jsonUpdate, ref);
+                      //           }
+                      //         }
+                      //       },
+                      //       child: Text(
+                      //         widget.address == null ? "Save" : "Update",
+                      //         style: const TextStyle(color: primarySwatch),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white, // Green
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Colors.grey)),
+                          ),
+                          onPressed: _getCurrentLocation,
+                          child: const Text(
+                            "Select your current location",
+                            style: TextStyle(color: Colors.black54),
+                          ),
                         ),
                       ),
-                      Text(
-                        widget.address == null
-                            ? "Add Delivery Address"
-                            : "Update Address",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Divider(
+                          thickness: 0.3,
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (widget.address == null) {
-                              var json = {
-                                "token": ref.watch(userProvider)!.user!.token,
-                                "street_number": "KG 41 Rd",
-                                "house_number": "20",
-                                "map_address": selectedAddress
-                              };
-                              ref
-                                  .read(addressesProvider.notifier)
-                                  .addAddress(context, json, ref);
-                            } else if (widget.address != null) {
-                              var jsonUpdate = {
-                                "token": ref.watch(userProvider)!.user!.token,
-                                "address_id": widget.address!.addressId,
-                                "street_number": "KG 41 Rd",
-                                "house_number": "20",
-                                "map_address": selectedAddress
-                              };
-                              ref
-                                  .read(addressesProvider.notifier)
-                                  .updateAddress(context, jsonUpdate, ref);
+                      TextFormField(
+                        readOnly: true,
+                        controller:
+                            TextEditingController(text: selectedAddress),
+                        validator: (s) => s?.trim().isNotEmpty == true
+                            ? null
+                            : 'Select Address On map',
+                        decoration: InputDecoration(
+                          hintText: "Select Address on map",
+                          suffixIcon: Container(
+                              margin: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: primarySwatch,
+                              ),
+                              child: const Icon(Icons.location_pin,
+                                  color: Colors.white)),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primarySwatch, // Green
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (widget.address == null) {
+                                var json = {
+                                  "token": ref.watch(userProvider)!.user!.token,
+                                  "street_number": "KG 41 Rd",
+                                  "house_number": "20",
+                                  "map_address": selectedAddress
+                                };
+                                ref
+                                    .read(addressesProvider.notifier)
+                                    .addAddress(context, json, ref);
+                              } else if (widget.address != null) {
+                                var jsonUpdate = {
+                                  "token": ref.watch(userProvider)!.user!.token,
+                                  "address_id": widget.address!.addressId,
+                                  "street_number": "KG 41 Rd",
+                                  "house_number": "20",
+                                  "map_address": selectedAddress
+                                };
+                                ref
+                                    .read(addressesProvider.notifier)
+                                    .updateAddress(context, jsonUpdate, ref);
+                              }
                             }
-                          }
-                        },
-                        child: Text(
-                          widget.address == null ? "Save" : "Update",
-                          style: const TextStyle(color: primarySwatch),
+                          },
+                          child: addressState!.isLoading
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  widget.address == null
+                                      ? "Save address"
+                                      : "Update Addres",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                         ),
                       ),
+
+                      // Row(
+                      //   children: [
+                      //     // const SizedBox(
+                      //     //   width: 20,
+                      //     // ),
+                      //     // Flexible(
+                      //     //   child: DropdownButtonFormField<String>(
+                      //     //     items: ['Time Slot 1', 'Time Slot 2', 'Time Slot 3']
+                      //     //         .map((slot) => DropdownMenuItem(
+                      //     //               value: slot,
+                      //     //               child: Text(slot),
+                      //     //             ))
+                      //     //         .toList(),
+                      //     //     onChanged: (value) {},
+                      //     //     decoration: InputDecoration(
+                      //     //       hintText: 'Name of Address',
+                      //     //       border: OutlineInputBorder(
+                      //     //         borderRadius: BorderRadius.circular(8),
+                      //     //       ),
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                      //   ],
+                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      // TextFormField(
+                      //   readOnly: true,
+                      //   controller: TextEditingController(text: selectedCode),
+                      //   decoration: InputDecoration(
+                      //     hintText: "Street code",
+                      //     filled: true,
+                      //     fillColor: Colors.white,
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(30),
+                      //       borderSide: BorderSide.none,
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // PhoneField(
+                      //   country: country,
+                      //   controller: phoneController,
+                      //   callback: (Country country) {
+                      //     setState(() {
+                      //       this.country = country;
+                      //     });
+                      //   },
+                      // ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     Radio<int>(
+                      //       value: 1,
+                      //       groupValue: _selectedValue,
+                      //       onChanged: (int? value) {
+                      //         setState(() {
+                      //           _selectedValue = value!;
+                      //         });
+                      //       },
+                      //     ),
+                      //     const Text(
+                      //       'Default Delivery Address',
+                      //       style: TextStyle(fontSize: 16.0),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      thickness: 0.3,
-                    ),
-                  ),
-                  TextFormField(
-                    readOnly: true,
-                    controller: TextEditingController(text: selectedAddress),
-                    validator: (s) => s?.trim().isNotEmpty == true
-                        ? null
-                        : 'Select Address On map',
-                    decoration: InputDecoration(
-                      hintText: "Select Address on map",
-                      suffixIcon: Container(
-                          margin: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: primarySwatch,
-                          ),
-                          child: const Icon(Icons.location_pin,
-                              color: Colors.white)),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-
-                  // Row(
-                  //   children: [
-                  //     // const SizedBox(
-                  //     //   width: 20,
-                  //     // ),
-                  //     // Flexible(
-                  //     //   child: DropdownButtonFormField<String>(
-                  //     //     items: ['Time Slot 1', 'Time Slot 2', 'Time Slot 3']
-                  //     //         .map((slot) => DropdownMenuItem(
-                  //     //               value: slot,
-                  //     //               child: Text(slot),
-                  //     //             ))
-                  //     //         .toList(),
-                  //     //     onChanged: (value) {},
-                  //     //     decoration: InputDecoration(
-                  //     //       hintText: 'Name of Address',
-                  //     //       border: OutlineInputBorder(
-                  //     //         borderRadius: BorderRadius.circular(8),
-                  //     //       ),
-                  //     //     ),
-                  //     //   ),
-                  //     // ),
-                  //   ],
-                  // ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // TextFormField(
-                  //   readOnly: true,
-                  //   controller: TextEditingController(text: selectedCode),
-                  //   decoration: InputDecoration(
-                  //     hintText: "Street code",
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(30),
-                  //       borderSide: BorderSide.none,
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // PhoneField(
-                  //   country: country,
-                  //   controller: phoneController,
-                  //   callback: (Country country) {
-                  //     setState(() {
-                  //       this.country = country;
-                  //     });
-                  //   },
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     Radio<int>(
-                  //       value: 1,
-                  //       groupValue: _selectedValue,
-                  //       onChanged: (int? value) {
-                  //         setState(() {
-                  //           _selectedValue = value!;
-                  //         });
-                  //       },
-                  //     ),
-                  //     const Text(
-                  //       'Default Delivery Address',
-                  //       style: TextStyle(fontSize: 16.0),
-                  //     ),
-                  //   ],
-                  // ),
-                ],
-              ),
-            ),
-          ))
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -426,5 +524,57 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+                Text('Location services are disabled. Please enable them.')),
+      );
+      return;
+    }
+
+    // Check for location permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location permissions are denied')),
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Location permissions are permanently denied, we cannot request permissions.')),
+      );
+      return;
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      selectedLocation = LatLng(position.latitude, position.longitude);
+    });
+
+    // Move the map to the new position
+    _mapController.animateCamera(
+      CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude)),
+    );
+
+    await _getAddressFromCoordinates(selectedLocation!);
   }
 }

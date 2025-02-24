@@ -61,10 +61,11 @@ class _MyOrderScreenState extends ConsumerState<MyOrderScreen>
           indicatorColor: Colors.green,
           tabs: const [
             Tab(text: "All"),
-            Tab(text: "Created"),
             Tab(text: "Pending"),
-            Tab(text: "Confirmed"),
+            Tab(text: "Preparing"),
             Tab(text: "Delivering"),
+            Tab(text: "Completed"),
+
           ],
         ),
       ),
@@ -74,10 +75,14 @@ class _MyOrderScreenState extends ConsumerState<MyOrderScreen>
               controller: _tabController,
               children: [
                 _buildOrderList(orders.orders, "All"),
-                _buildOrderList(orders.orders, "Created"),
                 _buildOrderList(orders.orders, "pending"),
-                _buildOrderList(orders.orders, "Confirmed"),
+                _buildOrderList(orders.orders, "preparing"),
                 _buildOrderList(orders.orders, "delivering"),
+                _buildOrderList(orders.orders, "completed"),
+                // "pending",
+                // "preparing",
+                // "delivering",
+                // "completed",
               ],
             ),
       bottomNavigationBar: SafeArea(

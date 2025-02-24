@@ -85,58 +85,56 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         // child:
                         // SingleChildScrollView(
                         //   scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: [
-                              const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          children: [
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Text('Pending'),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Text('Preparing'),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Text('Delivering'),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Text('Completed'),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Pending'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Preparing'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Delivering'),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Text('Completed'),
-                                  ),
+                                  for (int i = 0; i < statuses.length; i++) ...[
+                                    _buildStep(
+                                      statuses[i],
+                                      isCompleted(i),
+                                    ),
+                                    if (i != statuses.length - 1)
+                                      Container(
+                                        width: 55,
+                                        color: isCompleted(i + 1)
+                                            ? Colors.green
+                                            : Colors.grey[300],
+                                        height: 3,
+                                      ),
+                                  ],
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    for (int i = 0;
-                                        i < statuses.length;
-                                        i++) ...[
-                                      _buildStep(
-                                        statuses[i],
-                                        isCompleted(i),
-                                      ),
-                                      if (i != statuses.length - 1)
-                                        Container(
-                                          width: 55,
-                                          color: isCompleted(i + 1)
-                                              ? Colors.green
-                                              : Colors.grey[300],
-                                          height: 3,
-                                        ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
                         // ),
                       ),
                     ),
@@ -381,16 +379,16 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
 
   Widget _buildStep(String label, bool isCompleted) {
     return Container(
-      padding: const EdgeInsets.all(6),
+      padding:  EdgeInsets.all(isCompleted?6:12),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isCompleted ? Colors.green : Colors.grey[300],
       ),
-      child: Icon(
+      child:isCompleted? Icon(
         Icons.check,
         color: isCompleted ? Colors.white : Colors.grey,
         size: 16,
-      ),
+      ):null,
     );
   }
   // Widget _buildStep(String title, bool isActive) {

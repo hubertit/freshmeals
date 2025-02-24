@@ -86,7 +86,7 @@ class AdressesNotifier extends StateNotifier<AddressState> {
 
   Future<void> updateAddress(BuildContext context, json, WidgetRef ref) async {
     try {
-      // state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
 
       final response = await _dio.post(
         '$baseUrl/addresses/update',
