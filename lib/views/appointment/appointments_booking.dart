@@ -165,7 +165,11 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                       ),
                                       builder: (BuildContext context) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 30,top: 10),
+                                          padding: const EdgeInsets.only(
+                                              left: 20.0,
+                                              right: 20,
+                                              bottom: 30,
+                                              top: 10),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
@@ -175,7 +179,8 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                       onTap: () {
                                                         context.pop();
                                                       },
-                                                      child: const Icon(Icons.close)),
+                                                      child: const Icon(
+                                                          Icons.close)),
                                                   const SizedBox(
                                                     width: 20,
                                                   ),

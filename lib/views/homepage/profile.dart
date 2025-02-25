@@ -45,7 +45,7 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
-    // print(userState!.user!.token);
+    print(userState!.user!.token);
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(

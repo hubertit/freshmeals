@@ -149,15 +149,20 @@ class UserNotifier extends StateNotifier<UserState?> {
         data: {'token': token},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
-
+      print("------------------");
+      print(response.statusCode);
       if (response.statusCode == 200) {
         return;
-      } else {
-        // Token is invalid, log the user out
-        await logout(ref, context);
       }
     } on DioError catch (e) {
-      await logout(ref, context);
+      if(e.response!.statusCode == 401){
+        await logout(ref, context);
+      }
+      // print("------------------");
+      // print(e.response!.statusCode);
+      // return;
+
+      // await logout(ref, context);
     } finally {
       state = state!.copyWith(isLoading: false);
     }
