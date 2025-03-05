@@ -4,7 +4,7 @@ import '../../../theme/colors.dart';
 
 class IngredientItem extends StatelessWidget {
   final String itemTitle;
-  final String itemValue;
+  // final String itemValue;
   final bool isStatus;
   final bool isSmall;
   final Color? statusColor;
@@ -13,7 +13,7 @@ class IngredientItem extends StatelessWidget {
   const IngredientItem(
       {super.key,
         required this.itemTitle,
-        required this.itemValue,
+        // required this.itemValue,
         this.isStatus = false,
         this.isSmall = false,
         this.statusColor,
@@ -29,31 +29,31 @@ class IngredientItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 1),
               child: Text(
                 itemTitle,
-                style:  TextStyle(color: secondarTex,fontSize: 14,fontWeight: FontWeight.bold),
+                style:  TextStyle(fontSize: 14),
               ),
             ),
-            Expanded(child: Container()),
-            isStatus
-                ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-              decoration: BoxDecoration(
-                color: statusColor,
-                borderRadius: BorderRadius.circular(5),
-              )
-              ,
-              child: Text(
-                itemValue,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: Colors.white),
-              ),
-            )
-                : Text(
-              itemValue,
-              style: const TextStyle(
-                   ),
-            )
+            // Expanded(child: Container()),
+            // isStatus
+            //     ? Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+            //   decoration: BoxDecoration(
+            //     color: statusColor,
+            //     borderRadius: BorderRadius.circular(5),
+            //   )
+            //   ,
+            //   child: Text(
+            //     itemValue,
+            //     style: const TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 12,
+            //         color: Colors.white),
+            //   ),
+            // )
+            //     : Text(
+            //   itemValue,
+            //   style: const TextStyle(
+            //        ),
+            // )
           ],
         ),
         if (isLast == false)

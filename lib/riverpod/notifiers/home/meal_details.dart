@@ -11,7 +11,7 @@ class MealDetailsNotifier extends StateNotifier<MealDetailsState> {
 
   final Dio _dio = Dio();
 
-  Future<void> fetchMealDetails(BuildContext context, int mealId) async {
+  Future<void> fetchMealDetails(BuildContext context, String mealId) async {
     try {
       state = state.copyWith(isLoading: true);
 

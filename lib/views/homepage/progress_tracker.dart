@@ -98,7 +98,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     'Average Progress',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Stack(
                     children: [
                       CoverContainer(margin: 0,
@@ -143,10 +143,10 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                           right: 10,
                           child: Row(
                             children: [
-                              Text(
-                                '${calorisState.calorieData!.target}',
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
+                              // Text(
+                              //   '${calorisState.calorieData!.target}',
+                              //   style: TextStyle(fontWeight: FontWeight.w600),
+                              // ),
                               IconButton(
                                 onPressed: () {
                                   showModalBottomSheet(
@@ -246,7 +246,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                       children: [
                         const TextSpan(
                           text: 'Target: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: primarySwatch),
                         ),
                         TextSpan(
                           text: '${calorisState.calorieData!.target}',
@@ -254,20 +254,20 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Average Consumed: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: '${calorisState.calorieData!.averageConsumed}',
-                        ),
-                      ],
-                    ),
-                  ),
+                  // const SizedBox(height: 10),
+                  // Text.rich(
+                  //   TextSpan(
+                  //     children: [
+                  //       const TextSpan(
+                  //         text: 'Average Consumed: ',
+                  //         style: TextStyle(fontWeight: FontWeight.bold),
+                  //       ),
+                  //       TextSpan(
+                  //         text: '${calorisState.calorieData!.averageConsumed}',
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   const Text(
                     'Daily Entries',
@@ -303,7 +303,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                     '${entry.date}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
-                                  title: Text('${entry.calories} kcal'),
+                                  title: Text('${entry.calories} cal'),
                                   trailing: Text(
                                     '(${entry.percentage}%)',
                                     style: TextStyle(

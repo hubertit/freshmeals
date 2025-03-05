@@ -74,7 +74,7 @@ class User {
   final double? weight;
   final double? bmi;
   final String? activityLevel;
-  final List<int>? dietaryPreferences;
+  final List<String>? dietaryPreferences;
   final List<dynamic>? healthConditions;
   final List<dynamic>? healthGoal;
   final String? profilePicture;
@@ -122,7 +122,7 @@ class User {
       bmi: double.tryParse(json['bmi']?.toString() ?? ''),
       activityLevel: json['activity_level'],
       dietaryPreferences: (json['dietary_preferences'] as List<dynamic>?)
-          ?.map((e) => int.tryParse(e.toString()) ?? 0)
+          ?.map((e) => e.toString() ?? '')
           .toList(),
       healthConditions: json['health_conditions'],
       healthGoal: json['health_goal'],

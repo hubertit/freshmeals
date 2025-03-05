@@ -34,6 +34,31 @@ class RandomMealsNotifier extends StateNotifier<RandomMealsState?> {
       state = state!.copyWith(isLoading: false);
     }
   }
+  Future<void> mealByTypes(BuildContext context, type) async {
+    try {
+      state = state!.copyWith(isLoading: true);
+      final response = await _dio.get(
+        '${baseUrl}meals/type?type=${type}&limit=1',
+      );
+      // print(response.data['data']);
+      if (response.statusCode == 200) {
+        final List<dynamic> myList = response.data['data'];
+
+        state = RandomMealsState(
+          mealCategories: myList.map((json) => Meal.fromJson(json)).toList(),
+          isLoading: false,
+        );
+      } else {
+        throw Exception('Failed: ${response.statusMessage}');
+      }
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error: $e')),
+      // );
+    } finally {
+      state = state!.copyWith(isLoading: false);
+    }
+  }
 }
 
 class RandomMealsState {

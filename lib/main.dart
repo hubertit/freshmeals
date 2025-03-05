@@ -6,6 +6,8 @@ import 'routers/app_router.dart';
 import 'theme/colors.dart';
 
 void main() async {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));

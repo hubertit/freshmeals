@@ -82,7 +82,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     var mealType = types.mealCategories[index];
                     return _buildCategoryChip(mealType.name, mealType.imageUrl,
                         () {
-                      context.push('/lunch/${mealType.name}');
+                      context.push('/lunch',extra: mealType);
                     });
                   })),
                 ),

@@ -61,7 +61,7 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
       required double height,
       required double weight,
       String? activityLevel,
-      required List<int>? dietaryPreferences,
+      required List<String>? dietaryPreferences,
       required WidgetRef ref,
       required BuildContext context}) async {
     try {

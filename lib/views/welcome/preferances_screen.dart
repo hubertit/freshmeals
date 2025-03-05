@@ -66,81 +66,72 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        mainAxisExtent: 150.0,
-                      ),
+                    child: ListView.builder(
                       itemCount: preferences.preferances.length,
                       itemBuilder: (context, index) {
-                        PreferenceModel preference =
-                            preferences.preferances[index];
-                        bool isSelected = selPref
-                            .contains(preference.name);
+                        PreferenceModel preference = preferences.preferances[index];
+                        bool isSelected = selPref.contains(preference.name);
 
                         return GestureDetector(
                           onTap: () {
-                            // final selectedPreferences =
-                            // ref.read(selectedPreferenceProvider.notifier);
-                            //
-                            // if (selectedPreferences.state
-                            //     .contains(int.parse(preference.preferenceId))) {
-                            //   selectedPreferences
-                            //       .state = List.from(selectedPreferences.state)
-                            //     ..remove(int.parse(preference.preferenceId));
-                            //   setState(() {
-                            //     widget.user.dietaryPreferences = selectedPref;
-                            //   });
-                            // } else {
-                            //   selectedPreferences.state =
-                            //   List.from(selectedPreferences.state)
-                            //     ..add(int.parse(preference.preferenceId));
-                            //   setState(() {
-                            //     widget.user.dietaryPreferences = selectedPref;
-                            //   });
-                            // }
-
-                            if (selPref
-                                .contains(preference.name)) {
-
-                              setState(() {
-                                selPref = List.from(selPref)
-                                  ..remove(preference.name);                              });
-                            } else {
-
-                              setState(() {
-                                selPref =
-                                List.from(selPref)
-                                  ..add(preference.name);                              });
-                            }
+                            setState(() {
+                              if (selPref.contains(preference.name)) {
+                                selPref = List.from(selPref)..remove(preference.name);
+                              } else {
+                                selPref = List.from(selPref)..add(preference.name);
+                              }
+                            });
                           },
                           child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: isSelected
-                                  ? Border.all(
-                                      color: Colors.green,
-                                      width: 2,
-                                    )
-                                  : null,
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected ? Border.all(color: Colors.green, width: 2) : null,
                               color: Colors.white,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.network(
-                                  preference.imageUrl,
-                                  height: 70,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  blurRadius: 5,
+                                  spreadRadius: 2,
+                                  offset: const Offset(0, 2),
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  preference.name,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    preference.imageUrl,
+                                    height: 60,
+                                    width: 60,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        preference.name,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        preference.description ?? "No description available",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

@@ -10,7 +10,6 @@ import '../../models/user_model.dart';
 
 class SubscribeScreen extends ConsumerStatefulWidget {
   final UserModel? user;
-
   const SubscribeScreen({super.key, this.user});
 
   @override
@@ -18,7 +17,24 @@ class SubscribeScreen extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
-  final int _selectedGoalIndex = 0;
+  int? _selectedGoalIndex;
+  bool _isLoading = false;
+
+  void _showLoadingOverlay() {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -38,16 +54,15 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
   Widget build(BuildContext context) {
     var subscriptions = ref.watch(subscriptionsProvider);
     var user = ref.watch(userProvider);
+    var isFirsttim = ref.watch(firstTimeProvider);
     return Scaffold(
       backgroundColor: const Color(0xfff5f8fe),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Text(subscriptions!.isLoading
-            ? ""
-            : subscriptions.activeSubscription == null
-                ? "Extend Your Subscription"
-                : "Subscription Plan"),
+        title: Text(subscriptions!.activeSubscription == null
+            ? "Extend Your Subscription"
+            : "Subscription Plan"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
@@ -55,7 +70,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
           },
         ),
       ),
-      body: subscriptions!.isLoading
+      body: (subscriptions.isLoading || _isLoading)
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -75,44 +90,104 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                             color: Colors.black54),
                       ),
                       const SizedBox(height: 30),
-                      Expanded(
+                     isFirsttim? Expanded(
                         child: ListView.builder(
-                          itemCount: subscriptions.subscriptions.length,
+                          itemCount: subscriptions.subscriptions.length +
+                              1, // Add 1 for the static item
                           itemBuilder: (context, index) {
-                            final subscription =
-                                subscriptions.subscriptions[index];
-                            final isSelected = _selectedGoalIndex == index;
-
-                            return GestureDetector(
-                              onTap: () {
-                                ref
-                                    .read(subscriptionsProvider.notifier)
-                                    .subscribe(context, user!.user!.token,
-                                        subscription.planId);
-                                print(subscription.planId);
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 20),
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  // border: Border.all(
-                                  //   color:
-                                  //       isSelected ? Colors.green : Colors.grey.shade300,
-                                  //   width: 2,
-                                  // ),
+                            if (index == 0 ) {
+                              // Static First Item
+                              return GestureDetector(
+                                onTap: () => context.go('/home'),
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // You can change this color
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Free Plan",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            // Text(
+                                            //   "0 Rwf Per 0 Days",
+                                            //   style: TextStyle(
+                                            //     fontWeight: FontWeight.bold,
+                                            //     color: primarySwatch,
+                                            //     fontSize: 16,
+                                            //   ),
+                                            // ),
+                                            // SizedBox(height: 5),
+                                            Text(
+                                              "Enjoy limited features for free.",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                              );
+                            }
+
+                            // Adjust the index for subscriptions list
+                            final subscription =
+                                subscriptions.subscriptions[index - 1];
+                            final isSelected = _selectedGoalIndex == index - 1;
+
+                            return Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(subscriptionsProvider.notifier)
+                                        .subscribe(context, user!.user!.token,
+                                            subscription.planId);
+                                    setState(() {
+                                      _selectedGoalIndex = index - 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 20),
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? primarySwatch
+                                            : Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 subscription.name,
@@ -122,34 +197,144 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                                   color: Colors.black,
                                                 ),
                                               ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: primarySwatch,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                subscription.description,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primarySwatch,
-                                                fontSize: 16),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            subscription.description,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                if (_isLoading) ...[
+                                  Positioned.fill(
+                                    child: Container(
+                                      color: Colors.black.withOpacity(
+                                          0.5), // Semi-transparent background
+                                      child: const Center(
+                                        child: CircularProgressIndicator(),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                ]
+                              ],
                             );
                           },
                         ),
-                      ),
+                      ):Expanded(
+                       child: ListView.builder(
+                         itemCount: subscriptions.subscriptions.length,
+                         itemBuilder: (context, index) {
+                           final subscription =
+                           subscriptions.subscriptions[index];
+                           final isSelected = _selectedGoalIndex == index;
+
+                           return Stack(
+                             children: [
+                               GestureDetector(
+                                 onTap: () {
+                                   // _showLoadingOverlay();
+                                   // print(subscription.planId);
+                                   ref
+                                       .read(subscriptionsProvider.notifier)
+                                       .subscribe(context, user!.user!.token,
+                                       subscription.planId);
+                                   setState(() {
+                                     _selectedGoalIndex = index;
+                                   });
+                                   // if (isSelected) {
+                                   // }
+                                   // print(subscription.planId);
+                                 },
+                                 child: Container(
+                                   margin: const EdgeInsets.only(bottom: 20),
+                                   padding: const EdgeInsets.all(16),
+                                   decoration: BoxDecoration(
+                                     color: Colors.white,
+                                     borderRadius: BorderRadius.circular(12),
+                                     border: Border.all(
+                                       color:
+                                       isSelected ? primarySwatch : Colors.white,
+                                       width: 2,
+                                     ),
+                                   ),
+                                   child: Row(
+                                     children: [
+                                       Expanded(
+                                         child: Column(
+                                           crossAxisAlignment:
+                                           CrossAxisAlignment.start,
+                                           children: [
+                                             Row(
+                                               mainAxisAlignment:
+                                               MainAxisAlignment
+                                                   .spaceBetween,
+                                               children: [
+                                                 Text(
+                                                   subscription.name,
+                                                   style: const TextStyle(
+                                                     fontSize: 18,
+                                                     fontWeight:
+                                                     FontWeight.bold,
+                                                     color: Colors.black,
+                                                   ),
+                                                 ),
+                                               ],
+                                             ),
+                                             const SizedBox(height: 5),
+                                             Text(
+                                               "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
+                                               style: const TextStyle(
+                                                   fontWeight: FontWeight.bold,
+                                                   color: primarySwatch,
+                                                   fontSize: 16),
+                                             ),
+                                             const SizedBox(height: 5),
+                                             Text(
+                                               subscription.description,
+                                               style: const TextStyle(
+                                                 fontSize: 14,
+                                                 color: Colors.grey,
+                                               ),
+                                             ),
+                                           ],
+                                         ),
+                                       ),
+                                     ],
+                                   ),
+                                 ),
+                               ),
+                               if (_isLoading) ...[
+                                 Positioned.fill(
+                                   child: Container(
+                                     color: Colors.black.withOpacity(
+                                         0.5), // Semi-transparent background
+                                     child: const Center(
+                                       child: CircularProgressIndicator(),
+                                     ),
+                                   ),
+                                 ),
+                               ]
+                             ],
+                           );
+                         },
+                       ),
+                     ),
                       // ElevatedButton(
                       //   style: ElevatedButton.styleFrom(
                       //     backgroundColor: Colors.green,
@@ -233,7 +418,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                                   .read(subscriptionsProvider
                                                       .notifier)
                                                   .cancelSubscription(context,
-                                                      user!.user!.token,ref);
+                                                      user!.user!.token, ref);
                                             },
                                             child: const Text(
                                               'Yes',

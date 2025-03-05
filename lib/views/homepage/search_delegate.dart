@@ -132,7 +132,7 @@ Widget buildMealCard({
   String? saleText,
 }) {
   return InkWell(
-    onTap: () => context.push("/mealDetails/:${meal.mealId}"),
+    onTap: () => context.push("/mealDetails/${meal.mealId}"),
     child: Container(
       decoration: BoxDecoration(
         color: Colors.white,

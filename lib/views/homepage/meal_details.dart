@@ -31,13 +31,14 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
       print(widget.mealId);
       ref
           .read(mealDetailsDataProvider.notifier)
-          .fetchMealDetails(context, int.parse(id));
+          .fetchMealDetails(context, id);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+print(widget.mealId);
     var meal = ref.watch(mealDetailsDataProvider);
     var favorites = ref.watch(favoritesProvider);
     var user = ref.watch(userProvider);
@@ -295,44 +296,40 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //   margin: const EdgeInsets.all(10).copyWith(top: 20),
-                      //   padding: const EdgeInsets.all(10),
-                      //   decoration: const BoxDecoration(
-                      //     color: Colors.white,
-                      //     borderRadius:
-                      //         BorderRadius.vertical(top: Radius.circular(10)),
-                      //   ),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       const Text(
-                      //         'Ingredients',
-                      //         style: TextStyle(
-                      //           fontSize: 18,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //       ),
-                      //       const SizedBox(
-                      //         height: 10,
-                      //       ),
-                      //       Column(
-                      //           children: meal.mealsData!.ingredients.entries
-                      //               .map((entry) {
-                      //         final ingredientList =
-                      //             meal.mealsData!.ingredients.entries.toList();
-                      //         final isLastEntry = entry.key ==
-                      //             ingredientList[ingredientList.length - 1].key;
-                      //
-                      //         return IngredientItem(
-                      //           itemTitle: entry.key,
-                      //           itemValue: entry.value,
-                      //           isLast: isLastEntry,
-                      //         );
-                      //       }).toList()),
-                      //     ],
-                      //   ),
-                      // ),
+                      Container(
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Ingredients',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: meal.mealsData!.ingredients.map((entry) {
+                                final ingredientList = meal.mealsData!.ingredients.toList();
+                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
+                                return IngredientItem(
+                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
+                                  isLast: isLastEntry,
+                                );
+                              }).toList(),
+                            )                      ],
+                        ),
+                      ),
                       // Container(
                       //   margin: const EdgeInsets.all(10).copyWith(top: 20),
                       //   padding: const EdgeInsets.all(10),

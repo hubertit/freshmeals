@@ -1,5 +1,3 @@
-import 'package:freshmeals/models/home/meal_model.dart';
-
 class MealDetailsModel {
   final String mealId;
   final String name;
@@ -12,12 +10,12 @@ class MealDetailsModel {
   final int sugar;
   final String sodium;
   final String minerals;
-  // final Map<String, String> ingredients;
+  final List<String> ingredients;
   final String imageUrl;
   final String price;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<String>?  allergens;
+  final List<String> allergens;
   final Map<String, ContentDetails> contents;
 
   MealDetailsModel({
@@ -32,18 +30,18 @@ class MealDetailsModel {
     required this.sugar,
     required this.sodium,
     required this.minerals,
-    // required this.ingredients,
+    required this.ingredients,
     required this.imageUrl,
     required this.price,
-     this.allergens,
     required this.createdAt,
     required this.updatedAt,
+    required this.allergens,
     required this.contents,
   });
 
   factory MealDetailsModel.fromJson(Map<String, dynamic> json) {
     return MealDetailsModel(
-      mealId: json['meal_id'].toString() ?? '',
+      mealId: json['meal_id'].toString(),
       name: json['name'] ?? '',
       description: json['description'] ?? '',
       calories: json['calories'] ?? '0',
@@ -52,16 +50,18 @@ class MealDetailsModel {
       fat: json['fat'] ?? 0,
       fiber: json['fiber'] ?? 0,
       sugar: json['sugar'] ?? 0,
-      sodium: json['sodium'] ?? '0',
+      sodium: json['sodium'] ?? '',
       minerals: json['minerals'] ?? '',
-      // ingredients: (json['ingredients'] as Map<String, dynamic>?)
-      //     ?.map((key, value) => MapEntry(key, value.toString())) ??
-      //     {},
+      ingredients: (json['ingredients'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList() ??
+          [],
       imageUrl: json['image_url'] ?? '',
       price: json['price'] ?? '0',
       allergens: (json['allergens'] as List<dynamic>?)
           ?.map((e) => e.toString())
-          .toList() ?? [],
+          .toList() ??
+          [],
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime(1970),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime(1970),
       contents: (json['contents'] as Map<String, dynamic>?)
@@ -72,7 +72,6 @@ class MealDetailsModel {
           {},
     );
   }
-
 }
 
 class ContentDetails {
@@ -86,7 +85,7 @@ class ContentDetails {
 
   factory ContentDetails.fromJson(Map<String, dynamic> json) {
     return ContentDetails(
-      amount: json['amount'] ?? '',
+      amount: json['amount'] ?? '0g',
       percentage: (json['percentage'] ?? 0).toDouble(),
     );
   }

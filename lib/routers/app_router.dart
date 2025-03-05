@@ -1,7 +1,7 @@
 import 'package:freshmeals/models/facebook_user.dart';
 import 'package:freshmeals/models/home/address_model.dart';
+import 'package:freshmeals/models/home/meal_type.dart';
 import 'package:freshmeals/views/appointment/appointments_booking.dart';
-import 'package:freshmeals/views/appointment/booking_screen.dart';
 import 'package:freshmeals/views/appointment/my_appointments.dart';
 import 'package:freshmeals/views/auth/facebook_login.dart';
 import 'package:freshmeals/views/homepage/account_info.dart';
@@ -42,7 +42,9 @@ import '../views/homepage/progress_tracker.dart';
 import '../views/splash/splash.dart';
 import '../views/welcome/weight_input.dart';
 
-final GoRouter router = GoRouter(routes: [
+final GoRouter router = GoRouter(
+
+    routes: [
   GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
   GoRoute(
     path: '/login',
@@ -142,14 +144,13 @@ final GoRouter router = GoRouter(routes: [
   //   path: '/lunch',
   //   builder: (context, state) => LunchPage(),
   // ),
+
   GoRoute(
-    path: '/lunch/:category',
-    builder: (context, state) {
-      // Retrieve the mealId from the route parameters
-      final category = state.pathParameters['category']!;
-      return LunchPage(category: category);
-    },
-  ),
+      path: '/lunch',
+      builder: (context, state) {
+        final mealType = state.extra as MealType;
+        return LunchPage(category: mealType);
+      }),
   GoRoute(
     path: '/productDetails',
     builder: (context, state) => ProductDetailPage(),

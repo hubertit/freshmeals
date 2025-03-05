@@ -4,13 +4,14 @@ import 'package:freshmeals/utls/styles.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
+import '../../models/home/meal_type.dart';
 import '../../riverpod/providers/home.dart';
 import '../../utls/callbacks.dart';
 import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 
 class LunchPage extends ConsumerStatefulWidget {
-  final String category;
+  final MealType category;
   const LunchPage({super.key, required this.category});
 
   @override
@@ -21,7 +22,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(randomMealsProvider.notifier).fetchMeals(context);
+      ref.read(randomMealsProvider.notifier).mealByTypes(context, widget.category.typeId);
     });
     super.initState();
   }
@@ -40,7 +41,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           },
         ),
         title: Text(
-          widget.category,
+          widget.category.name,
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,

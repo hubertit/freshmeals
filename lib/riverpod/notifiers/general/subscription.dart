@@ -56,29 +56,40 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
             'token': token,
             'plan_id': planId,
           },
+          options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          ),
         );
 
         if (response.statusCode == 200 && response.data['data'] != null) {
+
           Uri uri = Uri.parse(response.data['data']['payment_url']);
           print(uri);
           String? invoiceNumber = uri.queryParameters['invoiceNumber'];
 
           print(invoiceNumber);
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
 
+          // });
           launchUrl(uri);
 
-          context.go("/processing/${invoiceNumber}/true");
-// ScaffoldMessenger.of(context).showSnackBar(
+          if(invoiceNumber!=null){
+            context.go("/processing/${invoiceNumber}/true");
+          }
+          // ScaffoldMessenger.of(context).showSnackBar(
           //   const SnackBar(content: Text('Subscription successful!')),
           // );
         } else {
+
           print(response);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${response.data['message']}')),
           );
         }
-      } catch (e) {
-      } finally {
+      } catch (e) {}
+      finally {
         state = state!.copyWith(isLoading: false);
       }
     }
