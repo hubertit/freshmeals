@@ -5,14 +5,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
 import '../../models/home/meal_type.dart';
+import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/home.dart';
 import '../../utls/callbacks.dart';
 import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 
 class LunchPage extends ConsumerStatefulWidget {
-  final MealType category;
-  const LunchPage({super.key, required this.category});
+  final String typeId;
+  final String title;
+  const LunchPage({super.key, required this.typeId, required this.title});
 
   @override
   ConsumerState<LunchPage> createState() => _LunchPageState();
@@ -22,7 +24,10 @@ class _LunchPageState extends ConsumerState<LunchPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(randomMealsProvider.notifier).mealByTypes(context, widget.category.typeId);
+      var user = ref.watch(userProvider)!.user;
+      ref
+          .read(randomMealsProvider.notifier)
+          .mealByTypes(context, widget.typeId, user!.token);
     });
     super.initState();
   }
@@ -41,7 +46,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           },
         ),
         title: Text(
-          widget.category.name,
+          widget.title,
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -180,7 +185,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                   ),
                   // const SizedBox(height: 4),
                   Text(
-                    "For ${widget.category}",
+                    "For ${widget.title}",
                     style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Row(

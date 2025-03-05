@@ -34,11 +34,14 @@ class RandomMealsNotifier extends StateNotifier<RandomMealsState?> {
       state = state!.copyWith(isLoading: false);
     }
   }
-  Future<void> mealByTypes(BuildContext context, type) async {
+
+  Future<void> mealByTypes(BuildContext context, type, token) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.get(
-        '${baseUrl}meals/type?type=${type}&limit=1',
+        type == "0"
+            ? '${baseUrl}meals/recommended?token=$token'
+            : '${baseUrl}meals/type?type=$type&limit=1',
       );
       // print(response.data['data']);
       if (response.statusCode == 200) {

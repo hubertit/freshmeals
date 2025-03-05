@@ -26,7 +26,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       ref.read(mealTypesProvider.notifier).mealTypes(context);
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
       var user = ref.watch(userProvider)!.user;
-      ref.read(recommendedMealsProvider.notifier).subscriptions(context,user!.token );
+      ref
+          .read(recommendedMealsProvider.notifier)
+          .subscriptions(context, user!.token);
     });
     super.initState();
   }
@@ -82,7 +84,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     var mealType = types.mealCategories[index];
                     return _buildCategoryChip(mealType.name, mealType.imageUrl,
                         () {
-                      context.push('/lunch',extra: mealType);
+                      context.push('/lunch/${mealType.typeId}/${mealType.name}');
                     });
                   })),
                 ),
@@ -204,7 +206,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               ),
                             );
                           },
-                        )),
+                        ),
+                        '0'),
                     const SizedBox(height: 16),
                     // _buildMealSection(
                     //   "Recommended",
@@ -226,16 +229,16 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                       "Breakfast",
                       "Start your day with wholesome and nutritious meals",
                       List.generate(mealsHome.mealsData!.breakfast.length,
-                              (index) {
-                            var breakF = mealsHome.mealsData!.breakfast[index];
+                          (index) {
+                        var breakF = mealsHome.mealsData!.breakfast[index];
 
-                            return _buildMealCard(
-                                breakF.name,
-                                breakF.price,
-                                breakF.imageUrl,
-                                    () =>
-                                    context.push("/mealDetails/${breakF.mealId}"));
-                          }),
+                        return _buildMealCard(
+                            breakF.name,
+                            breakF.price,
+                            breakF.imageUrl,
+                            () =>
+                                context.push("/mealDetails/${breakF.mealId}"));
+                      }),"1"
                     ),
                     const SizedBox(height: 16),
                     _buildMealSection(
@@ -251,7 +254,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               breakF.imageUrl,
                               () => context
                                   .push("/mealDetails/${breakF.mealId}"));
-                        })),
+                        }),"4"),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Lunch",
@@ -265,8 +268,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               lunch.price,
                               lunch.imageUrl,
                               () =>
+
                                   context.push("/mealDetails/${lunch.mealId}"));
-                        })),
+                        }),"2"),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Dinner",
@@ -281,7 +285,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               dinner.imageUrl,
                               () => context
                                   .push("/mealDetails/${dinner.mealId}"));
-                        })),
+                        }),"3"),
                   ],
                 ),
               ),
@@ -319,7 +323,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     );
   }
 
-  Widget _buildSection(String title, List<Widget> cards) {
+  Widget _buildSection(String title, List<Widget> cards, String typeId) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -331,7 +335,10 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
-                  context.push("/lunch/${title}");
+                  context.push('/lunch/${typeId}/${title}');
+
+                  // context.push(
+                  //     "/lunch/extra: {'typeId': ${typeId}, 'title': ${title}}");
                 },
                 child: const Text("View All",
                     style: TextStyle(color: Colors.green))),
@@ -350,6 +357,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     String title,
     String subtitle,
     List<Widget> cards,
+      String typeId
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,7 +370,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
-                  context.push("/lunch/${title}");
+                  // context.push("/lunch/${title}");
+                  context.push('/lunch/${typeId}/${title}');
+
+                  // context.push(
+                  //     "/lunch/extra: {'typeId': , 'title': ${title}}");
                 },
                 child: const Text("View All",
                     style: TextStyle(color: Colors.green))),

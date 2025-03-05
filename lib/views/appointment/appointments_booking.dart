@@ -6,6 +6,7 @@ import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/views/appointment/widgets/booking_model.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../homepage/widgets/cover_container.dart';
 import 'widgets/datetime_piker.dart';
 import 'widgets/empty_widget.dart';
@@ -289,18 +290,25 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                 width: double.infinity,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    ref
-                                                        .read(
-                                                            appointmentsProvider
-                                                                .notifier)
-                                                        .bookAppointment(
-                                                            context,
-                                                            user!.user!.token,
-                                                            "$_eventDate",
-                                                            appontment
-                                                                .startTime,
-                                                            "${calculateDuration(appontment.startTime, appontment.endTime)}",
-                                                            ref);
+                                                    if (_meetingType ==
+                                                        "Online") {
+                                                      context.pop();
+                                                      launchUrl(Uri.parse(
+                                                          "https://freshmeals.rw/app/questionnaire"));
+                                                    } else {
+                                                      ref
+                                                          .read(
+                                                              appointmentsProvider
+                                                                  .notifier)
+                                                          .bookAppointment(
+                                                              context,
+                                                              user!.user!.token,
+                                                              "$_eventDate",
+                                                              appontment
+                                                                  .startTime,
+                                                              "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                                              ref);
+                                                    }
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(

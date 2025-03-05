@@ -42,9 +42,7 @@ import '../views/homepage/progress_tracker.dart';
 import '../views/splash/splash.dart';
 import '../views/welcome/weight_input.dart';
 
-final GoRouter router = GoRouter(
-
-    routes: [
+final GoRouter router = GoRouter(routes: [
   GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
   GoRoute(
     path: '/login',
@@ -146,11 +144,14 @@ final GoRouter router = GoRouter(
   // ),
 
   GoRoute(
-      path: '/lunch',
-      builder: (context, state) {
-        final mealType = state.extra as MealType;
-        return LunchPage(category: mealType);
-      }),
+    path: '/lunch/:typeId/:title',
+    builder: (context, state) {
+      final typeId = state.pathParameters['typeId'] ?? '0';
+      final title = state.pathParameters['title'] ?? 'Recommended';
+
+      return LunchPage(typeId: typeId, title: title);
+    },
+  ),
   GoRoute(
     path: '/productDetails',
     builder: (context, state) => ProductDetailPage(),

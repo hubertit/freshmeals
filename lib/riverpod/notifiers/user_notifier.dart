@@ -91,16 +91,47 @@ class UserNotifier extends StateNotifier<UserState?> {
       );
       print(response.data);
       if (response.statusCode == 201 && response.data['data'] != null) {
-        // User user = User.fromJson(response.data['data']);
-        // state = UserState(user: user, isLoading: false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registered successfully')),
-        );
+        // Convert response data to User model
         User user = User.fromJson(response.data['data']);
         state = UserState(user: user, isLoading: false);
-        print(response.data['data']);
+
+        // Save user data locally
         await saveUserToPreferences(user);
-        context.push('/subscribe');
+
+        // Show success dialog with options
+        showDialog(
+          context: context,
+          barrierDismissible:
+              false, // Prevents dismissing the dialog by tapping outside
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Select Your Meal Option'),
+              content: const Text(
+                  "Choose how you'd like to proceed with your meals."),
+              actions: [
+                Spacer(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog
+                    context.push('/home'); // Navigate to home
+                  },
+                  child: const Text('No Meal Plan'),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog
+                    context.push('/subscribe'); // Navigate to subscription
+                  },
+                  child: const Text('Meal Plan'),
+                ),
+                Spacer()
+              ],
+            );
+          },
+        );
       } else {
         throw Exception('${response.statusMessage}');
       }
@@ -155,7 +186,7 @@ class UserNotifier extends StateNotifier<UserState?> {
         return;
       }
     } on DioError catch (e) {
-      if(e.response!.statusCode == 401){
+      if (e.response!.statusCode == 401) {
         await logout(ref, context);
       }
       // print("------------------");
