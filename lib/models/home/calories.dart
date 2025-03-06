@@ -50,19 +50,19 @@ class CalorieData {
 
 class DailyEntry {
   final String? date;
-  final String? calories;
+  final String calories;
   final double? percentage;
 
   DailyEntry({
     this.date,
-    this.calories,
+    required this.calories,
     this.percentage,
   });
 
   factory DailyEntry.fromJson(Map<String, dynamic> json) {
     return DailyEntry(
       date: json['date'] as String?,
-      calories: json['calories'] as String?,
+      calories: json['calories']??'',
       percentage: CalorieData._toDouble(json['percentage']),
     );
   }
