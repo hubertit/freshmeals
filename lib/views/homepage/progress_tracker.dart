@@ -1,15 +1,13 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
-import '../../models/home/calories.dart';
+import 'package:go_router/go_router.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../appointment/widgets/empty_widget.dart';
+import '../auth/widgets/input_dec.dart';
 
 class CalorieTrackerPage extends ConsumerStatefulWidget {
   const CalorieTrackerPage({super.key});
@@ -28,8 +26,9 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var user = ref.watch(userProvider);
       if (user!.user != null) {
-        await ref.read(calorieProvider.notifier).fetchCalorieData(
-            context, user.user!.token);
+        await ref
+            .read(calorieProvider.notifier)
+            .fetchCalorieData(context, user.user!.token);
       }
     });
   }
@@ -45,6 +44,80 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
       appBar: AppBar(
         title: const Text('Calorie Tracker'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled:
+                    true, // Allows bottom sheet to go full height if needed
+                builder: (context) {
+                  final TextEditingController targetController =
+                      TextEditingController(
+                          text: calorisState.calorieData!.target?.toString() ??
+                              '');
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                      top: 16,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                                onTap: () => context.pop(),
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            const Text(
+                              'Set Calorie Target/day',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  var user = ref.watch(userProvider)!.user;
+                                  ref
+                                      .read(calorieProvider.notifier)
+                                      .setCalorieTarget(context, user!.token,
+                                          double.parse(targetController.text));
+                                },
+                                child: const Text(
+                                  "Set",
+                                  style: TextStyle(
+                                      color: primarySwatch,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ],
+                        ),
+                        const SizedBox(height: 25),
+                        TextFormField(
+                          controller: targetController,
+                          decoration: iDecoration(),
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 50),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            icon: const Icon(Icons.settings),
+          ),
+          const SizedBox(
+            width: 5,
+          )
+        ],
       ),
       body: calorisState.isLoading
           ? const Center(
@@ -55,9 +128,10 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(color: Colors.white,
+                  Container(
+                    color: Colors.white,
                     height: 300,
-                    padding: const EdgeInsets.only(top: 10,right: 10),
+                    padding: const EdgeInsets.only(top: 10, right: 10),
                     child: calorisState.calorieData?.dailyEntries == null ||
                             calorisState.calorieData!.dailyEntries!.isEmpty
                         ? const Center(child: Text("No data available"))
@@ -305,7 +379,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                               color: primarySwatch),
                         ),
                         TextSpan(
-                          text: '${calorisState.calorieData!.target}',
+                          text: '${calorisState.calorieData!.target} Kcal',
                         ),
                       ],
                     ),
@@ -361,7 +435,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                     '${entry.date}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
-                                  title: Text('${entry.calories} cal'),
+                                  title: Text('${entry.calories} Kcal'),
                                   trailing: Text(
                                     '(${entry.percentage}%)',
                                     style: TextStyle(
