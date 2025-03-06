@@ -307,7 +307,7 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                               appontment
                                                                   .startTime,
                                                               "${calculateDuration(appontment.startTime, appontment.endTime)}",
-                                                              ref);
+                                                              ref,_meetingType);
                                                     // }
                                                   },
                                                   style:

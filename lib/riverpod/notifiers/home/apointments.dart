@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/_api_utls.dart';
 import '../../../models/general/slots.dart';
@@ -44,7 +45,7 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
 
   // Book appointment method
   Future<void> bookAppointment(BuildContext context, String token, String date,
-      String timeSlot, String duration, WidgetRef ref) async {
+      String timeSlot, String duration, WidgetRef ref, String meetingType) async {
     try {
       // state = state.copyWith(isLoading: true);
       // Request body
@@ -66,6 +67,12 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );
+        if (meetingType ==
+            "Online") {
+          // context.pop();
+          launchUrl(Uri.parse(
+              "https://freshmeals.rw/app/questionnaire"));
+        }
         context.pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
