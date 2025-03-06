@@ -36,88 +36,103 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
   @override
   Widget build(BuildContext context) {
     var calorisState = ref.watch(calorieProvider);
-    _calorieSpots =
-        calorisState.calorieData!.dailyEntries!.asMap().entries.map((entry) {
-      return FlSpot(entry.key.toDouble(), double.parse(entry.value.calories));
-    }).toList();
+    if(calorisState.calorieData!=null){
+      setState(() {
+        _calorieSpots =
+            calorisState.calorieData!.dailyEntries!.asMap().entries.map((entry) {
+              return FlSpot(entry.key.toDouble(), double.parse(entry.value.calories));
+            }).toList();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calorie Tracker'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled:
-                    true, // Allows bottom sheet to go full height if needed
-                builder: (context) {
-                  final TextEditingController targetController =
-                      TextEditingController(
-                          text: calorisState.calorieData!.target?.toString() ??
-                              '');
+        actions: calorisState.calorieData != null
+            ? [
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled:
+                          true, // Allows bottom sheet to go full height if needed
+                      builder: (context) {
+                        final TextEditingController targetController =
+                            TextEditingController(
+                                text: calorisState.calorieData!.target
+                                        ?.toString() ??
+                                    '');
 
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                      top: 16,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                                onTap: () => context.pop(),
-                                child: const Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                            const Text(
-                              'Set Calorie Target/day',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            InkWell(
-                                onTap: () {
-                                  var user = ref.watch(userProvider)!.user;
-                                  ref
-                                      .read(calorieProvider.notifier)
-                                      .setCalorieTarget(context, user!.token,
-                                          double.parse(targetController.text));
-                                },
-                                child: const Text(
-                                  "Set",
-                                  style: TextStyle(
-                                      color: primarySwatch,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ],
-                        ),
-                        const SizedBox(height: 25),
-                        TextFormField(
-                          controller: targetController,
-                          decoration: iDecoration(),
-                          keyboardType: TextInputType.number,
-                        ),
-                        const SizedBox(height: 50),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            icon: const Icon(Icons.settings),
-          ),
-          const SizedBox(
-            width: 5,
-          )
-        ],
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            left: 16,
+                            right: 16,
+                            bottom:
+                                MediaQuery.of(context).viewInsets.bottom + 16,
+                            top: 16,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                      onTap: () => context.pop(),
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  const Text(
+                                    'Set Calorie Target/day',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        var user =
+                                            ref.watch(userProvider)!.user;
+                                        ref
+                                            .read(calorieProvider.notifier)
+                                            .setCalorieTarget(
+                                                context,
+                                                user!.token,
+                                                double.parse(
+                                                    targetController.text));
+                                      },
+                                      child: const Text(
+                                        "Set",
+                                        style: TextStyle(
+                                            color: primarySwatch,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                ],
+                              ),
+                              const SizedBox(height: 25),
+                              TextFormField(
+                                controller: targetController,
+                                decoration: iDecoration(),
+                                keyboardType: TextInputType.number,
+                              ),
+                              const SizedBox(height: 50),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.settings),
+                ),
+                const SizedBox(
+                  width: 5,
+                )
+              ]
+            : null,
       ),
       body: calorisState.isLoading
           ? const Center(
@@ -373,7 +388,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     TextSpan(
                       children: [
                         const TextSpan(
-                          text: 'Target: ',
+                          text: 'Daily Calorie Target: ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: primarySwatch),
@@ -400,7 +415,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                   // ),
                   const SizedBox(height: 20),
                   const Text(
-                    'Daily Entries',
+                    'Daily Calorie Entries',
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   calorisState.calorieData!.dailyEntries!.isEmpty

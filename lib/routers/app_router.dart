@@ -1,6 +1,5 @@
 import 'package:freshmeals/models/facebook_user.dart';
 import 'package:freshmeals/models/home/address_model.dart';
-import 'package:freshmeals/models/home/meal_type.dart';
 import 'package:freshmeals/views/appointment/appointments_booking.dart';
 import 'package:freshmeals/views/appointment/my_appointments.dart';
 import 'package:freshmeals/views/auth/facebook_login.dart';
@@ -38,7 +37,7 @@ import '../views/auth/register.dart';
 import '../views/auth/reset_password.dart';
 import '../views/homepage/my_order.dart';
 import '../views/homepage/my_order_details.dart';
-import '../views/homepage/progress_tracker.dart';
+import '../views/homepage/calorie_tracker.dart';
 import '../views/splash/splash.dart';
 import '../views/welcome/weight_input.dart';
 
