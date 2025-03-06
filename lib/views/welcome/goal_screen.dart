@@ -44,7 +44,7 @@ class _HealthGoalScreenState extends ConsumerState<HealthGoalScreen> {
           },
         ),
         title: const Text(
-          "Health Goal",
+          "What is your health Goal",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
