@@ -157,7 +157,7 @@ print(widget.mealId);
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "${meal.mealsData!.calories} Cal",
+                              "${meal.mealsData!.calories} Kcal",
                               style: const TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 16),
                             ),
@@ -235,67 +235,67 @@ print(widget.mealId);
                           ),
                         ),
 
-                      Container(
-                        margin: const EdgeInsets.all(10).copyWith(top: 20),
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
-
-                            // Nutrition Information
-                            const Text(
-                              'Nutrition Information',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Text(
-                              'Per serving',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(height: 20),
-
-                            // Nutrition Chart
-                            Center(
-                              child: SizedBox(
-                                height: 200,
-                                width: 200,
-                                child: CustomPaint(
-                                  painter: NutritionChartPainter(
-                                      meal.mealsData!.contents),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-
-                            // Nutrition Values
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:
-                                  meal.mealsData!.contents.entries.map((entry) {
-                                final contentName = entry.key;
-                                final contentDetails = entry.value;
-
-                                return _buildNutritionValue(
-                                  contentName,
-                                  '${contentDetails.percentage}%', // You can adjust to the right format if needed
-                                  contentDetails
-                                      .amount, // Assuming `amount` is the value in grams
-                                  _getColorForContent(contentName),
-                                );
-                              }).toList(),
-                            ),
-                            const SizedBox(height: 30),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   margin: const EdgeInsets.all(10).copyWith(top: 20),
+                      //   padding: const EdgeInsets.all(10),
+                      //   decoration: const BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius:
+                      //         BorderRadius.vertical(top: Radius.circular(10)),
+                      //   ),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       const SizedBox(height: 20),
+                      //
+                      //       // Nutrition Information
+                      //       const Text(
+                      //         'Nutrition Information',
+                      //         style: TextStyle(
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
+                      //       const Text(
+                      //         'Per serving',
+                      //         style: TextStyle(color: Colors.grey),
+                      //       ),
+                      //       const SizedBox(height: 20),
+                      //
+                      //       // Nutrition Chart
+                      //       Center(
+                      //         child: SizedBox(
+                      //           height: 200,
+                      //           width: 200,
+                      //           child: CustomPaint(
+                      //             painter: NutritionChartPainter(
+                      //                 meal.mealsData!.contents),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       const SizedBox(height: 20),
+                      //
+                      //       // Nutrition Values
+                      //       Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //         children:
+                      //             meal.mealsData!.contents.entries.map((entry) {
+                      //           final contentName = entry.key;
+                      //           final contentDetails = entry.value;
+                      //
+                      //           return _buildNutritionValue(
+                      //             contentName,
+                      //             '${contentDetails.percentage}%', // You can adjust to the right format if needed
+                      //             contentDetails
+                      //                 .amount, // Assuming `amount` is the value in grams
+                      //             _getColorForContent(contentName),
+                      //           );
+                      //         }).toList(),
+                      //       ),
+                      //       const SizedBox(height: 30),
+                      //     ],
+                      //   ),
+                      // ),
                       Container(
                         margin: const EdgeInsets.all(10).copyWith(top: 20),
                         padding: const EdgeInsets.all(10),
@@ -321,6 +321,7 @@ print(widget.mealId);
                               children: meal.mealsData!.ingredients.map((entry) {
                                 final ingredientList = meal.mealsData!.ingredients.toList();
                                 final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
 
                                 return IngredientItem(
                                   itemTitle: '\u25B8 $entry', // Unicode bullet point
