@@ -290,12 +290,12 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                 width: double.infinity,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    if (_meetingType ==
-                                                        "Online") {
-                                                      context.pop();
-                                                      launchUrl(Uri.parse(
-                                                          "https://freshmeals.rw/app/questionnaire"));
-                                                    } else {
+                                                    // if (_meetingType ==
+                                                    //     "Online") {
+                                                    //   context.pop();
+                                                    //   launchUrl(Uri.parse(
+                                                    //       "https://freshmeals.rw/app/questionnaire"));
+                                                    // } else {
                                                       ref
                                                           .read(
                                                               appointmentsProvider
@@ -308,7 +308,7 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                                   .startTime,
                                                               "${calculateDuration(appontment.startTime, appontment.endTime)}",
                                                               ref);
-                                                    }
+                                                    // }
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(

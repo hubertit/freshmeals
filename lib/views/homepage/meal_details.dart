@@ -207,7 +207,7 @@ print(widget.mealId);
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Wrap(
