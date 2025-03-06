@@ -127,6 +127,51 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     //           milliseconds: 500), // Half-second animation
                     //       autoPlayCurve: Curves.easeInOut, // Smooth transition
                     //     )),
+                    // Container(
+                    //   // height: 220,
+                    //   // width: MediaQuery.of(context).size.width / 1.7,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     color: Colors.white,
+                    //     boxShadow: const [],
+                    //   ),
+                    //   child: InkWell(
+                    //     onTap:()=> context.push(
+                    //         "/mealDetails/${mealsHome.mealsData!.featured.mealId}"),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         ClipRRect(
+                    //           borderRadius:
+                    //           const BorderRadius.vertical(top: Radius.circular(10)),
+                    //           child: Image.network(
+                    //             mealsHome.mealsData!.featured.imageUrl, fit: BoxFit.cover,
+                    //             width: double
+                    //                 .infinity, // Makes the image fill the container width
+                    //             height: 200, // Set a fixed height to ensure uniformity
+                    //           ),
+                    //         ),
+                    //         Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Text(trimm(25, mealsHome.mealsData!.featured.name),
+                    //                   style: const TextStyle(
+                    //                       fontWeight: FontWeight.w500, fontSize: 14)),
+                    //               const SizedBox(height: 5),
+                    //               Text("${formatMoney(mealsHome.mealsData!.featured.price)} Rwf ",
+                    //                   style: const TextStyle(
+                    //                       color: primarySwatch,
+                    //                       fontSize: 16,
+                    //                       fontWeight: FontWeight.bold)),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     InkWell(
                       onTap: () => context.push(
                           "/mealDetails/${mealsHome.mealsData!.featured.mealId}"),
@@ -142,6 +187,35 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               //     .mealCategories[index]
                               //     .imageUrl)
                             )),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            gradient: const LinearGradient(
+                              colors: [Colors.transparent, Colors.black54],
+                              begin: Alignment.center,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned(left: 10,bottom: 10,
+                                  child:Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(trimm(25, mealsHome.mealsData!.featured.name),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500, fontSize: 14,color: Colors.white)),
+                                  const SizedBox(height: 5),
+                                  Text("${formatMoney(mealsHome.mealsData!.featured.price)} Rwf ",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ))
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(
