@@ -103,11 +103,13 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(
-                                            item.mealName,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
+                                          Flexible(
+                                            child: Text(
+                                              item.mealName,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
                                           ),
                                         ],
                                       ),
