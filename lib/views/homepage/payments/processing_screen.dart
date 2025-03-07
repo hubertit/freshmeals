@@ -33,7 +33,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
             .read(countProvider.notifier)
             .fetchCount(context, user.user!.token);
       }
-      _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
+      _timer = Timer.periodic(const Duration(minutes: 5), (Timer timer) {
         _executionCount++; // Increment the execution count
         print(_executionCount);
 

@@ -56,7 +56,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
             height: 200,
           ),
           CustomEmptyWidget(
-              message: "There is no favorite items.")
+              message: "There are no favorite items")
         ],
       )
           : Column(

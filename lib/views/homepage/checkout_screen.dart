@@ -5,9 +5,11 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/utls/styles.dart';
 import 'package:freshmeals/views/appointment/widgets/empty_widget.dart';
+import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
 
 class CheckOutScreen extends ConsumerStatefulWidget {
@@ -26,6 +28,9 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
         await ref
             .read(defaultAddressProvider.notifier)
             .fetchDefaultAdress(user.user!.token);
+        await ref
+            .read(subscriptionsProvider.notifier)
+            .fetchActiveSubscription(context, user.user!.token);
       }
     });
     super.initState();
@@ -39,6 +44,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     var user = ref.watch(userProvider);
     var orderState = ref.watch(orderProvider);
     var summary = ref.watch(cartProvider);
+    var subscription = ref.watch(subscriptionsProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -292,13 +298,47 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                         ),
                         Text(
                           'Rwf ${formatMoney(summary.summary.totalPrice)}',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 16),
+              if (subscription!.activeSubscription != null)
+                Container( padding:  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    margin:   EdgeInsets.only(left: 0,right: 0,top: 0),
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      color: Color(0xff0d1e7dd),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Color(0xffbadbcc))
+                    ), child:
+                    Text.rich(
+                      // textAlign: TextAlign.center,
+                      TextSpan(
+                        text: "You have ",
+                        style: const TextStyle(fontSize: 14,
+                          // color: Color(0xf0f5132),
+                            // fontWeight: FontWeight.bold
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "${formatMoney(subscription.activeSubscription!.walletBalance)} RWF",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green, // Highlight balance
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                            " remaining on your subscription plan. Your order amount will be deducted from this balance, excluding the delivery fee.",
+                          ),
+                        ],
+                      ),
+                    ),
+                ),
               const SizedBox(height: 16),
               const Text(
                 'Comment',
@@ -345,16 +385,15 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     ),
                     child: orderState!.isLoading
                         ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
+                            color: Colors.white,
+                          )
                         : const Text(
-                      'Confirm Order',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
+                            'Confirm Order',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                   ),
                 ),
               ),
-
             ],
           ),
         ),
