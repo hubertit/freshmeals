@@ -60,7 +60,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text("Subscription Plan"),
+        title:  Text(subscriptions!.activeSubscription!=null?"Your Plan": "Subscription Plans"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
@@ -361,177 +361,150 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                 )
               : Column(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.1),
-                            blurRadius: 0,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Subscription Name & Status
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                subscriptions.activeSubscription!.name,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                    Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Color(0xffbadbcc), width: 1), // Border color & width
+
+                          borderRadius: BorderRadius.circular(12)),
+                      // borderOnForeground: true,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    subscriptions.activeSubscription!.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.w600),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
                                 ),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text(
-                                          'Cancel subscription',
-                                          // style: TextStyle(color: Colors.red),
-                                        ),
-                                        content: const Text(
-                                            'Are you sure you want to cancel your subscription?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () async {
-                                              ref
-                                                  .read(subscriptionsProvider
-                                                      .notifier)
-                                                  .cancelSubscription(context,
-                                                      user!.user!.token, ref);
-                                            },
-                                            child: const Text(
-                                              'Yes',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
+                                TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            'Cancel subscription',
+                                            // style: TextStyle(color: Colors.red),
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'No',
-                                              style: TextStyle(
-                                                  color: Colors.black),
+                                          content: const Text(
+                                              'Are you sure you want to cancel your subscription?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () async {
+                                                ref
+                                                    .read(subscriptionsProvider
+                                                        .notifier)
+                                                    .cancelSubscription(context,
+                                                        user!.user!.token, ref);
+                                              },
+                                              child: const Text(
+                                                'Yes',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                'No',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  style: TextButton.styleFrom(
+                                      foregroundColor: Colors.red),
+                                  child: const Text("Cancel"),
+                                ),
+                              ],
+                            ),
+                            // const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Text(
+                                  "${formatMoney(subscriptions.activeSubscription!.price)} RWF per ${subscriptions.activeSubscription!.duration} Days",
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.grey[600],
+                                    fontSize: 16,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Price & Duration
-                          Text(
-                            "${formatMoney(subscriptions.activeSubscription!.price)} RWF per ${subscriptions.activeSubscription!.duration} Days",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: primarySwatch,
-                              fontSize: 16,
+                              ],
                             ),
-                          ),
+                            const SizedBox(height: 5),
 
-                          const SizedBox(height: 5),
-
-                          // Subscription Description
-                          Text(
-                            subscriptions.activeSubscription!.description,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
+                            Text(
+                              subscriptions.activeSubscription!.description,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: Colors.grey.shade700),
                             ),
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // Subscription Start & End Dates
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Start: ${subscriptions.activeSubscription!.startDate}",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                            const SizedBox(height: 12),
+                            const Divider(),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Wallet Balance:",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: primarySwatch),
                                 ),
-                              ),
-                              Text(
-                                "End: ${subscriptions.activeSubscription!.endDate}",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                Text(
+                                  "${formatMoney(subscriptions.activeSubscription!.walletBalance)} RWF",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: primarySwatch),
                                 ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          // Cancel Subscription Button
-                          // SizedBox(
-                          //   width: double.infinity,
-                          //   child: ElevatedButton(
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: Colors.red,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(12),
-                          //       ),
-                          //       padding: const EdgeInsets.symmetric(vertical: 12),
-                          //     ),
-                          //     onPressed: () {
-                          //       ref
-                          //           .read(subscriptionsProvider.notifier)
-                          //           .cancelSubscription(context, user!.user!.token);
-                          //     },
-                          //     child: const Text(
-                          //       "Cancel Subscription",
-                          //       style: TextStyle(
-                          //         fontSize: 16,
-                          //         color: Colors.white,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    "Start: ${subscriptions.activeSubscription!.startDate}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.grey)),
+                                Text(
+                                    "End: ${subscriptions.activeSubscription!.endDate}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.grey)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
     );

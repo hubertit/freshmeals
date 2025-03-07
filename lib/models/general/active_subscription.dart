@@ -7,6 +7,7 @@ class ActiveSubscription {
   final String startDate;
   final String endDate;
   final String status;
+  final String walletBalance;
 
   ActiveSubscription({
     required this.subscriptionId,
@@ -17,6 +18,7 @@ class ActiveSubscription {
     required this.startDate,
     required this.endDate,
     required this.status,
+    required this.walletBalance
   });
 
   factory ActiveSubscription.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class ActiveSubscription {
       startDate: json['start_date'],
       endDate: json['end_date'],
       status: json['status'],
+      walletBalance: json['wallet_balance']
     );
   }
 }

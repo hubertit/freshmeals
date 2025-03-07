@@ -61,7 +61,7 @@ class _RiderScreenState extends ConsumerState<PaymentsScreen> {
                           SizedBox(
                             height: 200,
                           ),
-                          CustomEmptyWidget(message: "You have  no Payments.")
+                          CustomEmptyWidget(message: "You have no Payments.")
                         ],
                       )
                     : ListView.builder(
