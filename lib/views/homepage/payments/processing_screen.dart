@@ -33,11 +33,11 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
             .read(countProvider.notifier)
             .fetchCount(context, user.user!.token);
       }
-      _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
         _executionCount++; // Increment the execution count
         print(_executionCount);
 
-        if (_executionCount == 12) {
+        if (_executionCount == 36) {
           // Navigate to the "failed" page on the 15th execution
           _timer.cancel(); // Stop the timer to avoid further executions
           context.go("/failed");
