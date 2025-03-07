@@ -157,7 +157,7 @@ print(widget.mealId);
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "${meal.mealsData!.calories} Kcal",
+                              "${meal.mealsData!.calories} Cal",
                               style: const TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 16),
                             ),

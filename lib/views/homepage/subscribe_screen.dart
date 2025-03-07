@@ -280,21 +280,14 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    subscription.name,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
+                                              Text(
+                                                subscription.name,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                               const SizedBox(height: 5),
                                               Text(

@@ -37,12 +37,15 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
   @override
   Widget build(BuildContext context) {
     var calorisState = ref.watch(calorieProvider);
-    if(calorisState.calorieData!=null){
+    if (calorisState.calorieData != null) {
       setState(() {
-        _calorieSpots =
-            calorisState.calorieData!.dailyEntries!.asMap().entries.map((entry) {
-              return FlSpot(entry.key.toDouble(), double.parse(entry.value.calories));
-            }).toList();
+        _calorieSpots = calorisState.calorieData!.dailyEntries!
+            .asMap()
+            .entries
+            .map((entry) {
+          return FlSpot(
+              entry.key.toDouble(), double.parse(entry.value.calories));
+        }).toList();
       });
     }
 
@@ -140,7 +143,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
-            child: Padding(
+              child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,14 +157,50 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                           ? const Center(child: Text("No data available"))
                           : LineChart(
                               LineChartData(
-                                titlesData: const FlTitlesData(
-                                  rightTitles: AxisTitles(
-                                      sideTitles: SideTitles(showTitles: false)),
-                                  topTitles: AxisTitles(
+                                titlesData: FlTitlesData(
+                                  leftTitles: AxisTitles(
+                                    axisNameWidget: const Text(
+                                      'Calories',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    ),
                                     sideTitles: SideTitles(
-                                      showTitles: false, // Hide Dates (x-axis)
+                                      showTitles: true,
+                                      reservedSize: 40,
+                                      getTitlesWidget: (value, meta) {
+                                        return Text(value.toInt().toString(),
+                                            style:
+                                                const TextStyle(fontSize: 12));
+                                      },
                                     ),
                                   ),
+                                  bottomTitles: AxisTitles(
+                                    axisNameWidget: const Text(
+                                      'Period',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    ),
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      reservedSize: 40,
+                                      interval:
+                                          1, // Adjust based on time intervals
+                                      getTitlesWidget: (value, meta) {
+                                        return Text(
+                                          '${value.toInt()}',
+                                          style: const TextStyle(fontSize: 12),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  rightTitles: const AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                  topTitles: const AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
                                 ),
                                 gridData: const FlGridData(
                                     show: true, drawVerticalLine: true),
@@ -183,7 +222,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                     spots: _calorieSpots,
                                     isCurved: true,
                                     color: primarySwatch,
-                                    barWidth: 5,
+                                    barWidth: 2,
                                     belowBarData: BarAreaData(
                                       show: true,
                                       color: primarySwatch.withOpacity(0.3),
@@ -396,7 +435,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                 color: primarySwatch),
                           ),
                           TextSpan(
-                            text: '${calorisState.calorieData!.target} Kcal',
+                            text: '${calorisState.calorieData!.target} Cal',
                           ),
                         ],
                       ),
@@ -437,40 +476,40 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                             ],
                           )
                         : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount:
-                              calorisState.calorieData!.dailyEntries!.length,
-                          itemBuilder: (context, index) {
-                            final entry = calorisState
-                                .calorieData!.dailyEntries![index];
-                            // final entryPercentage =
-                            //     (entry['calories'] / targetCalories) * 100;
-                            return Card(
-                              margin: const EdgeInsets.symmetric(vertical: 5),
-                              child: ListTile(
-                                leading: Text(
-                                  '${entry.date}',
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                                title: Text('${entry.calories} Kcal'),
-                                trailing: Text(
-                                  '(${entry.percentage}%)',
-                                  style: TextStyle(
-                                    color: entry.percentage! > 100
-                                        ? Colors.red
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount:
+                                calorisState.calorieData!.dailyEntries!.length,
+                            itemBuilder: (context, index) {
+                              final entry = calorisState
+                                  .calorieData!.dailyEntries![index];
+                              // final entryPercentage =
+                              //     (entry['calories'] / targetCalories) * 100;
+                              return Card(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                child: ListTile(
+                                  leading: Text(
+                                    '${entry.date}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  title: Text('${entry.calories} Cal'),
+                                  trailing: Text(
+                                    '(${entry.percentage}%)',
+                                    style: TextStyle(
+                                      color: entry.percentage! > 100
+                                          ? Colors.red
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                              );
+                            },
+                          ),
                   ],
                 ),
               ),
-          ),
+            ),
     );
   }
 }
