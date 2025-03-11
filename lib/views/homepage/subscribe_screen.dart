@@ -60,7 +60,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title:  Text(subscriptions!.activeSubscription!=null?"Your Plan": "Subscription Plans"),
+        title: Text(subscriptions!.activeSubscription != null
+            ? "Your Plan"
+            : "Subscription Plans"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
@@ -284,8 +286,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                                 subscription.name,
                                                 style: const TextStyle(
                                                   fontSize: 18,
-                                                  fontWeight:
-                                                      FontWeight.bold,
+                                                  fontWeight: FontWeight.bold,
                                                   color: Colors.black,
                                                 ),
                                               ),
@@ -358,7 +359,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                       margin: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Color(0xffbadbcc), width: 1), // Border color & width
+                          side: const BorderSide(
+                              color: Color(0xffbadbcc),
+                              width: 1), // Border color & width
 
                           borderRadius: BorderRadius.circular(12)),
                       // borderOnForeground: true,
@@ -433,7 +436,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                               children: [
                                 Text(
                                   "${formatMoney(subscriptions.activeSubscription!.price)} RWF per ${subscriptions.activeSubscription!.duration} Days",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[600],
                                     fontSize: 16,
@@ -457,7 +460,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Wallet Balance:",
+                                  "Balance:",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium

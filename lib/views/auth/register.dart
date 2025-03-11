@@ -110,19 +110,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 : ElevatedButton(
                     style: StyleUtls.buttonStyle,
                     onPressed: () {
-                      // UserModel user = UserModel(
-                      //   names: namesController.text ?? "",
-                      //   phone: "+${country.phoneCode}${phoneController.text}" ?? "",
-                      //   email: emailController.text ?? "",
-                      //   password: passwordController.text ?? "",
-                      //   age: 0,
-                      //   gender: '',
-                      //   healthStatus: 'Good',
-                      //   height: 0,
-                      //   weight: 0,
-                      //   activityLevel: "Moderately Active",
-                      //   dietaryPreferences: [],
-                      // );
                       UserModel user = UserModel(
                           names: namesController.text ?? "",
                           phone:
@@ -142,9 +129,47 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           preExistingConditions: [],
                           healthyGoals: [],
                           foodAllergies: []);
+                      // Show success dialog with options
+
 
                       if (key.currentState!.validate()) {
-                        context.push("/goal", extra: user);
+                        showDialog(
+                          context: context,
+                          barrierDismissible:
+                          false, // Prevents dismissing by tapping outside
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Select Your Meal Option'),
+                              content: const Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Prevent unnecessary blank space
+                                children: [
+                                  Text(
+                                      "Choose how you'd like to proceed with your meals."),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    // Navigator.pop(context);
+                                    ref
+                                        .read(userProvider.notifier)
+                                        .register(context, ref, user.toJson(), false);
+                                  },
+                                  child: const Text('No Meal Plan'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    context.push("/goal", extra: user);
+                                  },
+                                  child: const Text('Meal Plan'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     },
                     child: const Text(

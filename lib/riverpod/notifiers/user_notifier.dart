@@ -75,8 +75,8 @@ class UserNotifier extends StateNotifier<UserState?> {
     }
   }
 
-  Future<void> register(
-      BuildContext context, WidgetRef ref, Map<String, dynamic> json) async {
+  Future<void> register(BuildContext context, WidgetRef ref,
+      Map<String, dynamic> json, bool hasPlan) async {
     try {
       state = state!.copyWith(isLoading: true);
       print(json);
@@ -98,40 +98,11 @@ class UserNotifier extends StateNotifier<UserState?> {
         // Save user data locally
         await saveUserToPreferences(user);
 
-        // Show success dialog with options
-        showDialog(
-          context: context,
-          barrierDismissible:
-              false, // Prevents dismissing the dialog by tapping outside
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Select Your Meal Option'),
-              content: const Text(
-                  "Choose how you'd like to proceed with your meals."),
-              actions: [
-                Spacer(),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close dialog
-                    context.push('/home'); // Navigate to home
-                  },
-                  child: const Text('No Meal Plan'),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close dialog
-                    context.push('/subscribe'); // Navigate to subscription
-                  },
-                  child: const Text('Meal Plan'),
-                ),
-                Spacer()
-              ],
-            );
-          },
-        );
+        if (hasPlan) {
+          context.push('/subscribe'); // Navigate to subscription
+        } else {
+          context.go("/newAddress");
+        }
       } else {
         throw Exception('${response.statusMessage}');
       }

@@ -160,10 +160,11 @@ class OderNotifier extends StateNotifier<OrderState> {
         '${baseUrl}payments/status?invoiceNumber=$invoiceNumber',
       );
       print(response);
+      print("-----d-d-d-d-d-d");
       if (response.statusCode == 200) {
         final data = response.data['invoiceDetails'];
-        final status = data['paymentStatus'];
-        if (status == "PAID") {
+        final String status = data['paymentStatus'];
+        if (status.toUpperCase() == "PAID") {
           // showDialog(
           //   context: context,
           //   builder: (context) {
@@ -175,7 +176,7 @@ class OderNotifier extends StateNotifier<OrderState> {
           } else {
             context.go("/success");
           }
-        } else if (status == "FAILED") {
+        } else if (status.toUpperCase() == "FAILED") {
           context.go("/failed");
         }
 

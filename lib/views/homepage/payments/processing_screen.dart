@@ -24,7 +24,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var user = ref.watch(userProvider);
+      var user = ref.read(userProvider); // Use ref.read instead of watch
       if (user!.user != null) {
         await ref
             .read(cartProvider.notifier)
@@ -32,27 +32,31 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
         await ref
             .read(countProvider.notifier)
             .fetchCount(context, user.user!.token);
-      }
-      _timer = Timer.periodic(const Duration(minutes: 5), (Timer timer) {
-        _executionCount++; // Increment the execution count
-        print(_executionCount);
 
-        if (_executionCount == 12) {
-          // Navigate to the "failed" page on the 15th execution
-          _timer.cancel(); // Stop the timer to avoid further executions
-          context.go("/failed");
-        } else {
-          // Perform other actions
+        _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+          _executionCount++;
+          print(_executionCount);
+
+          if (_executionCount == 90) {
+            _timer.cancel();
+            context.go("/failed");
+          }
+
           ref
               .read(orderProvider.notifier)
               .checkOrderStatus(context, widget.invoiceNo, widget.subscribing);
-        }
-      });
+        });
+      }
     });
 
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel(); // Ensure timer is cancelled when widget is removed
+    super.dispose();
+  }
   // nitState() {
   //   WidgetsBinding.instance.addPostFrameCallback((_) async {
   //     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
@@ -92,12 +96,6 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
   // }
 
   @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +103,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
       ),
       body: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height/3,),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 3,
+          ),
           const Center(
             child: CircularProgressIndicator(),
           ),
@@ -120,7 +120,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
               onPressed: () {
                 context.go('/');
               },
-              child:  const Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -132,8 +132,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
               ),
             ),
           ),
-          SizedBox(height: 50,)
-
+          const SizedBox(
+            height: 50,
+          )
         ],
       ),
     );

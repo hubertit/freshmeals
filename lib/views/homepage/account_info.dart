@@ -17,9 +17,11 @@ class AccountInfoScreen extends ConsumerStatefulWidget {
 
 class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  List<String> selectedPreferences = [];
-  List<String> preExistingConditions = [];
-  List<String> foodAllergies = [];
+  late List<String> selectedPreferences;
+  late List<dynamic> preExistingConditions;
+  late List<String> foodAllergies;
+  late List<String> selectedGoals;
+
   bool isOtherConditionChecked = false;
   bool isOtherAllergyChecked = false;
 
@@ -36,7 +38,8 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
   late TextEditingController heightController;
   late TextEditingController weightController;
   late TextEditingController activityLevelController;
-  final List<String> selectedGoals = [];
+  late TextEditingController calLimitController;
+  late TextEditingController targetWeightController;
   bool isOtherGoalChecked = false;
   final TextEditingController otherGoalController = TextEditingController();
   @override
@@ -51,6 +54,8 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     healthStatusController = TextEditingController();
     heightController = TextEditingController();
     weightController = TextEditingController();
+    activityLevelController = TextEditingController();
+    activityLevelController = TextEditingController();
     activityLevelController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -80,6 +85,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     heightController.dispose();
     weightController.dispose();
     activityLevelController.dispose();
+    calLimitController.dispose();
     super.dispose();
   }
 
@@ -92,18 +98,23 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     var preferencesState = prefeee!.preferances;
     // Initialize dietary preferences based on API data
     if (accountInfo != null) {
-      nameController.text = accountInfo.name;
-      emailController.text = accountInfo.email;
-      phoneController.text = accountInfo.phoneNumber;
-      ageController.text = accountInfo.age.toString();
-      _selectedGender = accountInfo.gender ?? 'Male';
-      healthStatusController.text = accountInfo.healthStatus ?? '';
-      heightController.text = accountInfo.height.toString();
-      weightController.text = accountInfo.weight.toString();
-      activityLevelController.text = accountInfo.activityLevel ?? '';
+     setState(() {
+       nameController.text = accountInfo.name;
+       emailController.text = accountInfo.email;
+       phoneController.text = accountInfo.phoneNumber;
+       ageController.text = accountInfo.age.toString();
+       _selectedGender = accountInfo.gender ?? 'Male';
+       healthStatusController.text = accountInfo.healthStatus ?? '';
+       heightController.text = accountInfo.height.toString();
+       weightController.text = accountInfo.weight.toString();
+       activityLevelController.text = accountInfo.activityLevel ?? '';
 
-      selectedPreferences = accountInfo.dietaryPreferences ?? [];
-      ;
+       selectedPreferences = accountInfo.dietaryPreferences ?? [];
+       selectedGoals = accountInfo.healthGoal??[];
+       preExistingConditions = accountInfo.preExistingConditions??[];
+       foodAllergies = accountInfo.foodAllergies??[];
+       selectedGoals = accountInfo.healthGoal??[];
+     });
       // });
       // print(accountInfo.toJson());
     }
@@ -156,9 +167,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                           });
                         },
                       ),
-                      const SizedBox(height: 10),
-                      _buildAccountItem(
-                          "Health Status", healthStatusController),
+                      // const SizedBox(height: 10),
+                      // _buildAccountItem(
+                      //     "Health Status", healthStatusController),
                       const SizedBox(height: 10),
                       _buildAccountItem("Height", heightController),
                       const SizedBox(height: 10),
@@ -179,9 +190,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                         margin: 0,
                         children: [
                           ...[
-                            "Weight loss",
+                            "Weight Loss",
                             "Weight gain",
-                            "Muscle building",
+                            "Muscle Gain",
                             "Improving overall health",
                             "Managing a medical condition",
                             "Improving athletic performance",
@@ -259,7 +270,6 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       ),
                       CoverContainer(margin: 0, children: [
                         ...[
-                          "None",
                           "Diabetes",
                           "Hypertension",
                           "Thyroid disease",
@@ -299,17 +309,17 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       ),
                       CoverContainer(margin: 0, children: [
                         ...[
-                          "None",
                           "Dairy",
                           "Eggs",
                           "Peanuts",
                           "Tree nuts",
                           "Shellfish",
                           "Fish",
+                          "Seafood",
                           "Gluten",
                           "Soy",
                           "Sesame",
-                          "Other"
+                          "Other",
                         ].map((allergy) => CheckboxListTile(
                           title: Text(allergy),
                           value: foodAllergies.contains(allergy),
@@ -373,6 +383,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       context: context,
                     );
               }
+
+              // ref.read(accountInfoProvider.notifier).updateProfile(token: user!.user!.token, name: nameController.text, email: emailController.text, phone: phoneController.text,  age: int.tryParse(ageController.text) ?? 0, gender: _selectedGender, healthGoal: healthGoal, height: double.tryParse(heightController.text) ?? 0.0, weight: double.tryParse(weightController.text) ?? 0.0, targetWeight: t, calLimit: calLimit, dietaryPreferences: selectedPreferences, preExistingConditions: preExistingConditions, healthConditions: accountInfo!.healthConditions, foodAllergies: foodAllergies, ref: ref, context: context);
+
             },
             child: const Text(
               "Update",

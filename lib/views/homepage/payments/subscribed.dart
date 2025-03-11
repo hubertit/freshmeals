@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
@@ -62,12 +61,15 @@ class _SubscribedScreenState extends ConsumerState<SubscribedScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
                 onPressed: () {
-                  var firstTime = ref.watch(firstTimeProvider);
-                  if (firstTime) {
-                    context.push('/newAddress');
+                  var isFirst = ref.watch(firstTimeProvider);
+
+                  if (isFirst) {
+                    context.go("/newAddress");
                   } else {
                     context.go('/');
                   }
+
+                  ref.read(firstTimeProvider.notifier).state = false;
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

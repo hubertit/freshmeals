@@ -307,37 +307,39 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               ),
               const SizedBox(height: 16),
               if (subscription!.activeSubscription != null)
-                Container( padding:  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    margin:   EdgeInsets.only(left: 0,right: 0,top: 0),
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  margin: EdgeInsets.only(left: 0, right: 0, top: 0),
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
                       color: Color(0xff0d1e7dd),
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Color(0xffbadbcc))
-                    ), child:
-                    Text.rich(
-                      // textAlign: TextAlign.center,
-                      TextSpan(
-                        text: "You have ",
-                        style: const TextStyle(fontSize: 14,
-                          // color: Color(0xf0f5132),
-                            // fontWeight: FontWeight.bold
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "${formatMoney(subscription.activeSubscription!.walletBalance)} RWF",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green, // Highlight balance
-                            ),
-                          ),
-                          TextSpan(
-                            text:
-                            " remaining on your subscription plan. Your order amount will be deducted from this balance, excluding the delivery fee.",
-                          ),
-                        ],
+                      border: Border.all(color: Color(0xffbadbcc))),
+                  child: Text.rich(
+                    // textAlign: TextAlign.center,
+                    TextSpan(
+                      text: "You have ",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        // color: Color(0xf0f5132),
+                        // fontWeight: FontWeight.bold
                       ),
+                      children: [
+                        TextSpan(
+                          text:
+                              "${formatMoney(subscription.activeSubscription!.walletBalance)} RWF",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green, // Highlight balance
+                          ),
+                        ),
+                        const TextSpan(
+                          text:
+                              " remaining on your subscription plan. Your order amount will be deducted from this balance, excluding the delivery fee.",
+                        ),
+                      ],
                     ),
+                  ),
                 ),
               const SizedBox(height: 16),
               const Text(

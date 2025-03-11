@@ -45,18 +45,6 @@ class _AdditionalInformationScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: targetWeightController,
-                decoration: iDecoration(hint: 'Target Weight (Optional)'),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: targetCaloriesController,
-                decoration:
-                    iDecoration(hint: 'Calories Target/Limit (Optional)'),
-                keyboardType: TextInputType.number,
-              ),
               const SizedBox(height: 16),
               const Text(
                 'Pre-existing Conditions',
@@ -64,7 +52,6 @@ class _AdditionalInformationScreenState
               ),
               CoverContainer(margin: 0, children: [
                 ...[
-                  "None",
                   "Diabetes",
                   "Hypertension",
                   "Thyroid disease",
@@ -104,7 +91,6 @@ class _AdditionalInformationScreenState
               ),
               CoverContainer(margin: 0, children: [
                 ...[
-                  "None",
                   "Dairy",
                   "Eggs",
                   "Peanuts",
@@ -141,6 +127,19 @@ class _AdditionalInformationScreenState
                     decoration: iDecoration(hint: 'Specify other allergy'),
                   ),
               ]),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: targetWeightController,
+                decoration: iDecoration(hint: 'Target Weight (Optional)'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: targetCaloriesController,
+                decoration:
+                    iDecoration(hint: 'Calories Target/Limit (Optional)'),
+                keyboardType: TextInputType.number,
+              ),
               const SizedBox(height: 16),
               SafeArea(
                 child: Container(
@@ -180,9 +179,8 @@ class _AdditionalInformationScreenState
                             widget.user.calLimit =
                                 int.tryParse(targetCaloriesController.text);
 
-                            ref
-                                .read(userProvider.notifier)
-                                .register(context, ref, widget.user.toJson());
+                            ref.read(userProvider.notifier).register(
+                                context, ref, widget.user.toJson(), true);
                             ref.read(firstTimeProvider.notifier).state = true;
                           },
                           child: user!.isLoading

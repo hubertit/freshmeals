@@ -90,11 +90,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
 
                             return GestureDetector(
                               onTap: () {
-                                ref
-                                    .read(subscriptionsProvider.notifier)
-                                    .subscribe(context, user!.user!.token,
-                                        subscription.planId);
-                                // print(subscription.planId);
+                                // ref
+                                //     .read(subscriptionsProvider.notifier)
+                                //     .subscribe(context, user!.user!.token,
+                                //         subscription.planId);
+                                // // print(subscription.planId);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 20),

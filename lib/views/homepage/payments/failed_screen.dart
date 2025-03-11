@@ -1,17 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/_assets.dart';
+import '../../../riverpod/providers/general.dart';
 
-class FailedScreen extends StatefulWidget {
+class FailedScreen extends ConsumerStatefulWidget {
   const FailedScreen({super.key});
 
   @override
-  State<FailedScreen> createState() => _FailedScreenState();
+  ConsumerState<FailedScreen> createState() => _FailedScreenState();
 }
 
-class _FailedScreenState extends State<FailedScreen> {
+class _FailedScreenState extends ConsumerState<FailedScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
@@ -20,6 +22,7 @@ class _FailedScreenState extends State<FailedScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title:  Text("Payment Failed".tr()),
@@ -59,7 +62,15 @@ class _FailedScreenState extends State<FailedScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
                 onPressed: () {
-                  context.go('/');
+                  var isFirst = ref.watch(firstTimeProvider);
+
+                  if(isFirst){
+                    context.go("/newAddress");
+                  }else {
+                    context.go('/');
+                  }
+
+                  ref.read(firstTimeProvider.notifier).state = false;
                 },
                 child:  const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

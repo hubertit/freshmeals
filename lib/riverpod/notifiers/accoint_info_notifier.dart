@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshmeals/models/user_model.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 import '../../../constants/_api_utls.dart';
 import '../../models/account_info.dart';
+import '../../models/user_model.dart';
 
 class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
   AccountInfoNotifier() : super(AccountInfoState.initial());
@@ -27,11 +27,11 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
       );
 
       if (response.statusCode == 200 && response.data['data'] != null) {
-        User user = User.fromJson(response.data['data']);
+        AccountInformationModel user = AccountInformationModel.fromJson(response.data['data']);
 
         state = AccountInfoState(accountInfo: user, isLoading: false);
         ref.read(userProvider.notifier).saveUserToPreferences(User(
-            userId: user.userId,
+            userId: int.parse(user.userId),
             name: user.name,
             email: user.email,
             phoneNumber: user.phoneNumber,
@@ -103,7 +103,7 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
 }
 
 class AccountInfoState {
-  final User? accountInfo;
+  final AccountInformationModel? accountInfo;
   final bool isLoading;
 
   AccountInfoState({this.accountInfo, required this.isLoading});
@@ -111,7 +111,7 @@ class AccountInfoState {
   factory AccountInfoState.initial() =>
       AccountInfoState(accountInfo: null, isLoading: false);
 
-  AccountInfoState copyWith({User? accountInfo, bool? isLoading}) {
+  AccountInfoState copyWith({AccountInformationModel? accountInfo, bool? isLoading}) {
     return AccountInfoState(
       accountInfo: accountInfo ?? this.accountInfo,
       isLoading: isLoading ?? this.isLoading,

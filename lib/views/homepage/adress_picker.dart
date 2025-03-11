@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/address_model.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
@@ -34,6 +35,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
   final TextEditingController searchController = TextEditingController();
   final GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: mapKy);
   final GoogleMapsGeocoding _geocoding = GoogleMapsGeocoding(apiKey: mapKy);
+
   @override
   void initState() {
     country = CountryService().findByCode("RW")!;
@@ -42,6 +44,10 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
         selectedAddress = widget.address!.mapAddress;
       });
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(firstTimeProvider.notifier).state = false;
+    });
+
     super.initState();
   }
 
@@ -54,7 +60,7 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
       appBar: AppBar(
         leading: InkWell(
           child: Container(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             child: CircleAvatar(
               backgroundColor: scaffold,
               child: const Icon(
@@ -209,21 +215,25 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                             backgroundColor: Colors.white, // Green
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                // side: BorderSide(color: Colors.grey)
+                              borderRadius: BorderRadius.circular(0),
+                              // side: BorderSide(color: Colors.grey)
                             ),
                           ),
                           onPressed: _getCurrentLocation,
                           child: Row(
                             children: [
-                              Container(padding: EdgeInsets.all(5),
+                              Container(
+                                  padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-
-                                border: Border.all(color: primarySwatch),
-                                shape: BoxShape.circle
+                                      border: Border.all(color: primarySwatch),
+                                      shape: BoxShape.circle),
+                                  child: const Icon(
+                                    Icons.my_location_rounded,
+                                    color: primarySwatch,
+                                  )),
+                              const SizedBox(
+                                width: 20,
                               ),
-                                  child: const Icon(Icons.my_location_rounded,color: primarySwatch,)),
-                              const SizedBox(width: 20,),
                               const Text(
                                 "Use your current location",
                                 style: TextStyle(color: primarySwatch),
@@ -249,15 +259,18 @@ class _AddressPickerScreenState extends ConsumerState<AddressPickerScreen> {
                         decoration: InputDecoration(
                           hintText: "Select Address on map",
                           prefixIcon:
-                          // Container(width: 40,
-                          //     margin: const EdgeInsets.symmetric(vertical: 6,horizontal: 14),
-                          //     decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(5),
-                          //       color: primarySwatch,
-                          //     ),
-                          //     child:
-                              const Icon(Icons.location_pin,
-                                  color: primarySwatch,size: 30,),
+                              // Container(width: 40,
+                              //     margin: const EdgeInsets.symmetric(vertical: 6,horizontal: 14),
+                              //     decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(5),
+                              //       color: primarySwatch,
+                              //     ),
+                              //     child:
+                              const Icon(
+                            Icons.location_pin,
+                            color: primarySwatch,
+                            size: 30,
+                          ),
                           // ),
                           filled: true,
                           fillColor: Colors.white,

@@ -1,7 +1,7 @@
 class CalorieData {
   final int code;
   final String status;
-  final String? target;
+  final String target;
   final String? averageConsumed;
   final double? averageProgress;
   final List<DailyEntry>? dailyEntries;
@@ -9,7 +9,7 @@ class CalorieData {
   CalorieData({
     required this.code,
     required this.status,
-    this.target,
+    required this.target,
     this.averageConsumed,
     this.averageProgress,
     this.dailyEntries,
@@ -19,7 +19,7 @@ class CalorieData {
     return CalorieData(
       code: json['code'] as int,
       status: json['status'] as String,
-      target: json['target'] as String?,
+      target: json['target'] ?? "0",
       averageConsumed: json['average_consumed'] as String?,
       averageProgress: _toDouble(json['average_progress']),
       dailyEntries: (json['daily_entries'] as List<dynamic>?)
@@ -49,24 +49,26 @@ class CalorieData {
 }
 
 class DailyEntry {
-  final String? date;
+  final String date;
   final String calories;
   final double? percentage;
 
   DailyEntry({
-    this.date,
+    required this.date,
     required this.calories,
     this.percentage,
   });
 
   factory DailyEntry.fromJson(Map<String, dynamic> json) {
     return DailyEntry(
-      date: json['date'] as String?,
+      date: json['date']??"2025-03-06",
       calories: json['calories']??'',
       percentage: CalorieData._toDouble(json['percentage']),
     );
   }
-
+  factory DailyEntry.empty() {
+    return DailyEntry(date: '', calories: '0', percentage: 0.0);
+  }
   Map<String, dynamic> toJson() {
     return {
       'date': date,

@@ -44,7 +44,7 @@ class _HealthGoalScreenState extends ConsumerState<HealthGoalScreen> {
           },
         ),
         title: const Text(
-          "What is your health Goal",
+          "What is your health Goal?",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -65,15 +65,15 @@ class _HealthGoalScreenState extends ConsumerState<HealthGoalScreen> {
           children: [
             const SizedBox(height: 20),
 
-            const Text(
-              "What is your health goal?",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 10),
+            // const Text(
+            //   "What is your health goal?",
+            //   style: TextStyle(
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // const SizedBox(height: 10),
             CoverContainer(
               margin: 0,
               children: [

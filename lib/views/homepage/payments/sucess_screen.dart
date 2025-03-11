@@ -1,18 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/_assets.dart';
 import '../../../theme/colors.dart';
 
-class SuccessScreen extends StatefulWidget {
+class SuccessScreen extends ConsumerStatefulWidget {
   const SuccessScreen({super.key});
 
   @override
-  State<SuccessScreen> createState() => _SuccessScreenState();
+  ConsumerState<SuccessScreen> createState() => _SuccessScreenState();
 }
 
-class _SuccessScreenState extends State<SuccessScreen> {
+class _SuccessScreenState extends ConsumerState<SuccessScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
@@ -21,6 +23,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isFirst = ref.watch(firstTimeProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

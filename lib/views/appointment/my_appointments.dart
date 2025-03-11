@@ -62,7 +62,7 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
                             height: 200,
                           ),
                           CustomEmptyWidget(
-                              message: "You have  no appointments.")
+                              message: "You have no appointments.")
                         ],
                       )
                     : ListView.builder(

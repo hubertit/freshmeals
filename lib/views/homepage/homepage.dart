@@ -8,6 +8,7 @@ import 'package:freshmeals/views/homepage/favorites_screen.dart';
 import 'package:freshmeals/views/homepage/meals.dart';
 import 'package:freshmeals/views/homepage/profile.dart';
 import 'package:freshmeals/views/homepage/search_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/general.dart';
@@ -29,6 +30,10 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var isFist = ref.watch(firstTimeProvider);
+      if(isFist){
+        context.go("/newAddress");
+      }
       ref.read(firstTimeProvider.notifier).state =false;
       var user = ref.watch(userProvider);
       if (user!.user != null) {

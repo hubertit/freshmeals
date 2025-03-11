@@ -45,9 +45,9 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
   /// Subscribe to a plan with the given token and plan ID.
   Future<void> subscribe(
       BuildContext context, String token, String planId) async {
-    if (planId == "4") {
-      context.go('/');
-    } else {
+    // if (planId == "4") {
+    //   context.go('/');
+    // } else {
       try {
         // state = state!.copyWith(isLoading: true);
         final response = await _dio.post(
@@ -92,7 +92,7 @@ class SubscriptionNotifier extends StateNotifier<SubscriptionState?> {
       finally {
         state = state!.copyWith(isLoading: false);
       }
-    }
+    // }
   }
 
   /// Fetch the active subscription
