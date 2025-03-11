@@ -195,51 +195,112 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                   alignment: BarChartAlignment.spaceAround,
                                   titlesData: FlTitlesData(
                                     rightTitles: const AxisTitles(
-                                        sideTitles:
-                                            SideTitles(showTitles: false)),
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
                                     topTitles: const AxisTitles(
-                                        sideTitles:
-                                            SideTitles(showTitles: false)),
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
                                     leftTitles: AxisTitles(
                                       axisNameSize: 30,
-                                      axisNameWidget: const Text('Calories',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10)),
+                                      axisNameWidget: const Text(
+                                        'Calories',
+                                        style: TextStyle(fontSize: 10),
+                                      ),
                                       sideTitles: SideTitles(
                                         showTitles: true,
-                                        // reservedSize: 50,
+                                        reservedSize:
+                                            40, // Ensures enough space for labels
                                         getTitlesWidget: (value, meta) {
-                                          return Text(
-                                            value.toInt().toString(),
-                                            style: const TextStyle(
-                                                fontSize:
-                                                    8), // Reduce the font size here
-                                          );
+                                          if (value == 1000 ||
+                                              value == 2000 ||
+                                              value == 3000) {
+                                            return Text(
+                                              value.toInt().toString(),
+                                              style: const TextStyle(
+                                                  fontSize:
+                                                      10), // Adjust size if needed
+                                            );
+                                          }
+                                          return const SizedBox.shrink();
                                         },
                                       ),
                                     ),
                                     bottomTitles: AxisTitles(
-                                      axisNameWidget: const Text(
-                                          'Days of the Week',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10)),
                                       sideTitles: SideTitles(
                                         showTitles: true,
                                         getTitlesWidget: (value, meta) {
-                                          return Text(weekDays[value.toInt()],
-                                              style: const TextStyle(
-                                                  fontSize: 8));
+                                          return Text(
+                                            weekDays[value.toInt()],
+                                            style: const TextStyle(fontSize: 8),
+                                          );
                                         },
                                       ),
                                     ),
                                   ),
                                   borderData: FlBorderData(show: false),
-                                  gridData: const FlGridData(show: false),
+                                  gridData: FlGridData(
+                                    drawVerticalLine: false,
+                                    horizontalInterval:
+                                        1000, // Ensures step increments of 1000
+                                  ),
                                   barGroups: barGroups,
+                                  minY: 0,
+                                  maxY:
+                                      3000, // Set max Y-axis to accommodate wider calorie values
                                 ),
                               ),
+                              // BarChart(
+                              //   BarChartData(
+                              //     alignment: BarChartAlignment.spaceAround,
+                              //     titlesData: FlTitlesData(
+                              //       rightTitles: const AxisTitles(
+                              //         sideTitles: SideTitles(showTitles: false),
+                              //       ),
+                              //       topTitles: const AxisTitles(
+                              //         sideTitles: SideTitles(showTitles: false),
+                              //       ),
+                              //       leftTitles: AxisTitles(
+                              //         axisNameSize: 30,
+                              //         axisNameWidget: const Text(
+                              //           'Calories',
+                              //           style: TextStyle(fontSize: 10),
+                              //         ),
+                              //         sideTitles: SideTitles(
+                              //           showTitles: true,
+                              //           reservedSize: 40, // Ensures enough space for labels
+                              //           getTitlesWidget: (value, meta) {
+                              //             // if (value == 1000 || value == 2000 || value == 3000 || value == 4000 || value == 5000) {
+                              //             return Text(
+                              //               formatMoney(value.toInt().toString()),
+                              //               style: const TextStyle(fontSize: 10), // Adjust size if needed
+                              //             );
+                              //             // }
+                              //             // return const SizedBox.shrink();
+                              //           },
+                              //         ),
+                              //       ),
+                              //       bottomTitles: AxisTitles(
+                              //         sideTitles: SideTitles(
+                              //           showTitles: true,
+                              //           getTitlesWidget: (value, meta) {
+                              //             return Text(
+                              //               weekDays[value.toInt()],
+                              //               style: const TextStyle(fontSize: 8),
+                              //             );
+                              //           },
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     borderData: FlBorderData(show: false),
+                              //     gridData: FlGridData(
+                              //       drawVerticalLine: false,
+                              //       horizontalInterval: 1000, // Ensures step increments of 1000
+                              //     ),
+                              //     barGroups: barGroups,
+                              //     minY: 0,
+                              //     maxY: 30000, // Set max Y-axis to accommodate wider calorie values
+                              //   ),
+                              // )
                             ),
                     ),
                     const SizedBox(height: 10),

@@ -91,7 +91,7 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                   height: 200,
                                 ),
                                 CustomEmptyWidget(
-                                    message: "You have  no appointments.")
+                                    message: "You have no appointments.")
                               ],
                             )
                           : Column(
