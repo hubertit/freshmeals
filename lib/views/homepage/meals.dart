@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../constants/_assets.dart';
 import '../../riverpod/providers/home.dart';
 import 'search_delegate.dart';
+import 'widgets/choices_dialogue.dart';
 
 class MealsPage extends ConsumerStatefulWidget {
   const MealsPage({super.key});
@@ -41,40 +42,244 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     var recommendations = ref.watch(recommendedMealsProvider);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar:
+          // AppBar(
+          //   elevation: 0,
+          //   leadingWidth: 200,
+          //   // backgroundColor: primaryColor,
+          //   leading: Row(
+          //     children: [
+          //       const SizedBox(
+          //         width: 10,
+          //       ),
+          //       Container(
+          //         padding: const EdgeInsets.only(bottom: 10),
+          //         child: Image.asset(
+          //           AssetsUtils.logo2,
+          //           height: 50,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          //   actions: [
+          //     CircleAvatar(
+          //         radius: 18,
+          //         backgroundColor: scaffold,
+          //         // backgroundColor:
+          //         //     Theme.of(context).inputDecorationTheme.fillColor,
+          //         child:   GestureDetector(
+          //           onTap: () {
+          //
+          //             context.push('/myAppointments');
+          //           },
+          //           child: Padding(
+          //             padding: const EdgeInsets.all(9.0),
+          //             child: Image.asset(AssetsUtils.consult),
+          //           ),
+          //         )
+          //         // const Icon(
+          //         //   Icons.schedule,
+          //         //   color: Colors.black,
+          //         //   size: 20,
+          //         // )
+          //         ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     Material(
+          //       clipBehavior: Clip.antiAliasWithSaveLayer,
+          //       shape: RoundedRectangleBorder(
+          //           // side: const BorderSide(color: Color(0xffE3E7EC)),
+          //           borderRadius: BorderRadius.circular(1000)),
+          //       child: InkWell(
+          //         onTap: () {},
+          //         child: Container(
+          //             // color: Theme.of(context).inputDecorationTheme.fillColor,
+          //             color: scaffold,
+          //             height: 36,
+          //             width: 36,
+          //             child: const Center(
+          //               child: Stack(
+          //                 children: [
+          //                   Icon(
+          //                     Icons.notifications_none,
+          //                     size: 20,
+          //                     color: Colors.black,
+          //                   ),
+          //                   // Positioned(
+          //                   //     top: 0,
+          //                   //     right: 0,
+          //                   //     child: Container(
+          //                   //       decoration: BoxDecoration(
+          //                   //           color: _notifications > 0
+          //                   //               ? Colors.red
+          //                   //               : Colors.red,
+          //                   //           shape: BoxShape.circle),
+          //                   //       width: 10,
+          //                   //       height: 10,
+          //                   //     ))
+          //                 ],
+          //               ),
+          //             )),
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     InkWell(
+          //       onTap: () {
+          //         showSearch(
+          //           context: context,
+          //           delegate: OpportunitySearchDelegate(ref),
+          //         );
+          //       },
+          //       child: CircleAvatar(
+          //           radius: 18,
+          //           backgroundColor: scaffold,
+          //           child: const Icon(
+          //             Icons.search,
+          //             color: Colors.black,
+          //             size: 20,
+          //           )),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //   ],
+          //   centerTitle: true,
+          // ),
+
+          AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: 100,
+        toolbarHeight: 110,
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: [
-              TextField(
-                readOnly: true,
-                onTap: () {
-                  showSearch(
-                    context: context,
-                    delegate: OpportunitySearchDelegate(ref),
-                  );
-                },
-                decoration: InputDecoration(
-                  hintText: "Find something...",
-                  suffixIcon: Container(
-                      margin: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: primarySwatch,
-                      ),
-                      child: const Icon(Icons.search, color: Colors.white)),
-                  filled: true,
-                  fillColor: Colors.transparent,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
+              Row(
+                children: [
+                  // const SizedBox(
+                  //   width: 10,
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Image.asset(
+                      AssetsUtils.logo2,
+                      height: 50,
+                    ),
                   ),
-                ),
+                  const Spacer(),
+                  CircleAvatar(
+                      radius: 18,
+                      backgroundColor: scaffold,
+                      // backgroundColor:
+                      //     Theme.of(context).inputDecorationTheme.fillColor,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push('/myAppointments');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: Image.asset(AssetsUtils.consult),
+                        ),
+                      )
+                      // const Icon(
+                      //   Icons.schedule,
+                      //   color: Colors.black,
+                      //   size: 20,
+                      // )
+                      ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Material(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                        // side: const BorderSide(color: Color(0xffE3E7EC)),
+                        borderRadius: BorderRadius.circular(1000)),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                          // color: Theme.of(context).inputDecorationTheme.fillColor,
+                          color: scaffold,
+                          height: 36,
+                          width: 36,
+                          child: const Center(
+                            child: Stack(
+                              children: [
+                                Icon(
+                                  Icons.notifications_none,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                // Positioned(
+                                //     top: 0,
+                                //     right: 0,
+                                //     child: Container(
+                                //       decoration: BoxDecoration(
+                                //           color: _notifications > 0
+                                //               ? Colors.red
+                                //               : Colors.red,
+                                //           shape: BoxShape.circle),
+                                //       width: 10,
+                                //       height: 10,
+                                //     ))
+                              ],
+                            ),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showSearch(
+                        context: context,
+                        delegate: OpportunitySearchDelegate(ref),
+                      );
+                    },
+                    child: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: scaffold,
+                        child: const Icon(
+                          Icons.search,
+                          color: Colors.black,
+                          size: 20,
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
+              // TextField(
+              //   readOnly: true,
+              //   onTap: () {
+              //     showSearch(
+              //       context: context,
+              //       delegate: OpportunitySearchDelegate(ref),
+              //     );
+              //   },
+              //   decoration: InputDecoration(
+              //     hintText: "Find something...",
+              //     suffixIcon: Container(
+              //         margin: const EdgeInsets.all(6),
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(5),
+              //           color: primarySwatch,
+              //         ),
+              //         child: const Icon(Icons.search, color: Colors.white)),
+              //     filled: true,
+              //     fillColor: Colors.transparent,
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(30),
+              //       borderSide: BorderSide.none,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 10),
               if (types!.mealCategories.isNotEmpty)
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -84,10 +289,13 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     var mealType = types.mealCategories[index];
                     return _buildCategoryChip(mealType.name, mealType.imageUrl,
                         () {
-                      context.push('/lunch/${mealType.typeId}/${mealType.name}');
+                      context
+                          .push('/lunch/${mealType.typeId}/${mealType.name}');
                     });
                   })),
                 ),
+              const SizedBox(height: 10),
+
             ],
           ),
         ),
@@ -198,21 +406,31 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           ),
                           child: Stack(
                             children: [
-                              Positioned(left: 10,bottom: 10,
-                                  child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(trimm(25, mealsHome.mealsData!.featured.name),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w500, fontSize: 14,color: Colors.white)),
-                                  const SizedBox(height: 5),
-                                  Text("${formatMoney(mealsHome.mealsData!.featured.price)} Rwf ",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ))
+                              Positioned(
+                                  left: 10,
+                                  bottom: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          trimm(
+                                              25,
+                                              mealsHome
+                                                  .mealsData!.featured.name),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              color: Colors.white)),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                          "${formatMoney(mealsHome.mealsData!.featured.price)} Rwf ",
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ))
                             ],
                           ),
                         ),
@@ -221,68 +439,68 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    _buildSection(
-                        "Recommended",
-                        List.generate(
-                          recommendations.recomendations.length,
-                          (index) {
-                            var pick = recommendations.recomendations[index];
-                            return InkWell(
-                              onTap: () =>
-                                  context.push("/mealDetails/${pick.mealId}"),
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Container(
-                                  width: 140,
-                                  height: 210,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: const [],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  top: Radius.circular(10)),
-                                          child: Image.network(pick.imageUrl,
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(formatStringDigits(pick.name),
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14)),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                                "${formatMoney(pick.price)} Rwf ",
-                                                style: const TextStyle(
-                                                    color: primarySwatch,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        '0'),
-                    const SizedBox(height: 16),
+                    // _buildSection(
+                    //     "Recommended",
+                    //     List.generate(
+                    //       recommendations.recomendations.length,
+                    //       (index) {
+                    //         var pick = recommendations.recomendations[index];
+                    //         return InkWell(
+                    //           onTap: () =>
+                    //               context.push("/mealDetails/${pick.mealId}"),
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.only(right: 10.0),
+                    //             child: Container(
+                    //               width: 140,
+                    //               height: 210,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 color: Colors.white,
+                    //                 boxShadow: const [],
+                    //               ),
+                    //               child: Column(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.start,
+                    //                 children: [
+                    //                   Expanded(
+                    //                     child: ClipRRect(
+                    //                       borderRadius:
+                    //                           const BorderRadius.vertical(
+                    //                               top: Radius.circular(10)),
+                    //                       child: Image.network(pick.imageUrl,
+                    //                           fit: BoxFit.cover),
+                    //                     ),
+                    //                   ),
+                    //                   Padding(
+                    //                     padding: const EdgeInsets.all(8.0),
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment.start,
+                    //                       children: [
+                    //                         Text(formatStringDigits(pick.name),
+                    //                             style: const TextStyle(
+                    //                                 fontWeight: FontWeight.w500,
+                    //                                 fontSize: 14)),
+                    //                         const SizedBox(height: 5),
+                    //                         Text(
+                    //                             "${formatMoney(pick.price)} Rwf ",
+                    //                             style: const TextStyle(
+                    //                                 color: primarySwatch,
+                    //                                 fontSize: 16,
+                    //                                 fontWeight:
+                    //                                     FontWeight.bold)),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       },
+                    //     ),
+                    //     '0'),
+                    // const SizedBox(height: 16),
                     // _buildMealSection(
                     //   "Recommended",
                     //   "These are the meals recommended for you",
@@ -300,20 +518,20 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     // ),
                     // const SizedBox(height: 16),
                     _buildMealSection(
-                      "Breakfast",
-                      "Start your day with wholesome and nutritious meals",
-                      List.generate(mealsHome.mealsData!.breakfast.length,
-                          (index) {
-                        var breakF = mealsHome.mealsData!.breakfast[index];
+                        "Breakfast",
+                        "Start your day with wholesome and nutritious meals",
+                        List.generate(mealsHome.mealsData!.breakfast.length,
+                            (index) {
+                          var breakF = mealsHome.mealsData!.breakfast[index];
 
-                        return _buildMealCard(
-                            breakF.name,
-                            breakF.price,
-                            breakF.imageUrl,
-                            () =>
-                                context.push("/mealDetails/${breakF.mealId}"));
-                      }),"1"
-                    ),
+                          return _buildMealCard(
+                              breakF.name,
+                              breakF.price,
+                              breakF.imageUrl,
+                              () => context
+                                  .push("/mealDetails/${breakF.mealId}"));
+                        }),
+                        "1"),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Snack",
@@ -328,7 +546,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               breakF.imageUrl,
                               () => context
                                   .push("/mealDetails/${breakF.mealId}"));
-                        }),"4"),
+                        }),
+                        "4"),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Lunch",
@@ -342,9 +561,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               lunch.price,
                               lunch.imageUrl,
                               () =>
-
                                   context.push("/mealDetails/${lunch.mealId}"));
-                        }),"2"),
+                        }),
+                        "2"),
                     const SizedBox(height: 16),
                     _buildMealSection(
                         "Dinner",
@@ -359,7 +578,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                               dinner.imageUrl,
                               () => context
                                   .push("/mealDetails/${dinner.mealId}"));
-                        }),"3"),
+                        }),
+                        "3"),
                   ],
                 ),
               ),
@@ -382,7 +602,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
           children: [
             Image.network(
               image,
-              height: 15,
+              height: 20,
             ),
             const SizedBox(
               width: 10,
@@ -428,11 +648,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
   }
 
   Widget _buildMealSection(
-    String title,
-    String subtitle,
-    List<Widget> cards,
-      String typeId
-  ) {
+      String title, String subtitle, List<Widget> cards, String typeId) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

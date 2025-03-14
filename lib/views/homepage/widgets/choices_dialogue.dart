@@ -44,7 +44,7 @@ class _ChoiceDialogState extends State<ChoiceDialog> {
           onPressed: () {
             if (_selectedChoice == "In Person") {
               context.pop();
-              context.push('/myAppointments');
+              context.push('/booking');
             } else {
               context.pop();
               launchUrl(Uri.parse("https://freshmeals.rw/app/questionnaire"));

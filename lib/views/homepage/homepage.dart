@@ -7,6 +7,7 @@ import 'package:freshmeals/views/homepage/cart_screen.dart';
 import 'package:freshmeals/views/homepage/favorites_screen.dart';
 import 'package:freshmeals/views/homepage/meals.dart';
 import 'package:freshmeals/views/homepage/profile.dart';
+import 'package:freshmeals/views/homepage/recomended_screen.dart';
 import 'package:freshmeals/views/homepage/search_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +15,7 @@ import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
 import '../appointment/appointments_booking.dart';
+import 'non_instant_meals.dart';
 
 // int screenIndex =1;
 class Homepage extends ConsumerStatefulWidget {
@@ -66,9 +68,9 @@ class _HomepageState extends ConsumerState<Homepage> {
         index: _index,
         children: const [
           MealsPage(),
-          SearchPage(),
+          RecommendedScreen(),
+          NonInstantMealsScreen(),
           ChartScreen(),
-          AppointmentsScreen(),
           Profile(),
         ],
       ),
@@ -84,13 +86,13 @@ class _HomepageState extends ConsumerState<Homepage> {
         currentIndex: _index,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.set_meal_sharp), label: "Meals"),
+              icon: Icon(Icons.set_meal_sharp), label: "Instant"),
           BottomNavigationBarItem(
-              icon: Icon(vector_icons.AntDesign.search1), label: "Search"),
+              icon: Icon(Icons.recommend), label: "For You"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.nfc), label: "Pre-order"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: "Booking"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.person_outline),
               label: "Account"),

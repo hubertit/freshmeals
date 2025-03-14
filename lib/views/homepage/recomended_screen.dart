@@ -10,43 +10,41 @@ import '../../utls/callbacks.dart';
 import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
 
-class LunchPage extends ConsumerStatefulWidget {
-  final String typeId;
-  final String title;
-  const LunchPage({super.key, required this.typeId, required this.title});
+class RecommendedScreen extends ConsumerStatefulWidget {
+  const RecommendedScreen({super.key});
 
   @override
-  ConsumerState<LunchPage> createState() => _LunchPageState();
+  ConsumerState<RecommendedScreen> createState() => _LunchPageState();
 }
 
-class _LunchPageState extends ConsumerState<LunchPage> {
+class _LunchPageState extends ConsumerState<RecommendedScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var user = ref.watch(userProvider)!.user;
       ref
-          .read(randomMealsProvider.notifier)
-          .mealByTypes(context, widget.typeId, user!.token);
+          .read(recommendedMealsProvider.notifier)
+          .subscriptions(context, user!.token);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var meals = ref.watch(randomMealsProvider);
+    var meals = ref.watch(recommendedMealsProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            context.pop();
-          },
-        ),
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Colors.black),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        //   onPressed: () {
+        //     context.pop();
+        //   },
+        // ),
+        title: const Text(
+          "Recommended",
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         // actions: [
@@ -58,53 +56,53 @@ class _LunchPageState extends ConsumerState<LunchPage> {
       ),
       body: meals!.isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : meals.mealCategories.isEmpty
-              ? const Column(
-                  children: [
-                    SizedBox(
-                      height: 200,
-                    ),
-                    CustomEmptyWidget(message: "There is no Special meal today!")
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       _buildCategoryTab("All", isSelected: true),
-                    //       _buildCategoryTab("For You"),
-                    //       _buildCategoryTab("Recommended"),
-                    //     ],
-                    //   ),
-                    // ),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 16,
-                            childAspectRatio: 0.8,
-                          ),
-                          itemCount: meals.mealCategories.length,
-                          itemBuilder: (context, index) {
-                            var meal = meals.mealCategories[index];
-                            return _buildMealCard(context: context, meal: meal);
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+        child: CircularProgressIndicator(),
+      )
+          : meals.recomendations.isEmpty
+          ? const Column(
+        children: [
+          SizedBox(
+            height: 200,
+          ),
+          CustomEmptyWidget(message: "You have  no items.")
+        ],
+      )
+          : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       _buildCategoryTab("All", isSelected: true),
+          //       _buildCategoryTab("For You"),
+          //       _buildCategoryTab("Recommended"),
+          //     ],
+          //   ),
+          // ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: GridView.builder(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.8,
                 ),
+                itemCount: meals.recomendations.length,
+                itemBuilder: (context, index) {
+                  var meal = meals.recomendations[index];
+                  return _buildMealCard(context: context, meal: meal);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -131,9 +129,9 @@ class _LunchPageState extends ConsumerState<LunchPage> {
   }
 
   Widget _buildMealCard({required BuildContext context, required Meal meal
-      // bool isSale = false,
-      // String? saleText,
-      }) {
+    // bool isSale = false,
+    // String? saleText,
+  }) {
     return InkWell(
       onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
@@ -156,7 +154,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                 children: [
                   ClipRRect(
                     borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(7)),
+                    const BorderRadius.vertical(top: Radius.circular(7)),
                     child: Image.network(
                       meal.imageUrl,
                       height: 130,
@@ -183,10 +181,10 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   // const SizedBox(height: 4),
-                  Text(
-                    "For ${widget.title}",
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
+                  // Text(
+                  //   "For ${widget.title}",
+                  //   style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -208,8 +206,8 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) => AddToCartModel(
-                                        productModel: meal,
-                                      ));
+                                    productModel: meal,
+                                  ));
                             },
                             child: const Icon(
                               Icons.add_shopping_cart,

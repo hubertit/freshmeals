@@ -7,6 +7,7 @@ import 'package:freshmeals/views/appointment/widgets/empty_widget.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/_assets.dart';
 import '../../theme/colors.dart';
+import '../homepage/widgets/choices_dialogue.dart';
 import '../homepage/widgets/cover_container.dart';
 import 'widgets/datetime_piker.dart';
 
@@ -35,9 +36,14 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Appointments"),
-        // actions: [
-        //   IconButton(onPressed: ()=>context.push("/booking"), icon: Icon(Icons.add_circle_outline))
-        // ],
+        actions: [
+          IconButton(onPressed: (){
+            showDialog<String>(
+              context: context,
+              builder: (context) => ChoiceDialog(),
+            );
+          }, icon: const Icon(Icons.add_circle_outline))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -72,18 +78,15 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
                         itemCount: appointments.appointments.length,
                         itemBuilder: (context, index) {
                           final appontment = appointments.appointments[index];
-                          return InkWell(
-                            onTap: () {},
-                            child: CoverContainer(
-                              children: [
-                                address("Appointment Date",
-                                    appontment.appointmentDate),
-                                address("Time slot", appontment.timeSlot),
-                                address("Duration", appontment.duration),
-                                address(
-                                    "Nutritionist", appontment.nutritionist),
-                              ],
-                            ),
+                          return CoverContainer(
+                            children: [
+                              address("Appointment Date",
+                                  appontment.appointmentDate),
+                              address("Time slot", appontment.timeSlot),
+                              address("Duration", appontment.duration),
+                              address(
+                                  "Nutritionist", appontment.nutritionist),
+                            ],
                           );
                         },
                       ),

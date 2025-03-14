@@ -17,7 +17,7 @@ class MealsTypeNotifier extends StateNotifier<MealsTypeState?> {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.get(
-        '${baseUrl}general/meal_types',
+        '${baseUrl}general/meal_types?category=instant',
       );
       // print(response.data['data']);
       if (response.statusCode == 200) {

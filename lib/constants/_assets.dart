@@ -1,11 +1,13 @@
 class AssetsUtils {
   static const logo = "assets/images/7.png";
+  static const logo2 = "assets/images/logo 2.png";
   static const mars = "assets/images/mars.png";
   static const venus = "assets/images/venus.png";
   static const order = "assets/images/Artwork.png";
   static const nutri = "assets/images/Artwork@2x.png";
   static const derivered = "assets/images/Artwork (1).png";
   static const empty = "assets/images/empty.png";
+  static const consult = "assets/images/consu.png";
   ////
   static const drinks = "assets/images/drinks.png";
   static const healthy = "assets/images/healthy.png";

@@ -104,10 +104,12 @@ class _ProfileState extends ConsumerState<Profile> {
                 title: 'Nutrition consultation',
                 iconSize: 18,
                 onPressed: () {
-                  showDialog<String>(
-                    context: context,
-                    builder: (context) => ChoiceDialog(),
-                  );
+                  context.push('/myAppointments');
+
+                  // showDialog<String>(
+                  //   context: context,
+                  //   builder: (context) => ChoiceDialog(),
+                  // );
                 },
                 leadingIcon: MaterialCommunityIcons.book_information_variant,
               ),
