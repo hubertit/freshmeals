@@ -15,23 +15,65 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>freshmeals</string>
+	<string>Freshmeals</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb3943089325924740</string>
+				<string>freshmeals-691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>14</string>
+	<key>FacebookAppID</key>
+	<string>3943089325924740</string>
+	<key>FacebookClientToken</key>
+	<string>54382507fff32c6bc68f84589238028c</string>
+	<key>FacebookDisplayName</key>
+	<string>freshmeals</string>
+	<key>GIDClientID</key>
+	<string>myapp-691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>mailto</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need your location to show the map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show the map.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>This app needs to send you notifications.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+      <string>fetch</string>
+      <string>processing</string>
+      <string>remote-notification</string>
+    </array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+      <string>$(PRODUCT_BUNDLE_IDENTIFIER).backgroundtask</string>
+    </array>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -49,45 +91,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb3943089325924740</string>
-				<string>freshmeals-691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
-			</array>
-		</dict>
-	</array>
-	<key>GIDClientID</key>
-	<string>myapp-691376765881-bsao3sf0butmhq85g7uuiim2ldkpajs5</string>
-	<key>FacebookAppID</key>
-	<string>3943089325924740</string>
-	<key>FacebookClientToken</key>
-	<string>54382507fff32c6bc68f84589238028c</string>
-	<key>FacebookDisplayName</key>
-	<string>freshmeals</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-		<string>mailto</string>
-
-	</array>
-	<key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-    </dict>
-    <key>UIBackgroundModes</key>
-    <array>
-      <string>fetch</string>
-      <string>remote-notification</string>
-    </array>
 </dict>
 </plist>
