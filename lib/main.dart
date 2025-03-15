@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'routers/app_router.dart';
 import 'theme/colors.dart';
+import 'utls/notification_service.dart';
 
 void main() async {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const ProviderScope(child: MyApp()));

@@ -79,5 +79,15 @@
 		<string>mailto</string>
 
 	</array>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
 </dict>
 </plist>

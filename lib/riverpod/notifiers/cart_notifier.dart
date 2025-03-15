@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../constants/_api_utls.dart';
 import '../../models/home/cart_model.dart';
+import '../../utls/notification_service.dart';
 import '../providers/auth_providers.dart';
 import '../providers/home.dart';
 
@@ -65,6 +66,12 @@ class CartNotifier extends StateNotifier<CartState?> {
 
       if (response.statusCode == 200) {
         print(response.data);
+
+        if (response.data['code'] == 400) {
+          await NotificationService.showNotification(
+              "Warning", response.data['message']);
+        }
+
         var user = ref.watch(userProvider);
         if (user!.user != null) {
           final List<dynamic> myList =
@@ -120,24 +127,20 @@ class CartNotifier extends StateNotifier<CartState?> {
               .myCart(context, user.user!.token, ref);
         }
         print(response.data);
-        //   List<CartItem> products = (response.data['data'] as List)
-        //       .map((item) => CartItem.fromJson(item as Map<String, dynamic>))
-        //       .toList();
-        //   state = CartState(cartItems: products, isLoading: false);
+
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              backgroundColor: response.data['code'] == 400
-                  ? const Color(0xffFFF3CD)
-                  : primarySwatch,
-              content: Text(
-                response.data['message'],
-                style: TextStyle(
-                    color: response.data['code'] == 400
-                        ? const Color(0xff664d03)
-                        : null),
-              )),
-        );
+
+        if (response.data['code'] == 400) {
+          await NotificationService.showNotification(
+              "Warning", response.data['message']);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: primarySwatch,
+              content: Text(response.data['message']),
+            ),
+          );
+        }
       }
     } catch (e) {
       // Handle the error

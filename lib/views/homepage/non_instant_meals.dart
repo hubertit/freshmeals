@@ -79,18 +79,18 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
           //   ),
           // ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            margin: EdgeInsets.only(left:16 , right: 16, top: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: const EdgeInsets.only(left:16 , right: 16, top: 10),
             width: double.maxFinite,
             decoration: BoxDecoration(
-                color: Color(0xff0d1e7dd),
+                color: const Color(0xff0d1e7dd),
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color(0xffbadbcc))),
-            child: Text.rich(
+                border: Border.all(color: const Color(0xffbadbcc))),
+            child: const Text.rich(
               // textAlign: TextAlign.center,
               TextSpan(
                 text: "These meals require approximately ",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   // color: Color(0xf0f5132),
                   // fontWeight: FontWeight.bold
@@ -99,12 +99,12 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                   TextSpan(
                     text:
                     "24 hours",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.green, // Highlight balance
                     ),
                   ),
-                  const TextSpan(
+                  TextSpan(
                     text:
                     " to prepare, you should place your orders well in advance.",
                   ),
