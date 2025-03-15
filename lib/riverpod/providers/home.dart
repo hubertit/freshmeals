@@ -16,6 +16,7 @@ import 'package:freshmeals/riverpod/notifiers/home/recommended_notifier.dart';
 import '../notifiers/cart_notifier.dart';
 import '../notifiers/home/calorie_notifier.dart';
 import '../notifiers/home/meal.dart';
+import '../notifiers/home/meal_by_type.dart';
 import '../notifiers/home/order_notifier.dart';
 import '../notifiers/home/search_notifier.dart';
 
@@ -55,8 +56,12 @@ final countProvider = StateNotifierProvider<CountNotifier, CountState?>((ref) {
 });
 
 final randomMealsProvider =
-    StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
+StateNotifierProvider<RandomMealsNotifier, RandomMealsState?>((ref) {
   return RandomMealsNotifier();
+});
+final mealByTypeProvider =
+StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
+  return MealByTypeNotifier();
 });
 final addressesProvider =
     StateNotifierProvider<AdressesNotifier, AddressState?>((ref) {

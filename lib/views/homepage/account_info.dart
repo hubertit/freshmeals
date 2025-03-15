@@ -95,26 +95,28 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     final user = ref.watch(userProvider);
     final accountInfo = accountInfoState?.accountInfo;
     final prefeee = ref.watch(preferencesProvider);
-    var preferencesState = prefeee!.preferances;
+    // var preferencesState = prefeee!.preferances;
     // Initialize dietary preferences based on API data
     if (accountInfo != null) {
-     setState(() {
-       nameController.text = accountInfo.name;
-       emailController.text = accountInfo.email;
-       phoneController.text = accountInfo.phoneNumber;
-       ageController.text = accountInfo.age.toString();
-       _selectedGender = accountInfo.gender ?? 'Male';
-       healthStatusController.text = accountInfo.healthStatus ?? '';
-       heightController.text = accountInfo.height.toString();
-       weightController.text = accountInfo.weight.toString();
-       activityLevelController.text = accountInfo.activityLevel ?? '';
+      setState(() {
+        nameController.text = accountInfo.name;
+        emailController.text = accountInfo.email;
+        phoneController.text = accountInfo.phoneNumber;
+        ageController.text = accountInfo.age.toString();
+        _selectedGender = accountInfo.gender ?? 'Male';
+        healthStatusController.text = accountInfo.healthStatus ?? '';
+        heightController.text = accountInfo.height.toString();
+        weightController.text = accountInfo.weight.toString();
+        activityLevelController.text = accountInfo.activityLevel ?? '';
 
-       selectedPreferences = accountInfo.dietaryPreferences ?? [];
-       selectedGoals = accountInfo.healthGoal??[];
-       preExistingConditions = accountInfo.preExistingConditions??[];
-       foodAllergies = accountInfo.foodAllergies??[];
-       selectedGoals = accountInfo.healthGoal??[];
-     });
+        selectedPreferences = accountInfo.dietaryPreferences ?? [];
+        print('piiiiiii');
+        print(selectedPreferences);
+        selectedGoals = accountInfo.healthGoal ?? [];
+        preExistingConditions = accountInfo.preExistingConditions ?? [];
+        foodAllergies = accountInfo.foodAllergies ?? [];
+        selectedGoals = accountInfo.healthGoal ?? [];
+      });
       // });
       // print(accountInfo.toJson());
     }
@@ -185,7 +187,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                           color: Colors.black,
                         ),
                       ),
-                      // const SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       CoverContainer(
                         margin: 0,
                         children: [
@@ -239,24 +241,26 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       const SizedBox(height: 10),
 
                       // Dietary Preferences Checklist
-                      if (preferencesState != null)
+                      if (prefeee!.preferances.isNotEmpty)
                         CoverContainer(
                           margin: 0,
-                          children: preferencesState.map((preference) {
-                            final isSelected =
-                                selectedPreferences.contains(preference.name);
+                          children: prefeee.preferances.map((preference) {
+                            // final isSelected =
+                            //     selectedPreferences.contains(preference.name);
                             return CheckboxListTile(
                               title: Text(preference.name),
-                              value: isSelected,
-                              onChanged: (value) {
+                              value: selectedPreferences.contains(preference.name),
+                              onChanged: (isSelected) {
                                 setState(() {
-                                  if (value == true && !selectedPreferences.contains(preference.name)) {
-                                    selectedPreferences = [...selectedPreferences, preference.name];
+                                  if (isSelected == true
+                                      ) {
+                                    selectedPreferences.add(preference.name);
                                   } else {
-                                    selectedPreferences = selectedPreferences.where((p) => p != preference.name).toList();
+                                    selectedPreferences.remove(preference.name);
                                   }
                                 });
-                                print("Updated Selected Preferences: $selectedPreferences");
+                                print(
+                                    "Updated Selected Preferences: $selectedPreferences");
                               },
                             );
                           }).toList(),
@@ -268,6 +272,8 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                         'Pre-existing Conditions',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 10),
+
                       CoverContainer(margin: 0, children: [
                         ...[
                           "Diabetes",
@@ -277,29 +283,30 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                           "Cancer",
                           "Other"
                         ].map((condition) => CheckboxListTile(
-                          title: Text(condition),
-                          value: preExistingConditions.contains(condition),
-                          onChanged: (isSelected) {
-                            setState(() {
-                              if (isSelected == true) {
-                                preExistingConditions.add(condition);
-                                if (condition == 'Other') {
-                                  isOtherConditionChecked = true;
-                                }
-                              } else {
-                                preExistingConditions.remove(condition);
-                                if (condition == 'Other') {
-                                  isOtherConditionChecked = false;
-                                  otherConditionController.clear();
-                                }
-                              }
-                            });
-                          },
-                        )),
+                              title: Text(condition),
+                              value: preExistingConditions.contains(condition),
+                              onChanged: (isSelected) {
+                                setState(() {
+                                  if (isSelected == true) {
+                                    preExistingConditions.add(condition);
+                                    if (condition == 'Other') {
+                                      isOtherConditionChecked = true;
+                                    }
+                                  } else {
+                                    preExistingConditions.remove(condition);
+                                    if (condition == 'Other') {
+                                      isOtherConditionChecked = false;
+                                      otherConditionController.clear();
+                                    }
+                                  }
+                                });
+                              },
+                            )),
                         if (isOtherConditionChecked)
                           TextFormField(
                             controller: otherConditionController,
-                            decoration: iDecoration(hint: 'Specify other condition'),
+                            decoration:
+                                iDecoration(hint: 'Specify other condition'),
                           ),
                       ]),
                       const SizedBox(height: 16),
@@ -307,6 +314,8 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                         'Food Allergies',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 10),
+
                       CoverContainer(margin: 0, children: [
                         ...[
                           "Dairy",
@@ -321,29 +330,30 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                           "Sesame",
                           "Other",
                         ].map((allergy) => CheckboxListTile(
-                          title: Text(allergy),
-                          value: foodAllergies.contains(allergy),
-                          onChanged: (isSelected) {
-                            setState(() {
-                              if (isSelected == true) {
-                                foodAllergies.add(allergy);
-                                if (allergy == 'Other') {
-                                  isOtherAllergyChecked = true;
-                                }
-                              } else {
-                                foodAllergies.remove(allergy);
-                                if (allergy == 'Other') {
-                                  isOtherAllergyChecked = false;
-                                  otherAllergyController.clear();
-                                }
-                              }
-                            });
-                          },
-                        )),
+                              title: Text(allergy),
+                              value: foodAllergies.contains(allergy),
+                              onChanged: (isSelected) {
+                                setState(() {
+                                  if (isSelected == true) {
+                                    foodAllergies.add(allergy);
+                                    if (allergy == 'Other') {
+                                      isOtherAllergyChecked = true;
+                                    }
+                                  } else {
+                                    foodAllergies.remove(allergy);
+                                    if (allergy == 'Other') {
+                                      isOtherAllergyChecked = false;
+                                      otherAllergyController.clear();
+                                    }
+                                  }
+                                });
+                              },
+                            )),
                         if (isOtherAllergyChecked)
                           TextFormField(
                             controller: otherAllergyController,
-                            decoration: iDecoration(hint: 'Specify other allergy'),
+                            decoration:
+                                iDecoration(hint: 'Specify other allergy'),
                           ),
                       ]),
                       const SizedBox(height: 16),
@@ -385,7 +395,6 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
               }
 
               // ref.read(accountInfoProvider.notifier).updateProfile(token: user!.user!.token, name: nameController.text, email: emailController.text, phone: phoneController.text,  age: int.tryParse(ageController.text) ?? 0, gender: _selectedGender, healthGoal: healthGoal, height: double.tryParse(heightController.text) ?? 0.0, weight: double.tryParse(weightController.text) ?? 0.0, targetWeight: t, calLimit: calLimit, dietaryPreferences: selectedPreferences, preExistingConditions: preExistingConditions, healthConditions: accountInfo!.healthConditions, foodAllergies: foodAllergies, ref: ref, context: context);
-
             },
             child: const Text(
               "Update",

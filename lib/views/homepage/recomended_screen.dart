@@ -14,45 +14,57 @@ class RecommendedScreen extends ConsumerStatefulWidget {
   const RecommendedScreen({super.key});
 
   @override
-  ConsumerState<RecommendedScreen> createState() => _LunchPageState();
+  ConsumerState<RecommendedScreen> createState() => _RecommendedScreenState();
 }
 
-class _LunchPageState extends ConsumerState<RecommendedScreen> {
+class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var user = ref.watch(userProvider)!.user;
       ref
           .read(recommendedMealsProvider.notifier)
           .subscriptions(context, user!.token);
     });
-    super.initState();
+
+    _tabController = TabController(length: 3, vsync: this); // 3 tabs: All, Instant, Non-Instant
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var meals = ref.watch(recommendedMealsProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        //   onPressed: () {
-        //     context.pop();
-        //   },
-        // ),
         title: const Text(
           "Recommended",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.search, color: Colors.black),
-        //     onPressed: () {},
-        //   ),
-        // ],
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: Colors.green,
+          tabs: const [
+            Tab(text: "All"),
+            Tab(text: "Instant"),
+            Tab(text: "Non-Instant"),
+          ],
+        ),
       ),
       body: meals!.isLoading
           ? const Center(
@@ -61,90 +73,51 @@ class _LunchPageState extends ConsumerState<RecommendedScreen> {
           : meals.recomendations.isEmpty
           ? const Column(
         children: [
-          SizedBox(
-            height: 200,
-          ),
-          CustomEmptyWidget(message: "You have  no items.")
+          SizedBox(height: 200),
+          CustomEmptyWidget(message: "You have no items.")
         ],
       )
-          : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+          : TabBarView(
+        controller: _tabController,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       _buildCategoryTab("All", isSelected: true),
-          //       _buildCategoryTab("For You"),
-          //       _buildCategoryTab("Recommended"),
-          //     ],
-          //   ),
-          // ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView.builder(
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: meals.recomendations.length,
-                itemBuilder: (context, index) {
-                  var meal = meals.recomendations[index];
-                  return _buildMealCard(context: context, meal: meal);
-                },
-              ),
-            ),
-          ),
+          _buildMealsList(meals.recomendations), // All Meals
+          _buildMealsList(meals.recomendations
+              ), // Instant Meals
+          _buildMealsList(meals.recomendations
+              // .where((meal) => !meal.isInstant)
+              // .toList()
+          ), // Non-Instant Meals
         ],
       ),
     );
   }
 
-  Widget _buildCategoryTab(String text, {bool isSelected = false}) {
-    return Column(
-      children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.black : Colors.grey,
-          ),
+  Widget _buildMealsList(List<Meal> meals) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: 0.8,
         ),
-        if (isSelected)
-          Container(
-            margin: const EdgeInsets.only(top: 4),
-            height: 2,
-            width: 20,
-            color: Colors.green,
-          ),
-      ],
+        itemCount: meals.length,
+        itemBuilder: (context, index) {
+          var meal = meals[index];
+          return _buildMealCard(context: context, meal: meal);
+        },
+      ),
     );
   }
 
-  Widget _buildMealCard({required BuildContext context, required Meal meal
-    // bool isSale = false,
-    // String? saleText,
-  }) {
+  Widget _buildMealCard({required BuildContext context, required Meal meal}) {
     return InkWell(
       onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey.withOpacity(0.2),
-          //     blurRadius: 6,
-          //     offset: Offset(0, 3),
-          //   ),
-          // ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,11 +153,6 @@ class _LunchPageState extends ConsumerState<RecommendedScreen> {
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  // const SizedBox(height: 4),
-                  // Text(
-                  //   "For ${widget.title}",
-                  //   style: const TextStyle(color: Colors.grey, fontSize: 12),
-                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -202,18 +170,19 @@ class _LunchPageState extends ConsumerState<RecommendedScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => AddToCartModel(
-                                    productModel: meal,
-                                  ));
-                            },
-                            child: const Icon(
-                              Icons.add_shopping_cart,
-                              color: Colors.white,
-                              size: 20,
-                            )),
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => AddToCartModel(
+                                  productModel: meal,
+                                ));
+                          },
+                          child: const Icon(
+                            Icons.add_shopping_cart,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
                       ),
                     ],
                   ),

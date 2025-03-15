@@ -360,7 +360,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 controller: commentController,
               ),
               // Confirm Order Button
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(10),

@@ -149,7 +149,7 @@ print(widget.mealId);
                           children: [
                             // Title Section
                             Text(
-                              "${meal.mealsData!.price} RWF",
+                              "${formatMoney(meal.mealsData!.price)} RWF",
                               style: const TextStyle(
                                   color: primarySwatch,
                                   fontWeight: FontWeight.bold,

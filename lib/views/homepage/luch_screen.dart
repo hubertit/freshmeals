@@ -25,7 +25,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var user = ref.watch(userProvider)!.user;
       ref
-          .read(randomMealsProvider.notifier)
+          .read(mealByTypeProvider.notifier)
           .mealByTypes(context, widget.typeId, user!.token);
     });
     super.initState();
@@ -33,7 +33,9 @@ class _LunchPageState extends ConsumerState<LunchPage> {
 
   @override
   Widget build(BuildContext context) {
-    var meals = ref.watch(randomMealsProvider);
+    var meals = ref.watch(mealByTypeProvider);
+    print(widget.typeId);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -45,7 +47,8 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           },
         ),
         title: Text(
-          widget.title,
+          Uri.decodeComponent(widget.title)
+          ,
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,

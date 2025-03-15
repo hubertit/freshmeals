@@ -24,7 +24,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(mealCategoriesProvider.notifier).mealCategories(context);
-      ref.read(mealTypesProvider.notifier).mealTypes(context);
+      ref.read(mealTypesProvider.notifier).mealTypes(context, 'instant');
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
       var user = ref.watch(userProvider)!.user;
       ref
@@ -289,13 +289,15 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     var mealType = types.mealCategories[index];
                     return _buildCategoryChip(mealType.name, mealType.imageUrl,
                         () {
-                      context
-                          .push('/lunch/${mealType.typeId}/${mealType.name}');
+                      context.push(
+                          '/lunch/${mealType.typeId}/${Uri.encodeComponent(mealType.name)}');
+
+                      // context
+                      // .push('/lunch/${mealType.typeId}/${mealType.name}');
                     });
                   })),
                 ),
               const SizedBox(height: 10),
-
             ],
           ),
         ),
@@ -399,7 +401,11 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             gradient: const LinearGradient(
-                              colors: [Colors.transparent, Colors.black54],
+                              colors: [
+                                Colors.transparent,
+                                Colors.transparent,
+                                Colors.black54
+                              ],
                               begin: Alignment.center,
                               end: Alignment.bottomCenter,
                             ),
@@ -430,7 +436,33 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold)),
                                     ],
-                                  ))
+                                  )),
+                              Positioned(
+                                  right: 1,
+                                  top: 1,
+                                  child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      decoration: BoxDecoration(
+                                          color: primarySwatch.withOpacity(0.8),
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft: Radius.circular(15))),
+                                      child: const Text(
+                                        "Today’s dinner special",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ))),
+
+                              // const Positioned(
+                              //     left: 10,
+                              //     top: 10,
+                              //     child: Text("Today’s dinner special",
+                              //         style: TextStyle(
+                              //             fontWeight: FontWeight.w500,
+                              //             fontSize: 16,
+                              //             color: Colors.white)))
                             ],
                           ),
                         ),
@@ -629,8 +661,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
-                  context.push('/lunch/${typeId}/${title}');
-
+                  context
+                      .push('/lunch/${typeId}/${Uri.encodeComponent(title)}');
+                  print(Uri.encodeComponent(title));
                   // context.push(
                   //     "/lunch/extra: {'typeId': ${typeId}, 'title': ${title}}");
                 },
@@ -661,7 +694,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
             InkWell(
                 onTap: () {
                   // context.push("/lunch/${title}");
-                  context.push('/lunch/${typeId}/${title}');
+                  context
+                      .push('/lunch/${typeId}/${Uri.encodeComponent(title)}');
 
                   // context.push(
                   //     "/lunch/extra: {'typeId': , 'title': ${title}}");

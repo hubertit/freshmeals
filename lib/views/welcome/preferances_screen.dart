@@ -50,7 +50,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
       body: preferences!.isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

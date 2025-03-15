@@ -13,11 +13,11 @@ class MealsTypeNotifier extends StateNotifier<MealsTypeState?> {
 
   final Dio _dio = Dio();
 
-  Future<void> mealTypes(BuildContext context) async {
+  Future<void> mealTypes(BuildContext context, String type) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.get(
-        '${baseUrl}general/meal_types?category=instant',
+        '${baseUrl}general/meal_types?category=$type',
       );
       // print(response.data['data']);
       if (response.statusCode == 200) {

@@ -26,5 +26,9 @@ final mealTypesProvider =
 StateNotifierProvider<MealsTypeNotifier, MealsTypeState?>((ref) {
   return MealsTypeNotifier();
 });
+final mealTypesProviderNI =
+StateNotifierProvider<MealsTypeNotifier, MealsTypeState?>((ref) {
+  return MealsTypeNotifier();
+});
 
 final firstTimeProvider = StateProvider<bool>((ref) => false);

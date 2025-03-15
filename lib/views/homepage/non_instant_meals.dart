@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/home/meal_model.dart';
 import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
+import '../../theme/colors.dart';
 import '../../utls/callbacks.dart';
 import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
@@ -22,119 +24,134 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(randomMealsProvider.notifier).fetchMeals(context);
-
+      ref.read(mealTypesProviderNI.notifier).mealTypes(context, 'non-instant');
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var meals = ref.watch(randomMealsProvider);
+    var types = ref.watch(mealTypesProviderNI);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        //   onPressed: () {
-        //     context.pop();
-        //   },
-        // ),
-        title: const Text(
-          "Non-instant Meals",
-          style: TextStyle(color: Colors.black),
+        toolbarHeight: 110,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Column(
+            children: [
+              const Text("Non-Instant Meals"),
+              SizedBox(
+                height: 10,
+              ),
+              if (types!.mealCategories.isNotEmpty)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children:
+                          List.generate(types.mealCategories.length, (index) {
+                    var mealType = types.mealCategories[index];
+                    return _buildCategoryChip(mealType.name, mealType.imageUrl,
+                        () {
+                      context.push(
+                          '/lunch/${mealType.typeId}/${Uri.encodeComponent(mealType.name)}');
+                    });
+                  })),
+                ),
+              // const SizedBox(height: 10),
+            ],
+          ),
         ),
-        centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.search, color: Colors.black),
-        //     onPressed: () {},
-        //   ),
-        // ],
       ),
       body: meals!.isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : meals.mealCategories.isEmpty
-          ? const Column(
-        children: [
-          SizedBox(
-            height: 200,
-          ),
-          CustomEmptyWidget(message: "You have  no items.")
-        ],
-      )
-          : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       _buildCategoryTab("All", isSelected: true),
-          //       _buildCategoryTab("For You"),
-          //       _buildCategoryTab("Recommended"),
-          //     ],
-          //   ),
-          // ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            margin: const EdgeInsets.only(left:16 , right: 16, top: 10),
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-                color: const Color(0xff0d1e7dd),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: const Color(0xffbadbcc))),
-            child: const Text.rich(
-              // textAlign: TextAlign.center,
-              TextSpan(
-                text: "These meals require approximately ",
-                style: TextStyle(
-                  fontSize: 14,
-                  // color: Color(0xf0f5132),
-                  // fontWeight: FontWeight.bold
-                ),
-                children: [
-                  TextSpan(
-                    text:
-                    "24 hours",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green, // Highlight balance
+              ? const Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
                     ),
-                  ),
-                  TextSpan(
-                    text:
-                    " to prepare, you should place your orders well in advance.",
-                  ),
-                ],
-              ),
-            ),
-          ),
+                    CustomEmptyWidget(message: "You have  no items.")
+                  ],
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       _buildCategoryTab("All", isSelected: true),
+                      //       _buildCategoryTab("For You"),
+                      //       _buildCategoryTab("Recommended"),
+                      //     ],
+                      //   ),
+                      // ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        margin:
+                            const EdgeInsets.only(left: 16, right: 16, top: 10),
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            color: const Color(0xff0d1e7dd),
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: const Color(0xffbadbcc))),
+                        child: const Text.rich(
+                          // textAlign: TextAlign.center,
+                          TextSpan(
+                            text: "These meals require approximately ",
+                            style: TextStyle(
+                              fontSize: 14,
+                              // color: Color(0xf0f5132),
+                              // fontWeight: FontWeight.bold
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "24 hours",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green, // Highlight balance
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    " to prepare, you should place your orders well in advance.",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
 
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GridView.builder(
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.8,
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.8,
+                          ),
+                          itemCount: meals.mealCategories.length,
+                          itemBuilder: (context, index) {
+                            var meal = meals.mealCategories[index];
+                            return _buildMealCard(context: context, meal: meal);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                itemCount: meals.mealCategories.length,
-                itemBuilder: (context, index) {
-                  var meal = meals.mealCategories[index];
-                  return _buildMealCard(context: context, meal: meal);
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -161,9 +178,9 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
   }
 
   Widget _buildMealCard({required BuildContext context, required Meal meal
-    // bool isSale = false,
-    // String? saleText,
-  }) {
+      // bool isSale = false,
+      // String? saleText,
+      }) {
     return InkWell(
       onTap: () => context.push('/mealDetails/${meal.mealId}'),
       child: Container(
@@ -186,7 +203,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                 children: [
                   ClipRRect(
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(7)),
+                        const BorderRadius.vertical(top: Radius.circular(7)),
                     child: Image.network(
                       meal.imageUrl,
                       height: 130,
@@ -238,8 +255,8 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) => AddToCartModel(
-                                    productModel: meal,
-                                  ));
+                                        productModel: meal,
+                                      ));
                             },
                             child: const Icon(
                               Icons.add_shopping_cart,
@@ -258,4 +275,33 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
       ),
     );
   }
+}
+
+Widget _buildCategoryChip(String label, String image, void Function()? onTap) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    margin: const EdgeInsets.only(right: 10),
+    decoration: BoxDecoration(
+      color: scaffold,
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Image.network(
+            image,
+            height: 20,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 13),
+          ),
+        ],
+      ),
+    ),
+  );
 }
