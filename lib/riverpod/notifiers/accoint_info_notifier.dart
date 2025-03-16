@@ -27,7 +27,8 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
       );
 
       if (response.statusCode == 200 && response.data['data'] != null) {
-        AccountInformationModel user = AccountInformationModel.fromJson(response.data['data']);
+        AccountInformationModel user =
+            AccountInformationModel.fromJson(response.data['data']);
 
         state = AccountInfoState(accountInfo: user, isLoading: false);
         ref.read(userProvider.notifier).saveUserToPreferences(User(
@@ -57,29 +58,52 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
       required String phone,
       required int age,
       required String gender,
-      required String healthStatus,
+      required List<String>? healthGoals,
       required double height,
       required double weight,
       String? activityLevel,
       required List<String>? dietaryPreferences,
+      required List<String>? preexistingConditions,
+      required List<String>? foodAllergies,
       required WidgetRef ref,
       required BuildContext context}) async {
     try {
       state = state!.copyWith(isLoading: true);
       final response = await _dio.put(
         '${baseUrl}user/update',
-        data: {
+        data:
+            // {
+            //   "token": token,
+            //   "name": name,
+            //   "email": email,
+            //   "phone": phone,
+            //   "age": age,
+            //   "gender": gender,
+            //   // "health_status": healthStatus,
+            //   "height": height,
+            //   "weight": weight,
+            //   "activity_level": activityLevel,
+            //   "dietary_preferences": dietaryPreferences,
+            // }
+            {
           "token": token,
           "name": name,
-          "email": email,
           "phone": phone,
+          "email": email,
+          // "password": "password",
           "age": age,
           "gender": gender,
-          "health_status": healthStatus,
+          "health_status": "Good",
+          "health_goal": healthGoals,
           "height": height,
-          "weight": weight,
-          "activity_level": activityLevel,
+          "weight": 80.2,
+          // "target_weight": 75,
+          // "cal_limit": ca,
+          // "activity_level": ,
           "dietary_preferences": dietaryPreferences,
+          "pre_existing_conditions": preexistingConditions,
+          // "health_conditions": he,
+          "food_allergies": foodAllergies
         },
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
@@ -111,7 +135,8 @@ class AccountInfoState {
   factory AccountInfoState.initial() =>
       AccountInfoState(accountInfo: null, isLoading: false);
 
-  AccountInfoState copyWith({AccountInformationModel? accountInfo, bool? isLoading}) {
+  AccountInfoState copyWith(
+      {AccountInformationModel? accountInfo, bool? isLoading}) {
     return AccountInfoState(
       accountInfo: accountInfo ?? this.accountInfo,
       isLoading: isLoading ?? this.isLoading,

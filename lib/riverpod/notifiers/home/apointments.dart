@@ -44,16 +44,19 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
   }
 
   // Book appointment method
-  Future<void> bookAppointment(BuildContext context, String token, String date,
-      String timeSlot, String duration, WidgetRef ref, String meetingType) async {
+  Future<void> bookAppointment(BuildContext context, String token,
+      // String date,
+      // String timeSlot, String duration, WidgetRef ref, String meetingType
+      ) async {
     try {
-      // state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
       // Request body
       final requestBody = {
-        "token": token,
-        "date": date,
-        "time_slot": timeSlot,
-        "duration": duration
+        "token": token
+        // ,
+        // "date": date,
+        // "time_slot": timeSlot,
+        // "duration": duration
       };
       final response = await _dio.post(
         '${baseUrl}appointments/book_appointment',
@@ -63,16 +66,16 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
       // Check response code and show Snackbar with message
       if (response.data['code'] == 200) {
         // state = SlotsState(isLoading: false, slotsData: []);
-        ref.read(appointmentsProvider.notifier).fetchSlots(context, date);
+        // ref.read(appointmentsProvider.notifier).fetchSlots(context, date);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );
-        if (meetingType ==
-            "Online") {
-          // context.pop();
-          launchUrl(Uri.parse(
-              "https://freshmeals.rw/app/questionnaire"));
-        }
+        // if (meetingType ==
+        //     "Online") {
+        //   // context.pop();
+        //   launchUrl(Uri.parse(
+        //       "https://freshmeals.rw/app/questionnaire"));
+        // }
         context.pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -60,7 +60,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
           unselectedLabelColor: Colors.grey,
           indicatorColor: Colors.green,
           tabs: const [
-            Tab(text: "All"),
+            // Tab(text: "All"),
             Tab(text: "Instant"),
             Tab(text: "Non-Instant"),
           ],
@@ -80,7 +80,8 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
           : TabBarView(
         controller: _tabController,
         children: [
-          _buildMealsList(meals.recomendations), // All Meals
+
+          // _buildMealsList(meals.recomendations), // All Meals
           _buildMealsList(meals.recomendations
               ), // Instant Meals
           _buildMealsList(meals.recomendations
@@ -94,7 +95,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
 
   Widget _buildMealsList(List<Meal> meals) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -122,6 +123,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Expanded(
               child: Stack(
                 children: [

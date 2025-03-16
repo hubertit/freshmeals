@@ -18,7 +18,7 @@ class AccountInfoScreen extends ConsumerStatefulWidget {
 class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late List<String> selectedPreferences;
-  late List<dynamic> preExistingConditions;
+  late List<String> preExistingConditions;
   late List<String> foodAllergies;
   late List<String> selectedGoals;
 
@@ -384,13 +384,15 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       phone: phoneController.text,
                       age: int.tryParse(ageController.text) ?? 0,
                       gender: _selectedGender,
-                      healthStatus: healthStatusController.text,
+                      healthGoals: selectedGoals,
                       height: double.tryParse(heightController.text) ?? 0.0,
                       weight: double.tryParse(weightController.text) ?? 0.0,
                       activityLevel: activityLevelController.text,
                       dietaryPreferences: selectedPreferences,
                       ref: ref,
                       context: context,
+                  foodAllergies: foodAllergies,
+                    preexistingConditions: preExistingConditions
                     );
               }
 

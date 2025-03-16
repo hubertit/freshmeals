@@ -296,18 +296,18 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                                     //   launchUrl(Uri.parse(
                                                     //       "https://freshmeals.rw/app/questionnaire"));
                                                     // } else {
-                                                      ref
-                                                          .read(
-                                                              appointmentsProvider
-                                                                  .notifier)
-                                                          .bookAppointment(
-                                                              context,
-                                                              user!.user!.token,
-                                                              "$_eventDate",
-                                                              appontment
-                                                                  .startTime,
-                                                              "${calculateDuration(appontment.startTime, appontment.endTime)}",
-                                                              ref,_meetingType);
+                                                    //   ref
+                                                    //       .read(
+                                                    //           appointmentsProvider
+                                                    //               .notifier)
+                                                    //       .bookAppointment(
+                                                    //           context,
+                                                    //           user!.user!.token,
+                                                    //           "$_eventDate",
+                                                    //           appontment
+                                                    //               .startTime,
+                                                    //           "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                                    //           ref,_meetingType);
                                                     // }
                                                   },
                                                   style:

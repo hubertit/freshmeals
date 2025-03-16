@@ -90,7 +90,7 @@ class _HomepageState extends ConsumerState<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.recommend), label: "For You"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.nfc), label: "Pre-order"),
+              icon: Icon(vector_icons.Ionicons.watch), label: "Pre-order"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
           BottomNavigationBarItem(

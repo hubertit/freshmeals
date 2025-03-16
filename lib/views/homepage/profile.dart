@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../riverpod/providers/auth_providers.dart';
+import '../../riverpod/providers/home.dart';
 import 'widgets/choices_dialogue.dart';
 import 'widgets/cover_container.dart';
 import 'widgets/profile_item.dart';
@@ -45,7 +46,7 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
-    print(userState!.user!.token);
+    var appointment = ref.watch(appointmentsProvider);
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(
@@ -104,7 +105,66 @@ class _ProfileState extends ConsumerState<Profile> {
                 title: 'Nutrition consultation',
                 iconSize: 18,
                 onPressed: () {
-                  context.push('/myAppointments');
+                  // context.push('/myAppointments');
+
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(15.0)),
+                      ),
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 50),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // if (_meetingType ==
+                                //     "Online") {
+                                //   context.pop();
+                                //   launchUrl(Uri.parse(
+                                //       "https://freshmeals.rw/app/questionnaire"));
+                                // } else {
+                                ref
+                                    .read(appointmentsProvider.notifier)
+                                    .bookAppointment(
+                                    context, userState.user!.token
+                                  // "$_eventDate",
+                                  // appontment
+                                  //     .startTime,
+                                  // "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                  // ref,_meetingType
+                                );
+                                // }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                primarySwatch, // Use your app's theme color
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: appointment!.isLoading
+                                  ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                                  : const Text(
+                                "Request For Nutritionist Appointment",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+
 
                   // showDialog<String>(
                   //   context: context,

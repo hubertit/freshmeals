@@ -40,7 +40,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
     var types = ref.watch(mealTypesProvider);
     var mealsHome = ref.watch(homeMealsDataProvider);
     var recommendations = ref.watch(recommendedMealsProvider);
-
+    var appointment = ref.watch(appointmentsProvider);
+    var user = ref.watch(userProvider);
     return Scaffold(
       appBar:
           // AppBar(
@@ -177,7 +178,63 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                       //     Theme.of(context).inputDecorationTheme.fillColor,
                       child: GestureDetector(
                         onTap: () {
-                          context.push('/myAppointments');
+                          showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15.0)),
+                            ),
+                            builder: (context) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 50),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      // if (_meetingType ==
+                                      //     "Online") {
+                                      //   context.pop();
+                                      //   launchUrl(Uri.parse(
+                                      //       "https://freshmeals.rw/app/questionnaire"));
+                                      // } else {
+                                      ref
+                                          .read(appointmentsProvider.notifier)
+                                          .bookAppointment(
+                                              context, user!.user!.token
+                                              // "$_eventDate",
+                                              // appontment
+                                              //     .startTime,
+                                              // "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                                              // ref,_meetingType
+                                              );
+                                      // }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          primarySwatch, // Use your app's theme color
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: appointment!.isLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : const Text(
+                                            "Request For Nutritionist Appointment",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(9.0),
@@ -390,7 +447,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             image: DecorationImage(
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               image: NetworkImage(
                                   mealsHome.mealsData!.featured.imageUrl),
                               // NetworkImage(categories
