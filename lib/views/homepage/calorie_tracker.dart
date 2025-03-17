@@ -67,7 +67,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
             x: index,
             barRods: [
               BarChartRodData(
-                toY: calories,
+                toY:calories>4000?4000: calories,
                 color: primarySwatch,
                 width: 16,
                 borderRadius: BorderRadius.circular(4),
@@ -213,7 +213,8 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                         getTitlesWidget: (value, meta) {
                                           if (value == 1000 ||
                                               value == 2000 ||
-                                              value == 3000) {
+                                              value == 3000||
+                                              value == 4000) {
                                             return Text(
                                               value.toInt().toString(),
                                               style: const TextStyle(
@@ -246,7 +247,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                   barGroups: barGroups,
                                   minY: 0,
                                   maxY:
-                                      3000, // Set max Y-axis to accommodate wider calorie values
+                                      4000, // Set max Y-axis to accommodate wider calorie values
                                 ),
                               ),
                               // BarChart(

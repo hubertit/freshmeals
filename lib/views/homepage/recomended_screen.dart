@@ -36,7 +36,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
     });
 
     _tabController = TabController(
-        length: 3, vsync: this); // 3 tabs: All, Instant, Non-Instant
+        length: 2, vsync: this); // 3 tabs: All, Instant, Non-Instant
   }
 
   @override
@@ -90,18 +90,18 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
   }
 
   Widget _buildMealsList(List<Meal> meals, bool nonInstant) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
-        child: meals.isEmpty
-            ? const Column(
-                children: [
-                  SizedBox(height: 200),
-                  CustomEmptyWidget(message: "You have no items.")
-                ],
-              )
-            : Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
+      child: meals.isEmpty
+          ? const Column(
+              children: [
+                SizedBox(height: 200),
+                CustomEmptyWidget(message: "You have no items.")
+              ],
+            )
+          : SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
                 children: [
                   if (nonInstant)
                     Container(
@@ -141,13 +141,14 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
                       ),
                     ),
                   if (nonInstant)
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
@@ -161,7 +162,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
                   ),
                 ],
               ),
-      ),
+            ),
     );
   }
 

@@ -71,7 +71,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
                     CustomEmptyWidget(
                         message: widget.typeId == "13"
                             ? "There is no Special meal today!"
-                            : "There is no meals in this category!")
+                            : "There are no meals in this category!")
                   ],
                 )
               : Column(
