@@ -114,7 +114,7 @@ class AccountInfoNotifier extends StateNotifier<AccountInfoState?> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );
-        context.pop();
+        context.go('/');
       } else {
         throw Exception('Failed to update profile: ${response.statusMessage}');
       }

@@ -10,6 +10,7 @@ import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
 import 'package:freshmeals/riverpod/notifiers/home/order_details_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/payments.dart';
+import 'package:freshmeals/riverpod/notifiers/home/pre_order.dart';
 import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 import 'package:freshmeals/riverpod/notifiers/home/recommended_notifier.dart';
 
@@ -94,6 +95,11 @@ final calorieProvider = StateNotifierProvider<CalorieNotifier, CalorieState>(
   (ref) => CalorieNotifier(),
 );
 final recommendedMealsProvider =
-    StateNotifierProvider<RecomendedNotifier, RecommendedState>(
-  (ref) => RecomendedNotifier(),
+StateNotifierProvider<RecomendedNotifier, RecommendedState>(
+      (ref) => RecomendedNotifier(),
+);
+
+final preOrderMealsProvider =
+StateNotifierProvider<PreOrderNotifier, PreOrderState>(
+      (ref) => PreOrderNotifier(),
 );

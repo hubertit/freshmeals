@@ -47,8 +47,7 @@ class _LunchPageState extends ConsumerState<LunchPage> {
           },
         ),
         title: Text(
-          Uri.decodeComponent(widget.title)
-          ,
+          Uri.decodeComponent(widget.title),
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -64,12 +63,15 @@ class _LunchPageState extends ConsumerState<LunchPage> {
               child: CircularProgressIndicator(),
             )
           : meals.mealCategories.isEmpty
-              ? const Column(
+              ? Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 200,
                     ),
-                    CustomEmptyWidget(message: "There is no Special meal today!")
+                    CustomEmptyWidget(
+                        message: widget.typeId == "13"
+                            ? "There is no Special meal today!"
+                            : "There is no meals in this category!")
                   ],
                 )
               : Column(

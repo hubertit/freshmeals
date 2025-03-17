@@ -23,27 +23,34 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(randomMealsProvider.notifier).fetchMeals(context);
-      ref.read(mealTypesProviderNI.notifier).mealTypes(context, 'non-instant');
+      final user = ref.read(userProvider);
+      if (user != null) {
+        ref
+            .read(preOrderMealsProvider.notifier)
+            .fetchPreOrderMeals(context, user.user!.token);
+        ref
+            .read(mealTypesProviderNI.notifier)
+            .mealTypes(context, 'non-instant');
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var meals = ref.watch(randomMealsProvider);
+    var meals = ref.watch(preOrderMealsProvider);
     var types = ref.watch(mealTypesProviderNI);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: 110,
+        toolbarHeight: 90,
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: [
               const Text("Non-Instant Meals"),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               if (types!.mealCategories.isNotEmpty)
@@ -69,7 +76,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : meals.mealCategories.isEmpty
+          : meals.preOrderMeals.isEmpty
               ? const Column(
                   children: [
                     SizedBox(
@@ -105,8 +112,9 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                             border: Border.all(color: const Color(0xffbadbcc))),
                         child: const Text.rich(
                           // textAlign: TextAlign.center,
+                          // These meals take a   long time to prepare. Kindly make your order at least 24 hours in advance
                           TextSpan(
-                            text: "These meals require approximately ",
+                            text: "These meals take a long time to prepare. Kindly make your order at least",
                             style: TextStyle(
                               fontSize: 14,
                               // color: Color(0xf0f5132),
@@ -114,7 +122,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: "24 hours",
+                                text: " 24 hours ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green, // Highlight balance
@@ -122,7 +130,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                               ),
                               TextSpan(
                                 text:
-                                    " to prepare, you should place your orders well in advance.",
+                                    "in advance.",
                               ),
                             ],
                           ),
@@ -142,9 +150,9 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                             crossAxisSpacing: 16,
                             childAspectRatio: 0.8,
                           ),
-                          itemCount: meals.mealCategories.length,
+                          itemCount: meals.preOrderMeals.length,
                           itemBuilder: (context, index) {
-                            var meal = meals.mealCategories[index];
+                            var meal = meals.preOrderMeals[index];
                             return _buildMealCard(context: context, meal: meal);
                           },
                         ),
