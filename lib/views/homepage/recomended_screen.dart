@@ -29,7 +29,10 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
       var user = ref.watch(userProvider)!.user;
       ref
           .read(recommendedMealsProvider.notifier)
-          .subscriptions(context, user!.token);
+          .fetchInstantRecommended(context, user!.token);
+      ref
+          .read(recommendedMealsProvider.notifier)
+          .fetchNonInstantRecommended(context, user!.token);
     });
 
     _tabController = TabController(length: 3, vsync: this); // 3 tabs: All, Instant, Non-Instant
@@ -70,21 +73,14 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
           ? const Center(
         child: CircularProgressIndicator(),
       )
-          : meals.recomendations.isEmpty
-          ? const Column(
-        children: [
-          SizedBox(height: 200),
-          CustomEmptyWidget(message: "You have no items.")
-        ],
-      )
-          : TabBarView(
+          :  TabBarView(
         controller: _tabController,
         children: [
 
           // _buildMealsList(meals.recomendations), // All Meals
-          _buildMealsList(meals.recomendations
+          _buildMealsList(meals.instantRecommendations
               ), // Instant Meals
-          _buildMealsList(meals.recomendations
+          _buildMealsList(meals.nonInstantRecommendations
               // .where((meal) => !meal.isInstant)
               // .toList()
           ), // Non-Instant Meals
@@ -96,7 +92,14 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
   Widget _buildMealsList(List<Meal> meals) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
-      child: GridView.builder(
+      child:meals.isEmpty
+          ? const Column(
+        children: [
+          SizedBox(height: 200),
+          CustomEmptyWidget(message: "You have no items.")
+        ],
+      )
+          : GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 16,

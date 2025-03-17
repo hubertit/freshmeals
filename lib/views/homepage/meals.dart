@@ -27,9 +27,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       ref.read(mealTypesProvider.notifier).mealTypes(context, 'instant');
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
       var user = ref.watch(userProvider)!.user;
-      ref
-          .read(recommendedMealsProvider.notifier)
-          .subscriptions(context, user!.token);
+      // ref
+      //     .read(recommendedMealsProvider.notifier)
+      //     .subscriptions(context, user!.token);
     });
     super.initState();
   }
