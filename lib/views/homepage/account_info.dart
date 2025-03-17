@@ -180,7 +180,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       // _buildAccountItem("Activity Level", activityLevelController),
                       // const SizedBox(height: 10),
                       const Text(
-                        "Health Goal",
+                        "Dietary goals",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
