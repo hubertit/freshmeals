@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
-import 'package:freshmeals/views/homepage/widgets/order_item.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../models/home/meal_model.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/home.dart';
 import '../../utls/callbacks.dart';
 import '../appointment/widgets/empty_widget.dart';
 import 'widgets/add_to_cart.dart';
-import 'widgets/category_card.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
@@ -50,51 +48,50 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
               child: CircularProgressIndicator(),
             )
           : meals.favoriteMeals!.isEmpty
-          ? const Column(
-        children: [
-          SizedBox(
-            height: 200,
-          ),
-          CustomEmptyWidget(
-              message: "There are no favorite items")
-        ],
-      )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       _buildCategoryTab("All", isSelected: true),
-                //       _buildCategoryTab("For You"),
-                //       _buildCategoryTab("Recommended"),
-                //     ],
-                //   ),
-                // ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.8,
-                      ),
-                      itemCount: meals.favoriteMeals!.length,
-                      itemBuilder: (context, index) {
-                        var meal = meals.favoriteMeals![index];
-                        return _buildMealCard(context: context, meal: meal);
-                      },
+              ? const Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
                     ),
-                  ),
+                    CustomEmptyWidget(message: "You have no favorite meals.")
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       _buildCategoryTab("All", isSelected: true),
+                    //       _buildCategoryTab("For You"),
+                    //       _buildCategoryTab("Recommended"),
+                    //     ],
+                    //   ),
+                    // ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.8,
+                          ),
+                          itemCount: meals.favoriteMeals!.length,
+                          itemBuilder: (context, index) {
+                            var meal = meals.favoriteMeals![index];
+                            return _buildMealCard(context: context, meal: meal);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 

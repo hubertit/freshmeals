@@ -96,7 +96,7 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
           ? const Column(
               children: [
                 SizedBox(height: 200),
-                CustomEmptyWidget(message: "There are no items recommended.")
+                CustomEmptyWidget(message: "There are no recommended meals")
               ],
             )
           : SingleChildScrollView(

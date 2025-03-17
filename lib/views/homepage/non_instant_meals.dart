@@ -82,7 +82,8 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                     SizedBox(
                       height: 200,
                     ),
-                    CustomEmptyWidget(message: "You have  no items.")
+                    CustomEmptyWidget(
+                        message: "There are no items in this category")
                   ],
                 )
               : SingleChildScrollView(
@@ -114,7 +115,8 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                           // textAlign: TextAlign.center,
                           // These meals take a   long time to prepare. Kindly make your order at least 24 hours in advance
                           TextSpan(
-                            text: "These meals take a long time to prepare. Kindly make your order at least",
+                            text:
+                                "These meals take a long time to prepare. Kindly make your order at least",
                             style: TextStyle(
                               fontSize: 14,
                               // color: Color(0xf0f5132),
@@ -129,8 +131,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    "in advance.",
+                                text: "in advance.",
                               ),
                             ],
                           ),
