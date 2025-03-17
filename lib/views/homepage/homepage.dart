@@ -1,20 +1,18 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
 import 'package:freshmeals/views/homepage/cart_screen.dart';
-import 'package:freshmeals/views/homepage/favorites_screen.dart';
 import 'package:freshmeals/views/homepage/meals.dart';
 import 'package:freshmeals/views/homepage/profile.dart';
 import 'package:freshmeals/views/homepage/recomended_screen.dart';
-import 'package:freshmeals/views/homepage/search_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
-import '../appointment/appointments_booking.dart';
 import 'non_instant_meals.dart';
 
 // int screenIndex =1;
@@ -90,7 +88,7 @@ class _HomepageState extends ConsumerState<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.recommend), label: "For You"),
           BottomNavigationBarItem(
-              icon: Icon(vector_icons.Ionicons.watch), label: "Pre-order"),
+              icon: Icon(CupertinoIcons.time), label: "Pre-order"),
           BottomNavigationBarItem(
               icon: Icon(vector_icons.Ionicons.ios_cart), label: "Cart"),
           BottomNavigationBarItem(

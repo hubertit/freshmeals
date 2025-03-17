@@ -35,7 +35,8 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
           .fetchNonInstantRecommended(context, user!.token);
     });
 
-    _tabController = TabController(length: 3, vsync: this); // 3 tabs: All, Instant, Non-Instant
+    _tabController = TabController(
+        length: 3, vsync: this); // 3 tabs: All, Instant, Non-Instant
   }
 
   @override
@@ -71,46 +72,95 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
       ),
       body: meals!.isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
-          :  TabBarView(
-        controller: _tabController,
-        children: [
-
-          // _buildMealsList(meals.recomendations), // All Meals
-          _buildMealsList(meals.instantRecommendations
-              ), // Instant Meals
-          _buildMealsList(meals.nonInstantRecommendations
-              // .where((meal) => !meal.isInstant)
-              // .toList()
-          ), // Non-Instant Meals
-        ],
-      ),
+              child: CircularProgressIndicator(),
+            )
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                // _buildMealsList(meals.recomendations), // All Meals
+                _buildMealsList(
+                    meals.instantRecommendations, false), // Instant Meals
+                _buildMealsList(meals.nonInstantRecommendations, true
+                    // .where((meal) => !meal.isInstant)
+                    // .toList()
+                    ), // Non-Instant Meals
+              ],
+            ),
     );
   }
 
-  Widget _buildMealsList(List<Meal> meals) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
-      child:meals.isEmpty
-          ? const Column(
-        children: [
-          SizedBox(height: 200),
-          CustomEmptyWidget(message: "You have no items.")
-        ],
-      )
-          : GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.8,
-        ),
-        itemCount: meals.length,
-        itemBuilder: (context, index) {
-          var meal = meals[index];
-          return _buildMealCard(context: context, meal: meal);
-        },
+  Widget _buildMealsList(List<Meal> meals, bool nonInstant) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 10),
+        child: meals.isEmpty
+            ? const Column(
+                children: [
+                  SizedBox(height: 200),
+                  CustomEmptyWidget(message: "You have no items.")
+                ],
+              )
+            : Column(
+                children: [
+                  if (nonInstant)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      // margin:
+                      // const EdgeInsets.only(left: 16, right: 16, top: 10),
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff0d1e7dd),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: const Color(0xffbadbcc))),
+                      child: const Text.rich(
+                        // textAlign: TextAlign.center,
+                        // These meals take a   long time to prepare. Kindly make your order at least 24 hours in advance
+                        TextSpan(
+                          text:
+                              "These meals take a long time to prepare. Kindly make your order at least",
+                          style: TextStyle(
+                            fontSize: 14,
+                            // color: Color(0xf0f5132),
+                            // fontWeight: FontWeight.bold
+                          ),
+                          children: [
+                            TextSpan(
+                              text: " 24 hours ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green, // Highlight balance
+                              ),
+                            ),
+                            TextSpan(
+                              text: "in advance.",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (nonInstant)
+                    SizedBox(
+                      height: 10,
+                    ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemCount: meals.length,
+                    itemBuilder: (context, index) {
+                      var meal = meals[index];
+                      return _buildMealCard(context: context, meal: meal);
+                    },
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -126,13 +176,12 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Expanded(
               child: Stack(
                 children: [
                   ClipRRect(
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(7)),
+                        const BorderRadius.vertical(top: Radius.circular(7)),
                     child: Image.network(
                       meal.imageUrl,
                       height: 130,
@@ -179,8 +228,8 @@ class _RecommendedScreenState extends ConsumerState<RecommendedScreen>
                             showModalBottomSheet(
                                 context: context,
                                 builder: (context) => AddToCartModel(
-                                  productModel: meal,
-                                ));
+                                      productModel: meal,
+                                    ));
                           },
                           child: const Icon(
                             Icons.add_shopping_cart,
