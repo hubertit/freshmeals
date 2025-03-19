@@ -138,11 +138,13 @@ class CartNotifier extends StateNotifier<CartState?> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: response.data['code'] == 400
-                ? Color(0xfff1e0d6)
+                ? const Color(0xfff1e0d6)
                 : primarySwatch,
-            content: Text(response.data['message'],style: TextStyle(color: response.data['code'] == 400
-                ? primarySwatch
-                :null),),
+            content: Text(
+              response.data['message'],
+              style: TextStyle(
+                  color: response.data['code'] == 400 ? primarySwatch : null),
+            ),
           ),
         );
         // }
