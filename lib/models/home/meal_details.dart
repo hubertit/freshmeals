@@ -11,11 +11,15 @@ class MealDetailsModel {
   final String sodium;
   final String minerals;
   final List<String> ingredients;
+  final List<String> allergens;
+  final List<String> allergies;
+  final List<String> preExistingConditions;
+  final List<String> dietaryPreferences;
+  final List<String> healthGoals;
   final String imageUrl;
   final String price;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<String> allergens;
   final Map<String, ContentDetails> contents;
 
   MealDetailsModel({
@@ -31,11 +35,15 @@ class MealDetailsModel {
     required this.sodium,
     required this.minerals,
     required this.ingredients,
+    required this.allergens,
+    required this.allergies,
+    required this.preExistingConditions,
+    required this.dietaryPreferences,
+    required this.healthGoals,
     required this.imageUrl,
     required this.price,
     required this.createdAt,
     required this.updatedAt,
-    required this.allergens,
     required this.contents,
   });
 
@@ -45,30 +53,25 @@ class MealDetailsModel {
       name: json['name'] ?? '',
       description: json['description'] ?? '',
       calories: json['calories'] ?? '0',
-      protein: json['protein'] ?? 0,
-      carbs: json['carbs'] ?? 0,
-      fat: json['fat'] ?? 0,
-      fiber: json['fiber'] ?? 0,
-      sugar: json['sugar'] ?? 0,
+      protein: int.tryParse(json['protein'].toString()) ?? 0,
+      carbs: int.tryParse(json['carbs'].toString()) ?? 0,
+      fat: int.tryParse(json['fat'].toString()) ?? 0,
+      fiber: int.tryParse(json['fiber'].toString()) ?? 0,
+      sugar: int.tryParse(json['sugar'].toString()) ?? 0,
       sodium: json['sodium'] ?? '',
       minerals: json['minerals'] ?? '',
-      ingredients: (json['ingredients'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ??
-          [],
+      ingredients: List<String>.from(json['ingredients'] ?? []),
+      allergens: List<String>.from(json['allergens'] ?? []),
+      allergies: List<String>.from(json['allergies'] ?? []),
+      preExistingConditions: List<String>.from(json['pre_existing_conditions'] ?? []),
+      dietaryPreferences: List<String>.from(json['dietary_preferences'] ?? []),
+      healthGoals: List<String>.from(json['health_goals'] ?? []),
       imageUrl: json['image_url'] ?? '',
       price: json['price'] ?? '0',
-      allergens: (json['allergens'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ??
-          [],
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime(1970),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime(1970),
       contents: (json['contents'] as Map<String, dynamic>?)
-          ?.map((key, value) => MapEntry(
-        key,
-        ContentDetails.fromJson(value),
-      )) ??
+          ?.map((key, value) => MapEntry(key, ContentDetails.fromJson(value))) ??
           {},
     );
   }

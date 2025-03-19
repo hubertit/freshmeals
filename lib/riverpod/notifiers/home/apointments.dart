@@ -46,7 +46,8 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
   // Book appointment method
   Future<void> bookAppointment(BuildContext context, String token,
       // String date,
-      // String timeSlot, String duration, WidgetRef ref, String meetingType
+      // String timeSlot, String duration, WidgetRef ref,
+      String meetingType
       ) async {
     try {
       state = state.copyWith(isLoading: true);
@@ -70,12 +71,12 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.data['message'])),
         );
-        // if (meetingType ==
-        //     "Online") {
-        //   // context.pop();
-        //   launchUrl(Uri.parse(
-        //       "https://freshmeals.rw/app/questionnaire"));
-        // }
+        if (meetingType ==
+            "Online") {
+          // context.pop();
+          launchUrl(Uri.parse(
+              "https://freshmeals.rw/app/questionnaire"));
+        }
         context.pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

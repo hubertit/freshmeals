@@ -302,7 +302,7 @@ print(widget.mealId);
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10)),
+                          BorderRadius.vertical(top: Radius.circular(10)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,6 +331,148 @@ print(widget.mealId);
                             )                      ],
                         ),
                       ),
+
+                      if(meal.mealsData!.healthGoals.isNotEmpty)Container(
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Health Goals',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: meal.mealsData!.healthGoals.map((entry) {
+                                final ingredientList = meal.mealsData!.healthGoals.toList();
+                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
+
+                                return IngredientItem(
+                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
+                                  isLast: isLastEntry,
+                                );
+                              }).toList(),
+                            )                      ],
+                        ),
+                      ),
+                      if(meal.mealsData!.allergens.isNotEmpty)Container(
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Food Allergens',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: meal.mealsData!.allergens.map((entry) {
+                                final ingredientList = meal.mealsData!.allergens.toList();
+                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
+
+                                return IngredientItem(
+                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
+                                  isLast: isLastEntry,
+                                );
+                              }).toList(),
+                            )                      ],
+                        ),
+                      ),
+                      if(meal.mealsData!.dietaryPreferences.isNotEmpty)Container(
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Dietary Preferances',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: meal.mealsData!.dietaryPreferences.map((entry) {
+                                final ingredientList = meal.mealsData!.dietaryPreferences.toList();
+                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
+
+                                return IngredientItem(
+                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
+                                  isLast: isLastEntry,
+                                );
+                              }).toList(),
+                            )                      ],
+                        ),
+                      ),
+                      if(meal.mealsData!.preExistingConditions.isNotEmpty)Container(
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Pre-Existing Conditions',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: meal.mealsData!.preExistingConditions.map((entry) {
+                                final ingredientList = meal.mealsData!.preExistingConditions.toList();
+                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+
+
+                                return IngredientItem(
+                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
+                                  isLast: isLastEntry,
+                                );
+                              }).toList(),
+                            )                      ],
+                        ),
+                      ),
+
                       // Container(
                       //   margin: const EdgeInsets.all(10).copyWith(top: 20),
                       //   padding: const EdgeInsets.all(10),

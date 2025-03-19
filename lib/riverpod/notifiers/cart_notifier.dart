@@ -130,17 +130,22 @@ class CartNotifier extends StateNotifier<CartState?> {
 
         context.pop();
 
-        if (response.data['code'] == 400) {
-          await NotificationService.showNotification(
-              "Warning", response.data['message']);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: primarySwatch,
-              content: Text(response.data['message']),
-            ),
-          );
-        }
+        // if (response.data['code'] == 400) {
+        await NotificationService.showNotification(
+            response.data['code'] == 400 ? "Warning" : "Success",
+            response.data['message']);
+        // } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: response.data['code'] == 400
+                ? Color(0xfff1e0d6)
+                : primarySwatch,
+            content: Text(response.data['message'],style: TextStyle(color: response.data['code'] == 400
+                ? primarySwatch
+                :null),),
+          ),
+        );
+        // }
       }
     } catch (e) {
       // Handle the error
