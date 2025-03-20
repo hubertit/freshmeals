@@ -140,6 +140,9 @@ class CartNotifier extends StateNotifier<CartState?> {
             backgroundColor: response.data['code'] == 400
                 ? const Color(0xfff1e0d6)
                 : primarySwatch,
+            duration: response.data['code'] == 400
+                ? const Duration(seconds: 7)
+                : const Duration(seconds: 2),
             content: Text(
               response.data['message'],
               style: TextStyle(
