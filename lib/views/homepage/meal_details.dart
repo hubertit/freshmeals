@@ -186,54 +186,6 @@ print(widget.mealId);
                           ],
                         ),
                       ),
-                      if (meal.mealsData!.allergens!.isNotEmpty)
-                        Container(
-                          width: double.maxFinite,
-                          margin: const EdgeInsets.all(10).copyWith(top: 20),
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(10)),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Allergens',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: List.generate(
-                                      meal.mealsData!.allergens!.length,
-                                      (index) {
-                                    return Chip(
-                                      label: Text(
-                                          meal.mealsData!.allergens![index]),
-                                      color: WidgetStateProperty.all(scaffold),
-                                      elevation: 0,
-                                      side: BorderSide.none,
-                                    );
-                                  })
-                                  // ...() [
-                                  //   Chip(label: Text('Lead')),
-                                  //   Chip(label: Text('UX Design')),
-                                  //   Chip(label: Text('Problem Solving')),
-                                  //   Chip(label: Text('Critical')),
-                                  // ],
-                                  ),
-                            ],
-                          ),
-                        ),
 
                       // Container(
                       //   margin: const EdgeInsets.all(10).copyWith(top: 20),
@@ -296,6 +248,54 @@ print(widget.mealId);
                       //     ],
                       //   ),
                       // ),
+                      if (meal.mealsData!.allergies!.isNotEmpty)Container(
+                        width: double.maxFinite,
+                        margin: const EdgeInsets.all(10).copyWith(top: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Allergies',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: List.generate(
+                                    meal.mealsData!.allergies!.length,
+                                        (index) {
+                                      return Chip(
+                                        label: Text(
+                                            meal.mealsData!.allergies![index]),
+                                        color: WidgetStateProperty.all(scaffold),
+                                        elevation: 0,
+                                        side: BorderSide.none,
+                                      );
+                                    })
+                              // ...() [
+                              //   Chip(label: Text('Lead')),
+                              //   Chip(label: Text('UX Design')),
+                              //   Chip(label: Text('Problem Solving')),
+                              //   Chip(label: Text('Critical')),
+                              // ],
+                            ),
+                          ],
+                        ),
+                      ),
+
                       Container(
                         margin: const EdgeInsets.all(10).copyWith(top: 20),
                         padding: const EdgeInsets.all(10),
@@ -367,41 +367,41 @@ print(widget.mealId);
                             )                      ],
                         ),
                       ),
-                      if(meal.mealsData!.allergens.isNotEmpty)Container(
-                        margin: const EdgeInsets.all(10).copyWith(top: 20),
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Food Allergens',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              children: meal.mealsData!.allergens.map((entry) {
-                                final ingredientList = meal.mealsData!.allergens.toList();
-                                final isLastEntry = entry == ingredientList[ingredientList.length - 1];
-
-
-                                return IngredientItem(
-                                  itemTitle: '\u25B8 $entry', // Unicode bullet point
-                                  isLast: isLastEntry,
-                                );
-                              }).toList(),
-                            )                      ],
-                        ),
-                      ),
+                      // if(meal.mealsData!.allergens.isNotEmpty)Container(
+                      //   margin: const EdgeInsets.all(10).copyWith(top: 20),
+                      //   padding: const EdgeInsets.all(10),
+                      //   decoration: const BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius:
+                      //     BorderRadius.vertical(top: Radius.circular(10)),
+                      //   ),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       const Text(
+                      //         'Food Allergens',
+                      //         style: TextStyle(
+                      //           fontSize: 18,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
+                      //       const SizedBox(
+                      //         height: 10,
+                      //       ),
+                      //       Column(
+                      //         children: meal.mealsData!.allergens.map((entry) {
+                      //           final ingredientList = meal.mealsData!.allergens.toList();
+                      //           final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+                      //
+                      //
+                      //           return IngredientItem(
+                      //             itemTitle: '\u25B8 $entry', // Unicode bullet point
+                      //             isLast: isLastEntry,
+                      //           );
+                      //         }).toList(),
+                      //       )                      ],
+                      //   ),
+                      // ),
                       if(meal.mealsData!.dietaryPreferences.isNotEmpty)Container(
                         margin: const EdgeInsets.all(10).copyWith(top: 20),
                         padding: const EdgeInsets.all(10),

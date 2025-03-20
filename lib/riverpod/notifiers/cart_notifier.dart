@@ -143,7 +143,7 @@ class CartNotifier extends StateNotifier<CartState?> {
             content: Text(
               response.data['message'],
               style: TextStyle(
-                  color: response.data['code'] == 400 ? primarySwatch : null),
+                  color: response.data['code'] == 400 ? Color(0xff842029) : null),
             ),
           ),
         );
