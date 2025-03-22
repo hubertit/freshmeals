@@ -31,31 +31,31 @@ class MealsData {
   final List<Meal> breakfast;
   final List<Meal> lunch;
   final List<Meal> dinner;
-  final Meal featured;
+  final Meal? featured;
 
-  MealsData({
-    required this.yourPick,
-    required this.breakfast,
-    required this.lunch,
-    required this.dinner,
-    required this.featured
-  });
+  MealsData(
+      {required this.yourPick,
+      required this.breakfast,
+      required this.lunch,
+      required this.dinner,
+      this.featured});
 
   factory MealsData.fromJson(Map<String, dynamic> json) {
     return MealsData(
-      yourPick: (json['Your Pick'] as List<dynamic>)
-          .map((mealJson) => Meal.fromJson(mealJson))
-          .toList(),
-      breakfast: (json['Breakfast'] as List<dynamic>)
-          .map((mealJson) => Meal.fromJson(mealJson))
-          .toList(),
-      lunch: (json['Lunch'] as List<dynamic>)
-          .map((mealJson) => Meal.fromJson(mealJson))
-          .toList(),
-      dinner: (json['Dinner'] as List<dynamic>)
-          .map((mealJson) => Meal.fromJson(mealJson))
-          .toList(),
-      featured: Meal.fromJson(json['Featured Meal'])
-    );
+        yourPick: (json['Your Pick'] as List<dynamic>)
+            .map((mealJson) => Meal.fromJson(mealJson))
+            .toList(),
+        breakfast: (json['Breakfast'] as List<dynamic>)
+            .map((mealJson) => Meal.fromJson(mealJson))
+            .toList(),
+        lunch: (json['Lunch'] as List<dynamic>)
+            .map((mealJson) => Meal.fromJson(mealJson))
+            .toList(),
+        dinner: (json['Dinner'] as List<dynamic>)
+            .map((mealJson) => Meal.fromJson(mealJson))
+            .toList(),
+        featured: json['Featured Meal'] == null
+            ? null
+            : Meal.fromJson(json['Featured Meal']));
   }
 }

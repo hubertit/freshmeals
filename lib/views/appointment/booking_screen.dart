@@ -1,265 +1,174 @@
-// import 'package:flutter/material.dart';
-// import 'package:freshmeals/theme/colors.dart';
-//
-// import '../../constants/_assets.dart';
-// import '../../models/general/calendar.dart';
-//
-// class NutritionistBookingScreen extends StatefulWidget {
-//   const NutritionistBookingScreen({super.key});
-//
-//   @override
-//   State<NutritionistBookingScreen> createState() =>
-//       _NutritionistBookingScreenState();
-// }
-//
-// class _NutritionistBookingScreenState extends State<NutritionistBookingScreen> {
-//   List<CalendarDay> calendar =
-//       (calenderDatas as Iterable).map((e) => CalendarDay.fromJson(e)).toList();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.all(10.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               // Greeting Section
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   const Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       Text(
-//                         "Hello, Aristide 👋",
-//                         style: TextStyle(
-//                           fontSize: 20,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       SizedBox(height: 4),
-//                       Text(
-//                         "How are you today?",
-//                         style: TextStyle(
-//                           fontSize: 16,
-//                           color: Colors.grey,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   Row(
-//                     children: [
-//                       CircleAvatar(
-//                         backgroundColor: Colors.white,
-//                         child: IconButton(
-//                           onPressed: () {},
-//                           icon: const Icon(Icons.search),
-//                         ),
-//                       ),
-//                       SizedBox(width: 5),
-//                       CircleAvatar(
-//                         backgroundColor: Colors.white,
-//                         child: IconButton(
-//                           onPressed: () {},
-//                           icon: Icon(Icons.notifications_outlined),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 16),
-//               // Categories Section
-//               SingleChildScrollView(
-//                 scrollDirection: Axis.horizontal,
-//                 child: Row(
-//                   children: [
-//                     _buildCategoryItem("General", Icons.health_and_safety),
-//                     _buildCategoryItem("Weight Loss", Icons.scale),
-//                     _buildCategoryItem("Sports", Icons.fitness_center),
-//                     _buildCategoryItem("Diet Plans", Icons.restaurant_menu),
-//                   ],
-//                 ),
-//               ),
-//               SizedBox(height: 16),
-//               // Top Nutritionists Section
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   const Text(
-//                     "Top Nutritionists",
-//                     style: TextStyle(
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                   TextButton(
-//                     onPressed: () {},
-//                     child: const Text("See All"),
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 16),
-//               // Nutritionist Cards
-//               Expanded(
-//                 child: ListView(
-//                   children: [
-//                     _buildNutritionistCard(
-//                       name: "Dr. Sarah Johnson",
-//                       specialty: "Dietitian",
-//                       price: "\$80/session",
-//                       rating: 4.9,
-//                       availableSlots: "8 slots",
-//                       imagePath: "assets/nutritionist1.jpg",
-//                     ),
-//                     _buildNutritionistCard(
-//                       name: "Dr. Michael Smith",
-//                       specialty: "Sports Nutritionist",
-//                       price: "\$90/session",
-//                       rating: 4.8,
-//                       availableSlots: "6 slots",
-//                       imagePath: "assets/nutritionist2.jpg",
-//                     ),
-//                     _buildNutritionistCard(
-//                       name: "Dr. Sarah Johnson",
-//                       specialty: "Dietitian",
-//                       price: "\$80/session",
-//                       rating: 4.9,
-//                       availableSlots: "8 slots",
-//                       imagePath: "assets/nutritionist1.jpg",
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildCategoryItem(String title, IconData icon) {
-//     return Padding(
-//       padding: const EdgeInsets.only(right: 16.0),
-//       child: Column(
-//         children: [
-//           CircleAvatar(
-//             radius: 30,
-//             backgroundColor: Colors.white,
-//             child: Icon(icon, size: 30, color: Colors.black),
-//           ),
-//           const SizedBox(height: 8),
-//           Text(
-//             title,
-//             style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildNutritionistCard({
-//     required String name,
-//     required String specialty,
-//     required String price,
-//     required double rating,
-//     required String availableSlots,
-//     required String imagePath,
-//   }) {
-//     return Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-//       elevation: 0,
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 CircleAvatar(
-//                   radius: 40,
-//                   backgroundImage: const AssetImage(AssetsUtils.profile),
-//                 ),
-//                 SizedBox(width: 16),
-//                 Expanded(
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       Text(
-//                         name,
-//                         style: TextStyle(
-//                           fontSize: 16,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       SizedBox(height: 4),
-//                       Text(
-//                         specialty,
-//                         style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-//                       ),
-//                       SizedBox(height: 8),
-//                       Text(
-//                         price,
-//                         style: TextStyle(fontSize: 14, color: primarySwatch),
-//                       ),
-//                       SizedBox(height: 8),
-//                       Row(
-//                         children: [
-//                           Icon(Icons.star, color: primarySwatch, size: 18),
-//                           SizedBox(width: 4),
-//                           Text(
-//                             "$rating",
-//                             style: const TextStyle(fontSize: 14),
-//                           ),
-//                           Spacer(),
-//                           Text(
-//                             availableSlots,
-//                             style: TextStyle(
-//                                 fontSize: 12, color: Colors.grey[600]),
-//                           ),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             const Divider(
-//               thickness: 0.3,
-//             ),
-//             Container(
-//               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-//               // height: 50,
-//               child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: List.generate(
-//                       calendar.length,
-//                       (index) => Column(
-//                             children: [
-//                               Text(
-//                                 calendar[index].day,
-//                                 style: const TextStyle(fontSize: 15),
-//                               ),
-//                               const SizedBox(
-//                                 height: 5,
-//                               ),
-//                               Text(
-//                                 calendar[index].date,
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.bold,
-//                                     fontSize: 19,
-//                                     color: index == 0
-//                                         ? primarySwatch
-//                                         : Colors.black),
-//                               )
-//                             ],
-//                           ))),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/models/preferences.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
+import 'package:freshmeals/riverpod/providers/general.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../models/general/preferances_model.dart';
+import '../../models/user_model.dart';
+
+class NutritionistsScreen extends ConsumerStatefulWidget {
+  final UserModel user;
+  const NutritionistsScreen({Key? key, required this.user}) : super(key: key);
+
+  @override
+  ConsumerState<NutritionistsScreen> createState() => _PreferencesScreenState();
+}
+
+class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(preferencesProvider.notifier).preferences(context);
+    });
+    super.initState();
+  }
+  List<String> selPref = [];
+
+  final selectedPreferenceProvider = StateProvider<List<int>>((ref) => []);
+
+  @override
+  Widget build(BuildContext context) {
+    print(selPref);
+    var preferences = ref.watch(preferencesProvider);
+    // var selectedPref = ref.watch(selectedPreferenceProvider);
+    var user = ref.watch(userProvider);
+    return Scaffold(
+      backgroundColor: const Color(0xfff5f8fe),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: const Text("Choose preferences"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: preferences!.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 13.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              "You can choose interests and we have a few suggestions for you",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: preferences.preferances.length,
+                itemBuilder: (context, index) {
+                  PreferenceModel preference = preferences.preferances[index];
+                  bool isSelected = selPref.contains(preference.name);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (selPref.contains(preference.name)) {
+                          selPref = List.from(selPref)..remove(preference.name);
+                        } else {
+                          selPref = List.from(selPref)..add(preference.name);
+                        }
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: isSelected ? Border.all(color: Colors.green, width: 2) : null,
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            blurRadius: 5,
+                            spreadRadius: 2,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              preference.imageUrl,
+                              height: 60,
+                              width: 60,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  preference.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  preference.description ?? "No description available",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                widget.user.dietaryPreferences = selPref;
+                context.push("/additional",extra: widget.user);
+
+                // context.push('/welcome');
+              },
+              child: const Text(
+                "Continue",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}

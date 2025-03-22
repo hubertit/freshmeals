@@ -478,9 +478,9 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     //     ),
                     //   ),
                     // ),
-                    InkWell(
+                    if(mealsHome.mealsData!.featured!=null)InkWell(
                       onTap: () => context.push(
-                          "/mealDetails/${mealsHome.mealsData!.featured.mealId}"),
+                          "/mealDetails/${mealsHome.mealsData!.featured!.mealId}"),
                       child: Container(
                         height: 200,
                         decoration: BoxDecoration(
@@ -488,7 +488,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                  mealsHome.mealsData!.featured.imageUrl),
+                                  mealsHome.mealsData!.featured!.imageUrl),
                               // NetworkImage(categories
                               //     .mealCategories[index]
                               //     .imageUrl)
@@ -519,14 +519,14 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                           trimm(
                                               25,
                                               mealsHome
-                                                  .mealsData!.featured.name),
+                                                  .mealsData!.featured!.name),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                               color: Colors.white)),
                                       const SizedBox(height: 5),
                                       Text(
-                                          "${formatMoney(mealsHome.mealsData!.featured.price)} Rwf ",
+                                          "${formatMoney(mealsHome.mealsData!.featured!.price)} Rwf ",
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -645,7 +645,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     //       }),
                     // ),
                     // const SizedBox(height: 16),
-                    _buildMealSection(
+                    if(mealsHome.mealsData!.breakfast.isNotEmpty) _buildMealSection(
                         "Breakfast",
                         "Start your day with wholesome and nutritious meals",
                         List.generate(mealsHome.mealsData!.breakfast.length,
@@ -661,12 +661,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         }),
                         "1"),
                     const SizedBox(height: 16),
-                    _buildMealSection(
+                    if(mealsHome.mealsData!.yourPick.isNotEmpty)_buildMealSection(
                         "Snack",
                         "Midday snacks to keep your energy levels high",
-                        List.generate(mealsHome.mealsData!.dinner.length,
+                        List.generate(mealsHome.mealsData!.yourPick.length,
                             (index) {
-                          var breakF = mealsHome.mealsData!.dinner[index];
+                          var breakF = mealsHome.mealsData!.yourPick[index];
 
                           return _buildMealCard(
                               breakF.name,
@@ -677,7 +677,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         }),
                         "4"),
                     const SizedBox(height: 16),
-                    _buildMealSection(
+                    if(mealsHome.mealsData!.lunch.isNotEmpty)_buildMealSection(
                         "Lunch",
                         "Fuel your afternoon with hearty, balanced meals",
                         List.generate(mealsHome.mealsData!.lunch.length,
@@ -693,7 +693,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         }),
                         "2"),
                     const SizedBox(height: 16),
-                    _buildMealSection(
+                   if(mealsHome.mealsData!.dinner.isNotEmpty) _buildMealSection(
                         "Dinner",
                         "End your day with a healthy, delicious, and satisfying meal",
                         List.generate(mealsHome.mealsData!.dinner.length,
