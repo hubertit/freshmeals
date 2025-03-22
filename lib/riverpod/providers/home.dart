@@ -103,3 +103,26 @@ final preOrderMealsProvider =
 StateNotifierProvider<PreOrderNotifier, PreOrderState>(
       (ref) => PreOrderNotifier(),
 );
+
+
+// Home meal
+
+final breakFastProvider =
+StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
+  return MealByTypeNotifier();
+});
+
+final lunchDinerProvider =
+StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
+  return MealByTypeNotifier();
+});
+
+final desertProvider =
+StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
+  return MealByTypeNotifier();
+});
+
+final snacksProvider =
+StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
+  return MealByTypeNotifier();
+});

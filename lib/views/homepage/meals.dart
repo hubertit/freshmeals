@@ -27,9 +27,20 @@ class _MealsPageState extends ConsumerState<MealsPage> {
       ref.read(mealTypesProvider.notifier).mealTypes(context, 'instant');
       ref.read(homeMealsDataProvider.notifier).fetchMeals(context);
       var user = ref.watch(userProvider)!.user;
-      // ref
-      //     .read(recommendedMealsProvider.notifier)
-      //     .subscriptions(context, user!.token);
+      ref
+          .read(breakFastProvider.notifier)
+          .mealByTypes(context, '1', user!.token);
+      ref
+          .read(lunchDinerProvider.notifier)
+          .mealByTypes(context, '2', user.token);
+      ref
+          .read(desertProvider.notifier)
+          .mealByTypes(context, '4', user.token);
+      ref
+          .read(snacksProvider.notifier)
+          .mealByTypes(context, '3', user.token);
+
+
     });
     super.initState();
   }
@@ -37,11 +48,13 @@ class _MealsPageState extends ConsumerState<MealsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var categories = ref.watch(mealCategoriesProvider);
     var types = ref.watch(mealTypesProvider);
     var mealsHome = ref.watch(homeMealsDataProvider);
-    var recommendations = ref.watch(recommendedMealsProvider);
     var appointment = ref.watch(appointmentsProvider);
+    var breakFast = ref.watch(breakFastProvider);
+    var lunchDiner = ref.watch(lunchDinerProvider);
+    var desert = ref.watch(desertProvider);
+    var snacks = ref.watch(snacksProvider);
     var user = ref.watch(userProvider);
     return Scaffold(
       appBar:
@@ -645,12 +658,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                     //       }),
                     // ),
                     // const SizedBox(height: 16),
-                    if(mealsHome.mealsData!.breakfast.isNotEmpty) _buildMealSection(
+                    if(breakFast!.mealCategories.isNotEmpty) _buildMealSection(
                         "Breakfast",
                         "Start your day with wholesome and nutritious meals",
-                        List.generate(mealsHome.mealsData!.breakfast.length,
+                        List.generate(breakFast.mealCategories.length,
                             (index) {
-                          var breakF = mealsHome.mealsData!.breakfast[index];
+                          var breakF = breakFast.mealCategories[index];
 
                           return _buildMealCard(
                               breakF.name,
@@ -660,29 +673,14 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                   .push("/mealDetails/${breakF.mealId}"));
                         }),
                         "1"),
-                    const SizedBox(height: 16),
-                    if(mealsHome.mealsData!.yourPick.isNotEmpty)_buildMealSection(
-                        "Snack",
-                        "Midday snacks to keep your energy levels high",
-                        List.generate(mealsHome.mealsData!.yourPick.length,
-                            (index) {
-                          var breakF = mealsHome.mealsData!.yourPick[index];
 
-                          return _buildMealCard(
-                              breakF.name,
-                              breakF.price,
-                              breakF.imageUrl,
-                              () => context
-                                  .push("/mealDetails/${breakF.mealId}"));
-                        }),
-                        "4"),
                     const SizedBox(height: 16),
-                    if(mealsHome.mealsData!.lunch.isNotEmpty)_buildMealSection(
-                        "Lunch",
+                    if(lunchDiner!.mealCategories.isNotEmpty)_buildMealSection(
+                        "Lunch/Diner",
                         "Fuel your afternoon with hearty, balanced meals",
-                        List.generate(mealsHome.mealsData!.lunch.length,
+                        List.generate(lunchDiner.mealCategories.length,
                             (index) {
-                          var lunch = mealsHome.mealsData!.lunch[index];
+                          var lunch = lunchDiner.mealCategories[index];
 
                           return _buildMealCard(
                               lunch.name,
@@ -693,12 +691,12 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                         }),
                         "2"),
                     const SizedBox(height: 16),
-                   if(mealsHome.mealsData!.dinner.isNotEmpty) _buildMealSection(
-                        "Dinner",
+                   if(desert!.mealCategories.isNotEmpty) _buildMealSection(
+                        "Desert",
                         "End your day with a healthy, delicious, and satisfying meal",
-                        List.generate(mealsHome.mealsData!.dinner.length,
+                        List.generate(desert.mealCategories.length,
                             (index) {
-                          var dinner = mealsHome.mealsData!.dinner[index];
+                          var dinner = desert.mealCategories[index];
 
                           return _buildMealCard(
                               dinner.name,
@@ -708,6 +706,22 @@ class _MealsPageState extends ConsumerState<MealsPage> {
                                   .push("/mealDetails/${dinner.mealId}"));
                         }),
                         "3"),
+                    const SizedBox(height: 16),
+                    if(snacks!.mealCategories.isNotEmpty)_buildMealSection(
+                        "Snack",
+                        "Midday snacks to keep your energy levels high",
+                        List.generate(snacks.mealCategories.length,
+                                (index) {
+                              var breakF = snacks.mealCategories[index];
+
+                              return _buildMealCard(
+                                  breakF.name,
+                                  breakF.price,
+                                  breakF.imageUrl,
+                                      () => context
+                                      .push("/mealDetails/${breakF.mealId}"));
+                            }),
+                        "4"),
                   ],
                 ),
               ),
