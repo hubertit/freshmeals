@@ -7,9 +7,6 @@ class NotificationService {
 
   /// Initialize notifications for Android & iOS
   static Future<void> init() async {
-    final FlutterLocalNotificationsPlugin _notificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
     const AndroidInitializationSettings androidSettings =
     AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -30,18 +27,20 @@ class NotificationService {
         debugPrint('Notification clicked: ${response.payload}');
       },
     );
+
+    // Request permissions for iOS
+    await _notificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   /// Show a simple notification
   static Future<void> showNotification(String title, String body) async {
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    const AndroidNotificationDetails androidDetails =
-    AndroidNotificationDetails(
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       'channel_id',
       'General Notifications',
       channelDescription: 'This channel is used for general notifications.',
@@ -50,8 +49,14 @@ class NotificationService {
       color: Color(0xff664d03),
     );
 
-     NotificationDetails notificationDetails =
-    NotificationDetails(android: androidDetails);
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const NotificationDetails notificationDetails =
+    NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     await _notificationsPlugin.show(
       0, // Notification ID

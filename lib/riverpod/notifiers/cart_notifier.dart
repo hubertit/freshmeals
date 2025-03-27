@@ -128,12 +128,10 @@ class CartNotifier extends StateNotifier<CartState?> {
         }
         print(response.data);
 
-        context.pop();
 
         // if (response.data['code'] == 400) {
-        await NotificationService.showNotification(
-            response.data['code'] == 400 ? "Warning" : "Success",
-            response.data['message']);
+        context.pop();
+
         // } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -146,11 +144,14 @@ class CartNotifier extends StateNotifier<CartState?> {
             content: Text(
               response.data['message'],
               style: TextStyle(
-                  color: response.data['code'] == 400 ? Color(0xff842029) : null),
+                  color: response.data['code'] == 400 ? const Color(0xff842029) : null),
             ),
           ),
         );
         // }
+        await NotificationService.showNotification(
+            response.data['code'] == 400 ? "Warning" : "Success",
+            response.data['message']);
       }
     } catch (e) {
       // Handle the error

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/models/home/nutritionist.dart';
 import 'package:freshmeals/models/preferences.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
@@ -9,8 +10,7 @@ import '../../models/general/preferances_model.dart';
 import '../../models/user_model.dart';
 
 class NutritionistsScreen extends ConsumerStatefulWidget {
-  final UserModel user;
-  const NutritionistsScreen({Key? key, required this.user}) : super(key: key);
+  const NutritionistsScreen({super.key});
 
   @override
   ConsumerState<NutritionistsScreen> createState() => _PreferencesScreenState();
@@ -19,27 +19,18 @@ class NutritionistsScreen extends ConsumerStatefulWidget {
 class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(preferencesProvider.notifier).preferences(context);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
     super.initState();
   }
-  List<String> selPref = [];
-
-  final selectedPreferenceProvider = StateProvider<List<int>>((ref) => []);
 
   @override
   Widget build(BuildContext context) {
-    print(selPref);
-    var preferences = ref.watch(preferencesProvider);
-    // var selectedPref = ref.watch(selectedPreferenceProvider);
-    var user = ref.watch(userProvider);
     return Scaffold(
-      backgroundColor: const Color(0xfff5f8fe),
+      // backgroundColor: const Color(0xfff5f8fe),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text("Choose preferences"),
+        title: const Text("Choose Nutritionist"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
@@ -47,47 +38,28 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
           },
         ),
       ),
-      body: preferences!.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 13.0),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              "You can choose interests and we have a few suggestions for you",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-              ),
-            ),
-            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: preferences.preferances.length,
+                itemCount: dummyNutritionists.length,
                 itemBuilder: (context, index) {
-                  PreferenceModel preference = preferences.preferances[index];
-                  bool isSelected = selPref.contains(preference.name);
+                  Nutritionist preference = dummyNutritionists[index];
 
                   return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (selPref.contains(preference.name)) {
-                          selPref = List.from(selPref)..remove(preference.name);
-                        } else {
-                          selPref = List.from(selPref)..add(preference.name);
-                        }
-                      });
+                    onTap: (){
+                      context.push('/nutDetails',extra: preference);
                     },
                     child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        border: isSelected ? Border.all(color: Colors.green, width: 2) : null,
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
@@ -103,7 +75,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
-                              preference.imageUrl,
+                              preference.image,
                               height: 60,
                               width: 60,
                               fit: BoxFit.cover,
@@ -123,7 +95,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  preference.description ?? "No description available",
+                                  preference.about,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -142,30 +114,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
               ),
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                widget.user.dietaryPreferences = selPref;
-                context.push("/additional",extra: widget.user);
 
-                // context.push('/welcome');
-              },
-              child: const Text(
-                "Continue",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

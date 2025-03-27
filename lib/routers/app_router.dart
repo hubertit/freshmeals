@@ -1,6 +1,9 @@
 import 'package:freshmeals/models/facebook_user.dart';
 import 'package:freshmeals/models/home/address_model.dart';
+import 'package:freshmeals/models/home/nutritionist.dart';
 import 'package:freshmeals/views/appointment/appointments_booking.dart';
+import 'package:freshmeals/views/appointment/nutritionist_details.dart';
+import 'package:freshmeals/views/appointment/nutritionist_screen.dart';
 import 'package:freshmeals/views/appointment/my_appointments.dart';
 import 'package:freshmeals/views/auth/facebook_login.dart';
 import 'package:freshmeals/views/homepage/account_info.dart';
@@ -251,4 +254,15 @@ final GoRouter router = GoRouter(routes: [
     path: '/payments',
     builder: (context, state) => const PaymentsScreen(),
   ),
+
+  GoRoute(
+    path: '/nutritionists',
+    builder: (context, state) => const NutritionistsScreen(),
+  ),
+  GoRoute(
+      path: '/nutDetails',
+      builder: (context, state) {
+        final addressModel = state.extra as Nutritionist;
+        return NutritionDetails(nutritionist: addressModel);
+      }),
 ]);

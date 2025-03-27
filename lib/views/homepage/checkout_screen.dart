@@ -35,6 +35,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     });
     super.initState();
   }
+  String _meetingType = "Check delivery"; // Default selection
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
@@ -83,8 +84,41 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               //     ),
               //   ],
               // ),
+              DropdownButtonFormField<String>(
+
+                value: _meetingType,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(
+                        8),
+                  ),
+                  contentPadding:
+                  const EdgeInsets
+                      .symmetric(
+                      vertical: 12,
+                      horizontal: 16),
+                ),
+                items: ["Check delivery", "Pick up"]
+                    .map((String option) {
+                  return DropdownMenuItem<
+                      String>(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _meetingType = newValue!;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+
               const SizedBox(height: 16),
-              Container(
+              if(_meetingType=="Check delivery") Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -243,7 +277,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               ),
               const SizedBox(height: 16),
 
-              Container(
+             Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -370,7 +404,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     onPressed: () {
                       var json = {
                         "token": user!.user!.token,
-                        "address_id": defaultAddress.address!.addressId,
+                        "address_id": defaultAddress!.address!.addressId,
                         "comment": commentController.text
                       };
                       ref
