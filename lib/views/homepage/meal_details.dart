@@ -262,7 +262,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             children: [
                               const SizedBox(height: 10),
                               const Text(
-                                'Allergies',
+                                'Allergies:',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -309,7 +309,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Ingredients',
+                                'Ingredients:',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -350,7 +350,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'For dietary goals',
+                                'For dietary goals:',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -425,7 +425,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Dietary Preferances',
+                                'Dietary Preferances:',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -466,7 +466,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Not for pre-existing conditions',
+                                'Not for pre-existing conditions:',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

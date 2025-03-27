@@ -35,7 +35,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     });
     super.initState();
   }
-  String _meetingType = "Check delivery"; // Default selection
+  String _meetingType = "Delivery"; // Default selection
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
@@ -87,8 +87,10 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               DropdownButtonFormField<String>(
 
                 value: _meetingType,
+
                 decoration: InputDecoration(
                   filled: true,
+                  label: const Text("Select delivery method"),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius:
@@ -101,7 +103,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                       vertical: 12,
                       horizontal: 16),
                 ),
-                items: ["Check delivery", "Pick up"]
+                items: ["Delivery", "Pickup"]
                     .map((String option) {
                   return DropdownMenuItem<
                       String>(

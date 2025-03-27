@@ -39,7 +39,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
   Widget build(BuildContext context) {
     var cart = ref.watch(cartProvider);
     var user = ref.watch(userProvider);
-    var count = ref.watch(countProvider);
+    // var count = ref.watch(countProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -286,7 +286,7 @@ class _ChartScreenState extends ConsumerState<ChartScreen> {
                                 color: Colors.white,
                               ))
                           : Text(
-                              "Rwf ${formatMoney(count!.count.totalAmount)}",
+                              "Rwf ${formatMoney(cart!.summary.subtotal)}",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
