@@ -106,7 +106,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                               name: "Free Plan",
                               price: '0',
                               duration: "0", // Example duration
-                              description: "Basic access with limited features.",
+                              description: "No subscription needed.",
                               imageUrl: '',
                             )
                                 : subscriptions.subscriptions[isFirsttim ? index - 1 : index]; // Adjust index
@@ -157,7 +157,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                                 ),
                                               ),
                                               const SizedBox(height: 5),
-                                              Text(
+                                              if(!isStaticPlan)Text(
                                                 "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
