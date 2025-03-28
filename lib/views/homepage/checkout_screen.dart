@@ -35,6 +35,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     });
     super.initState();
   }
+
   String _meetingType = "Delivery"; // Default selection
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -85,28 +86,19 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               //   ],
               // ),
               DropdownButtonFormField<String>(
-
                 value: _meetingType,
-
                 decoration: InputDecoration(
                   filled: true,
                   label: const Text("Select delivery method"),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
-                    borderRadius:
-                    BorderRadius.circular(
-                        8),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   contentPadding:
-                  const EdgeInsets
-                      .symmetric(
-                      vertical: 12,
-                      horizontal: 16),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
-                items: ["Delivery", "Pickup"]
-                    .map((String option) {
-                  return DropdownMenuItem<
-                      String>(
+                items: ["Delivery", "Pickup"].map((String option) {
+                  return DropdownMenuItem<String>(
                     value: option,
                     child: Text(option),
                   );
@@ -120,32 +112,68 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               const SizedBox(height: 20),
 
               const SizedBox(height: 16),
-              if(_meetingType=="Check delivery") Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: defaultAddress!.isLoading
-                    ? const SizedBox(
-                        height: 100,
-                        width: double.maxFinite,
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : defaultAddress.address == null
-                        ? Container(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            // height: 150,
-                            child: Column(
+              if (_meetingType == "Delivery")
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: defaultAddress!.isLoading
+                      ? const SizedBox(
+                          height: 100,
+                          width: double.maxFinite,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : defaultAddress.address == null
+                          ? Container(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              // height: 150,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Delivery Address',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.push('/changeAddress');
+                                        },
+                                        child: const Text(
+                                          'Select',
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const CustomEmptyWidget(
+                                    iconSize: 60,
+                                    message: "Select delivered address first",
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
@@ -163,123 +191,88 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                                         context.push('/changeAddress');
                                       },
                                       child: const Text(
-                                        'Select',
+                                        'Change',
                                         style: TextStyle(color: Colors.green),
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const CustomEmptyWidget(
-                                  iconSize: 60,
-                                  message: "Select delivered address first",
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      AssetsUtils.rectangle,
+                                      height: 80,
+                                      width: 80,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                  width: 30,
+                                                  child: Icon(
+                                                    Icons.location_pin,
+                                                    color: secondarTex,
+                                                    size: 16,
+                                                  )),
+                                              Flexible(
+                                                child: Text(
+                                                  defaultAddress
+                                                      .address!.mapAddress,
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                  width: 30,
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    color: secondarTex,
+                                                    size: 16,
+                                                  )),
+                                              Text(
+                                                user!.user!.name,
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                  width: 30,
+                                                  child: Icon(
+                                                    Icons.call,
+                                                    color: secondarTex,
+                                                    size: 16,
+                                                  )),
+                                              Text(
+                                                user.user!.phoneNumber,
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Delivery Address',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      context.push('/changeAddress');
-                                    },
-                                    child: const Text(
-                                      'Change',
-                                      style: TextStyle(color: Colors.green),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    AssetsUtils.rectangle,
-                                    height: 80,
-                                    width: 80,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                                width: 30,
-                                                child: Icon(
-                                                  Icons.location_pin,
-                                                  color: secondarTex,
-                                                  size: 16,
-                                                )),
-                                            Flexible(
-                                              child: Text(
-                                                defaultAddress
-                                                    .address!.mapAddress,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                                width: 30,
-                                                child: Icon(
-                                                  Icons.person,
-                                                  color: secondarTex,
-                                                  size: 16,
-                                                )),
-                                            Text(
-                                              user!.user!.name,
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                                width: 30,
-                                                child: Icon(
-                                                  Icons.call,
-                                                  color: secondarTex,
-                                                  size: 16,
-                                                )),
-                                            Text(
-                                              user.user!.phoneNumber,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-              ),
+                ),
               const SizedBox(height: 16),
 
-             Container(
+              Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -295,12 +288,12 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Order Bill',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -407,7 +400,8 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                       var json = {
                         "token": user!.user!.token,
                         "address_id": defaultAddress!.address!.addressId,
-                        "comment": commentController.text
+                        "comment": commentController.text,
+                        "delivery_method": _meetingType
                       };
                       ref
                           .read(orderProvider.notifier)

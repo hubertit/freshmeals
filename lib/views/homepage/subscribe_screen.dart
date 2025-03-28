@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshmeals/models/general/subscription.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
 import 'package:freshmeals/theme/colors.dart';
@@ -90,177 +91,45 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                             color: Colors.black54),
                       ),
                       const SizedBox(height: 30),
-                      // isFirsttim? Expanded(
-                      //    child: ListView.builder(
-                      //      itemCount: subscriptions.subscriptions.length +
-                      //          1, // Add 1 for the static item
-                      //      itemBuilder: (context, index) {
-                      //        if (index == 0 ) {
-                      //          // Static First Item
-                      //          return GestureDetector(
-                      //            onTap: () => context.go('/home'),
-                      //            child: Container(
-                      //              margin: const EdgeInsets.only(bottom: 20),
-                      //              padding: const EdgeInsets.all(16),
-                      //              decoration: BoxDecoration(
-                      //                color: Colors.white,
-                      //                borderRadius: BorderRadius.circular(12),
-                      //                border: Border.all(
-                      //                  color: Colors
-                      //                      .white, // You can change this color
-                      //                  width: 2,
-                      //                ),
-                      //              ),
-                      //              child: const Row(
-                      //                children: [
-                      //                  Expanded(
-                      //                    child: Column(
-                      //                      crossAxisAlignment:
-                      //                          CrossAxisAlignment.start,
-                      //                      children: [
-                      //                        Text(
-                      //                          "Free Plan",
-                      //                          style: TextStyle(
-                      //                            fontSize: 18,
-                      //                            fontWeight: FontWeight.bold,
-                      //                            color: Colors.black,
-                      //                          ),
-                      //                        ),
-                      //                        SizedBox(height: 5),
-                      //                        // Text(
-                      //                        //   "0 Rwf Per 0 Days",
-                      //                        //   style: TextStyle(
-                      //                        //     fontWeight: FontWeight.bold,
-                      //                        //     color: primarySwatch,
-                      //                        //     fontSize: 16,
-                      //                        //   ),
-                      //                        // ),
-                      //                        // SizedBox(height: 5),
-                      //                        Text(
-                      //                          "Enjoy limited features for free.",
-                      //                          style: TextStyle(
-                      //                            fontSize: 14,
-                      //                            color: Colors.grey,
-                      //                          ),
-                      //                        ),
-                      //                      ],
-                      //                    ),
-                      //                  ),
-                      //                ],
-                      //              ),
-                      //            ),
-                      //          );
-                      //        }
-                      //
-                      //        // Adjust the index for subscriptions list
-                      //        final subscription =
-                      //            subscriptions.subscriptions[index - 1];
-                      //        final isSelected = _selectedGoalIndex == index - 1;
-                      //
-                      //        return Stack(
-                      //          children: [
-                      //            GestureDetector(
-                      //              onTap: () {
-                      //                ref
-                      //                    .read(subscriptionsProvider.notifier)
-                      //                    .subscribe(context, user!.user!.token,
-                      //                        subscription.planId);
-                      //                setState(() {
-                      //                  _selectedGoalIndex = index - 1;
-                      //                });
-                      //              },
-                      //              child: Container(
-                      //                margin: const EdgeInsets.only(bottom: 20),
-                      //                padding: const EdgeInsets.all(16),
-                      //                decoration: BoxDecoration(
-                      //                  color: Colors.white,
-                      //                  borderRadius: BorderRadius.circular(12),
-                      //                  border: Border.all(
-                      //                    color: isSelected
-                      //                        ? primarySwatch
-                      //                        : Colors.white,
-                      //                    width: 2,
-                      //                  ),
-                      //                ),
-                      //                child: Row(
-                      //                  children: [
-                      //                    Expanded(
-                      //                      child: Column(
-                      //                        crossAxisAlignment:
-                      //                            CrossAxisAlignment.start,
-                      //                        children: [
-                      //                          Text(
-                      //                            subscription.name,
-                      //                            style: const TextStyle(
-                      //                              fontSize: 18,
-                      //                              fontWeight: FontWeight.bold,
-                      //                              color: Colors.black,
-                      //                            ),
-                      //                          ),
-                      //                          const SizedBox(height: 5),
-                      //                          Text(
-                      //                            "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
-                      //                            style: const TextStyle(
-                      //                              fontWeight: FontWeight.bold,
-                      //                              color: primarySwatch,
-                      //                              fontSize: 16,
-                      //                            ),
-                      //                          ),
-                      //                          const SizedBox(height: 5),
-                      //                          Text(
-                      //                            subscription.description,
-                      //                            style: const TextStyle(
-                      //                              fontSize: 14,
-                      //                              color: Colors.grey,
-                      //                            ),
-                      //                          ),
-                      //                        ],
-                      //                      ),
-                      //                    ),
-                      //                  ],
-                      //                ),
-                      //              ),
-                      //            ),
-                      //            if (_isLoading) ...[
-                      //              Positioned.fill(
-                      //                child: Container(
-                      //                  color: Colors.black.withOpacity(
-                      //                      0.5), // Semi-transparent background
-                      //                  child: const Center(
-                      //                    child: CircularProgressIndicator(),
-                      //                  ),
-                      //                ),
-                      //              ),
-                      //            ]
-                      //          ],
-                      //        );
-                      //      },
-                      //    ),
-                      //  ):
                       Expanded(
                         child: ListView.builder(
-                          itemCount: subscriptions.subscriptions.length,
+                          itemCount: isFirsttim
+                              ? subscriptions.subscriptions.length + 1 // Add Free Plan if first time
+                              : subscriptions.subscriptions.length, // Otherwise, only real plans
                           itemBuilder: (context, index) {
-                            final subscription =
-                                subscriptions.subscriptions[index];
+                            final isStaticPlan = isFirsttim && index == 0; // Show Free Plan only if first time
+
+                            final subscription = isStaticPlan
+                                ? SubscriptionPlan(
+                              mealCount: '',
+                              planId: "free_plan", // Dummy ID for the free plan
+                              name: "Free Plan",
+                              price: '0',
+                              duration: "0", // Example duration
+                              description: "Basic access with limited features.",
+                              imageUrl: '',
+                            )
+                                : subscriptions.subscriptions[isFirsttim ? index - 1 : index]; // Adjust index
+
                             final isSelected = _selectedGoalIndex == index;
 
                             return Stack(
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    // _showLoadingOverlay();
-                                    // print(subscription.planId);
-                                    ref
-                                        .read(subscriptionsProvider.notifier)
-                                        .subscribe(context, user!.user!.token,
-                                            subscription.planId);
+                                    if (isStaticPlan) {
+                                      // Navigate to the Home screen automatically
+                                      context.push('/');
+                                    } else {
+                                      ref.read(subscriptionsProvider.notifier).subscribe(
+                                        context,
+                                        user!.user!.token,
+                                        subscription.planId,
+                                      );
+                                    }
                                     setState(() {
                                       _selectedGoalIndex = index;
                                     });
-                                    // if (isSelected) {
-                                    // }
-                                    // print(subscription.planId);
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.only(bottom: 20),
@@ -269,9 +138,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: isSelected
-                                            ? primarySwatch
-                                            : Colors.white,
+                                        color: isSelected ? primarySwatch : Colors.white,
                                         width: 2,
                                       ),
                                     ),
@@ -279,8 +146,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                       children: [
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 subscription.name,
@@ -294,9 +160,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                               Text(
                                                 "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: primarySwatch,
-                                                    fontSize: 16),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: primarySwatch,
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                               const SizedBox(height: 5),
                                               Text(
@@ -313,22 +180,113 @@ class _SubscriptionScreenState extends ConsumerState<SubscribeScreen> {
                                     ),
                                   ),
                                 ),
-                                if (_isLoading) ...[
+                                if (_isLoading)
                                   Positioned.fill(
                                     child: Container(
-                                      color: Colors.black.withOpacity(
-                                          0.5), // Semi-transparent background
+                                      color: Colors.black.withOpacity(0.5),
                                       child: const Center(
                                         child: CircularProgressIndicator(),
                                       ),
                                     ),
                                   ),
-                                ]
                               ],
                             );
                           },
                         ),
                       ),
+
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //     itemCount: subscriptions.subscriptions.length,
+                      //     itemBuilder: (context, index) {
+                      //       final subscription =
+                      //           subscriptions.subscriptions[index];
+                      //       final isSelected = _selectedGoalIndex == index;
+                      //
+                      //       return Stack(
+                      //         children: [
+                      //           GestureDetector(
+                      //             onTap: () {
+                      //               // _showLoadingOverlay();
+                      //               // print(subscription.planId);
+                      //               ref
+                      //                   .read(subscriptionsProvider.notifier)
+                      //                   .subscribe(context, user!.user!.token,
+                      //                       subscription.planId);
+                      //               setState(() {
+                      //                 _selectedGoalIndex = index;
+                      //               });
+                      //               // if (isSelected) {
+                      //               // }
+                      //               // print(subscription.planId);
+                      //             },
+                      //             child: Container(
+                      //               margin: const EdgeInsets.only(bottom: 20),
+                      //               padding: const EdgeInsets.all(16),
+                      //               decoration: BoxDecoration(
+                      //                 color: Colors.white,
+                      //                 borderRadius: BorderRadius.circular(12),
+                      //                 border: Border.all(
+                      //                   color: isSelected
+                      //                       ? primarySwatch
+                      //                       : Colors.white,
+                      //                   width: 2,
+                      //                 ),
+                      //               ),
+                      //               child: Row(
+                      //                 children: [
+                      //                   Expanded(
+                      //                     child: Column(
+                      //                       crossAxisAlignment:
+                      //                           CrossAxisAlignment.start,
+                      //                       children: [
+                      //                         Text(
+                      //                           subscription.name,
+                      //                           style: const TextStyle(
+                      //                             fontSize: 18,
+                      //                             fontWeight: FontWeight.bold,
+                      //                             color: Colors.black,
+                      //                           ),
+                      //                         ),
+                      //                         const SizedBox(height: 5),
+                      //                         Text(
+                      //                           "${formatMoney(subscription.price)} Rwf Per ${subscription.duration} Days",
+                      //                           style: const TextStyle(
+                      //                               fontWeight: FontWeight.bold,
+                      //                               color: primarySwatch,
+                      //                               fontSize: 16),
+                      //                         ),
+                      //                         const SizedBox(height: 5),
+                      //                         Text(
+                      //                           subscription.description,
+                      //                           style: const TextStyle(
+                      //                             fontSize: 14,
+                      //                             color: Colors.grey,
+                      //                           ),
+                      //                         ),
+                      //                       ],
+                      //                     ),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           if (_isLoading) ...[
+                      //             Positioned.fill(
+                      //               child: Container(
+                      //                 color: Colors.black.withOpacity(
+                      //                     0.5), // Semi-transparent background
+                      //                 child: const Center(
+                      //                   child: CircularProgressIndicator(),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ]
+                      //         ],
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                       // ElevatedButton(
                       //   style: ElevatedButton.styleFrom(
                       //     backgroundColor: Colors.green,
