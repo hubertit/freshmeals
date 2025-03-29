@@ -306,7 +306,8 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Delivery Fee'),
-                        Text('Rwf ${formatMoney(summary.summary.shippingFee)}'),
+                        Text(
+                            'Rwf ${_meetingType == "Pickup" ? "0" : formatMoney(summary.summary.shippingFee)}'),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -326,7 +327,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Rwf ${formatMoney(summary.summary.totalPrice)}',
+                          'Rwf ${_meetingType == "Pickup" ? formatMoney(summary.summary.subtotal) : formatMoney(summary.summary.totalPrice)}',
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
