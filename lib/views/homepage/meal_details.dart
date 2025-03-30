@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:math' as math;
-
-import 'package:freshmeals/constants/_assets.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:freshmeals/models/home/meal_model.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:freshmeals/utls/callbacks.dart';
-import 'package:freshmeals/views/homepage/widgets/contents_chart.dart';
 import 'package:freshmeals/views/homepage/widgets/ingredient_item.dart';
 
 import '../../theme/colors.dart';
 import 'widgets/add_to_cart.dart';
-import 'widgets/cover_container.dart';
 
 class MealDetailScreen extends ConsumerStatefulWidget {
   final String mealId;
@@ -262,7 +256,7 @@ class _MealDetailScreenState extends ConsumerState<MealDetailScreen> {
                             children: [
                               const SizedBox(height: 10),
                               const Text(
-                                'Allergies:',
+                                'Allergens:',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
