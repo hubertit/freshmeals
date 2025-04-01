@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/models/home/nutritionist.dart';
-import 'package:freshmeals/views/homepage/widgets/ingredient_item.dart';
+import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 
+import '../../riverpod/providers/home.dart';
 import '../../theme/colors.dart';
 
 class NutritionDetails extends ConsumerStatefulWidget {
@@ -14,20 +15,21 @@ class NutritionDetails extends ConsumerStatefulWidget {
 }
 
 class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
-  // @override
-  // void initState() {
-  //   var id = widget.mealId;
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     print(widget.mealId);
-  //     ref
-  //         .read(mealDetailsDataProvider.notifier)
-  //         .fetchMealDetails(context, id);
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(availabilityProvider.notifier).fetchAvailability(
+         ref.watch(userProvider)!.user!.token,
+        widget.nutritionist.userId,
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.nutritionist.userId);
+    var availability = ref.watch(availabilityProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -36,7 +38,7 @@ class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
             Stack(
               children: [
                 Image.network(
-                  widget.nutritionist.image, // Add your image path
+                  widget.nutritionist.profilePicture, // Add your image path
                   height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -93,16 +95,16 @@ class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Title Section
+                      // Text(
+                      //   widget.nutritionist.availability?"Available":"Not available",
+                      //   style: const TextStyle(
+                      //       color: primarySwatch,
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 16),
+                      // ),
+                      // const SizedBox(height: 10),
                       Text(
-                        widget.nutritionist.availability?"Available":"Not available",
-                        style: const TextStyle(
-                            color: primarySwatch,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.nutritionist.about,
+                        widget.nutritionist.email,
                         style: const TextStyle(
                           color: Colors.grey,
                         ),
@@ -116,40 +118,91 @@ class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
 
                 Container(
                   margin: const EdgeInsets.all(10).copyWith(top: 20),
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(10)),
+                    borderRadius: BorderRadius.circular(7),
+                    // boxShadow: const [
+                    //   BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3)),
+                    // ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      if(availability.slots.isNotEmpty)const Text(
                         'Availability',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Column(
-                        children: widget.nutritionist.availabilityCalendar.map((entry) {
-                          final ingredientList = widget.nutritionist.availabilityCalendar.toList();
-                          final isLastEntry = entry == ingredientList[ingredientList.length - 1];
+                      const SizedBox(height: 10),
 
+                      availability.slots.isEmpty
+                          ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            'No available slots!!',
+                            style: TextStyle( fontSize: 16),
+                          ),
+                        ),
+                      )
+                          : Column(
+                        children: availability.slots.entries.map((entry) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Date header
+                              Container(
+                                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade100,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  '📅 ${entry.key}', // Date heading
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
 
-                          return IngredientItem(
-                            itemTitle: '\u25B8 $entry', // Unicode bullet point
-                            isLast: isLastEntry,
+                              // Time slots
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: entry.value.map((slot) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 4),
+                                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.access_time, size: 18, color: Colors.blueGrey),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '${slot["start_time"]} - ${slot["end_time"]}',
+                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 12),
+                            ],
                           );
                         }).toList(),
-                      )                      ],
+                      ),
+                    ],
                   ),
-                ),
-
+                )
 
               ],
             ),

@@ -4,6 +4,7 @@ import 'package:freshmeals/models/home/nutritionist.dart';
 import 'package:freshmeals/models/preferences.dart';
 import 'package:freshmeals/riverpod/providers/auth_providers.dart';
 import 'package:freshmeals/riverpod/providers/general.dart';
+import 'package:freshmeals/riverpod/providers/home.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/general/preferances_model.dart';
@@ -19,12 +20,19 @@ class NutritionistsScreen extends ConsumerStatefulWidget {
 class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {});
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref
+          .read(nutritionistsProvider.notifier)
+          .fetchNutritionists(context);
+    });
+
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    var nutritionists = ref.watch(nutritionistsProvider);
     return Scaffold(
       // backgroundColor: const Color(0xfff5f8fe),
       appBar: AppBar(
@@ -38,7 +46,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
           },
         ),
       ),
-      body: Padding(
+      body: nutritionists!.isLoading? Center(child: CircularProgressIndicator(),):Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,9 +54,9 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: dummyNutritionists.length,
+                itemCount: nutritionists.nutritionists.length,
                 itemBuilder: (context, index) {
-                  Nutritionist preference = dummyNutritionists[index];
+                  Nutritionist preference = nutritionists.nutritionists[index];
 
                   return GestureDetector(
                     onTap: (){
@@ -75,7 +83,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
-                              preference.image,
+                              preference.profilePicture,
                               height: 60,
                               width: 60,
                               fit: BoxFit.cover,
@@ -95,7 +103,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  preference.about,
+                                  preference.email,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,

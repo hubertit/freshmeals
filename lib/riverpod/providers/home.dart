@@ -8,6 +8,7 @@ import 'package:freshmeals/riverpod/notifiers/home/defaul_address.dart';
 import 'package:freshmeals/riverpod/notifiers/home/favorite_meals.dart';
 import 'package:freshmeals/riverpod/notifiers/home/meal_details.dart';
 import 'package:freshmeals/riverpod/notifiers/home/my_appointment.dart';
+import 'package:freshmeals/riverpod/notifiers/home/nutritionists.dart';
 import 'package:freshmeals/riverpod/notifiers/home/order_details_notifier.dart';
 import 'package:freshmeals/riverpod/notifiers/home/payments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/pre_order.dart';
@@ -15,6 +16,7 @@ import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 import 'package:freshmeals/riverpod/notifiers/home/recommended_notifier.dart';
 
 import '../notifiers/cart_notifier.dart';
+import '../notifiers/home/availability_notifier.dart';
 import '../notifiers/home/calorie_notifier.dart';
 import '../notifiers/home/meal.dart';
 import '../notifiers/home/meal_by_type.dart';
@@ -126,3 +128,13 @@ final snacksProvider =
 StateNotifierProvider<MealByTypeNotifier, MealsByTypeState?>((ref) {
   return MealByTypeNotifier();
 });
+
+final nutritionistsProvider =
+StateNotifierProvider<NutritionistNotifier, NutritionistState?>((ref) {
+  return NutritionistNotifier();
+});
+
+final availabilityProvider =
+StateNotifierProvider<AvailabilityNotifier, AvailabilityState>(
+      (ref) => AvailabilityNotifier(),
+);
