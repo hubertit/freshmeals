@@ -71,7 +71,7 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
+                            color: Colors.grey.withOpacity(0.08),
                             blurRadius: 5,
                             spreadRadius: 2,
                             offset: const Offset(0, 2),
@@ -102,9 +102,9 @@ class _PreferencesScreenState extends ConsumerState<NutritionistsScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 5),
-                                Text(
-                                  preference.email,
-                                  style: const TextStyle(
+                                const Text(
+                                  "Click to view the available time slots",
+                                  style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
                                   ),

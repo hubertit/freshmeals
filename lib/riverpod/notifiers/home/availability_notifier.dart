@@ -25,16 +25,13 @@ class AvailabilityNotifier extends StateNotifier<AvailabilityState> {
         final List<dynamic> data = response.data['data'];
 
         // Group slots by date
-        Map<String, List<Map<String, String>>> groupedSlots = {};
-        for (var slot in data) {
-          String date = slot["date"];
-          if (!groupedSlots.containsKey(date)) {
-            groupedSlots[date] = [];
+        Map<String, List<Slot>> groupedSlots = {};
+        for (var slotJson in data) {
+          Slot slot = Slot.fromJson(slotJson);
+          if (!groupedSlots.containsKey(slot.date)) {
+            groupedSlots[slot.date] = [];
           }
-          groupedSlots[date]!.add({
-            "start_time": slot["start_time"],
-            "end_time": slot["end_time"],
-          });
+          groupedSlots[slot.date]!.add(slot);
         }
 
         state = AvailabilityState(slots: groupedSlots, isLoading: false);
@@ -50,7 +47,7 @@ class AvailabilityNotifier extends StateNotifier<AvailabilityState> {
 }
 
 class AvailabilityState {
-  final Map<String, List<Map<String, String>>> slots;
+  final Map<String, List<Slot>> slots;
   final bool isLoading;
 
   AvailabilityState({required this.slots, required this.isLoading});
@@ -60,12 +57,46 @@ class AvailabilityState {
   }
 
   AvailabilityState copyWith({
-    Map<String, List<Map<String, String>>>? slots,
+    Map<String, List<Slot>>? slots,
     bool? isLoading,
   }) {
     return AvailabilityState(
       slots: slots ?? this.slots,
       isLoading: isLoading ?? this.isLoading,
     );
+  }
+}
+
+class Slot {
+  final String slotId;
+  final String date;
+  final String startTime;
+  final String endTime;
+
+  Slot({
+    required this.slotId,
+    required this.date,
+    required this.startTime,
+    required this.endTime,
+  });
+
+  // Factory method to create a Slot from JSON
+  factory Slot.fromJson(Map<String, dynamic> json) {
+    return Slot(
+      slotId: json['slot_id'],
+      date: json['date'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
+    );
+  }
+
+  // Convert Slot to JSON (if needed)
+  Map<String, dynamic> toJson() {
+    return {
+      'slot_id': slotId,
+      'date': date,
+      'start_time': startTime,
+      'end_time': endTime,
+    };
   }
 }
