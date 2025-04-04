@@ -679,7 +679,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
 
                     const SizedBox(height: 16),
                     if(lunchDiner!.mealCategories.isNotEmpty)_buildMealSection(
-                        "Lunch/Diner",
+                        "Lunch/Dinner",
                         "Fuel your afternoon with hearty, balanced meals",
                         List.generate(lunchDiner.mealCategories.length,
                             (index) {
