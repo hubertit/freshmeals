@@ -223,13 +223,14 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: MaterialCommunityIcons.contactless_payment,
               ),
               ProfileItemIcon(
-                title: 'Calorie Tracker',
+                title: 'Progress Tracker',
                 iconSize: 18,
                 onPressed: () {
                   context.push('/trackCalories');
                 },
                 leadingIcon: MaterialCommunityIcons.trackpad,
               ),
+
               ProfileItemIcon(
                 title: 'Delivery Address',
                 onPressed: () {

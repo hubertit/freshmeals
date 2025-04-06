@@ -7,10 +7,12 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/views/homepage/widgets/cover_container.dart';
 import 'package:go_router/go_router.dart';
+import '../../models/general/monthly_entry.dart';
 import '../../models/home/calories.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../appointment/widgets/empty_widget.dart';
 import '../auth/widgets/input_dec.dart';
+import 'widgets/reusable_barchat.dart';
 
 class CalorieTrackerPage extends ConsumerStatefulWidget {
   const CalorieTrackerPage({super.key});
@@ -27,6 +29,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
     DateTime date = DateFormat('yyyy-MM-dd').parse(dateString);
     return date.weekday % 7; // Converts Monday-Sunday (1-7) to index 0-6
   }
+
 
   @override
   void initState() {
@@ -67,7 +70,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
             x: index,
             barRods: [
               BarChartRodData(
-                toY:calories>4000?4000: calories,
+                toY: calories > 4000 ? 4000 : calories,
                 color: primarySwatch,
                 width: 16,
                 borderRadius: BorderRadius.circular(4),
@@ -78,94 +81,27 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
       });
     }
 
+    double currentWeight = 70;
+    double currentCircumference = 80;
+
+    List<MonthlyEntry> weightEntries = [
+      MonthlyEntry(month: "Jan", value: 70),
+      MonthlyEntry(month: "Feb", value: 63),
+      MonthlyEntry(month: "Mar", value: 70),
+      MonthlyEntry(month: "Apr", value: currentWeight),
+    ];
+
+    List<MonthlyEntry> circumferenceEntries = [
+      MonthlyEntry(month: "Jan", value: 80),
+      MonthlyEntry(month: "Feb", value: 79),
+      MonthlyEntry(month: "Mar", value: 81),
+      MonthlyEntry(month: "Apr", value: currentCircumference),
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calorie Tracker'),
+        title: const Text('Progress Tracker'),
         centerTitle: true,
-        actions: calorisState.calorieData != null
-            ? [
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled:
-                          true, // Allows bottom sheet to go full height if needed
-                      builder: (context) {
-                        final TextEditingController targetController =
-                            TextEditingController(
-                                text: calorisState.calorieData!.target
-                                        ?.toString() ??
-                                    '');
-
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            left: 16,
-                            right: 16,
-                            bottom:
-                                MediaQuery.of(context).viewInsets.bottom + 16,
-                            top: 16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                      onTap: () => context.pop(),
-                                      child: const Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                  const Text(
-                                    'Set Calorie Target/day',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        var user =
-                                            ref.watch(userProvider)!.user;
-                                        ref
-                                            .read(calorieProvider.notifier)
-                                            .setCalorieTarget(
-                                                context,
-                                                user!.token,
-                                                double.parse(
-                                                    targetController.text));
-                                      },
-                                      child: const Text(
-                                        "Set",
-                                        style: TextStyle(
-                                            color: primarySwatch,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              TextFormField(
-                                controller: targetController,
-                                decoration: iDecoration(),
-                                keyboardType: TextInputType.number,
-                              ),
-                              const SizedBox(height: 50),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
-                const SizedBox(
-                  width: 5,
-                )
-              ]
-            : null,
       ),
       body: calorisState.isLoading
           ? const Center(
@@ -177,6 +113,105 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        const Text('Calorie Tracker',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Spacer(),
+                        calorisState.calorieData != null
+                            ? IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled:
+                                        true, // Allows bottom sheet to go full height if needed
+                                    builder: (context) {
+                                      final TextEditingController
+                                          targetController =
+                                          TextEditingController(
+                                              text: calorisState
+                                                      .calorieData!.target
+                                                      ?.toString() ??
+                                                  '');
+
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom +
+                                              16,
+                                          top: 16,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                    onTap: () => context.pop(),
+                                                    child: const Text(
+                                                      "Cancel",
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                                const Text(
+                                                  'Set Calorie Target/day',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      var user = ref
+                                                          .watch(userProvider)!
+                                                          .user;
+                                                      ref
+                                                          .read(calorieProvider
+                                                              .notifier)
+                                                          .setCalorieTarget(
+                                                              context,
+                                                              user!.token,
+                                                              double.parse(
+                                                                  targetController
+                                                                      .text));
+                                                    },
+                                                    child: const Text(
+                                                      "Set",
+                                                      style: TextStyle(
+                                                          color: primarySwatch,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 25),
+                                            TextFormField(
+                                              controller: targetController,
+                                              decoration: iDecoration(),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
+                                            const SizedBox(height: 50),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.settings),
+                              )
+                            : Container(),
+                      ],
+                    ),
+
                     Container(
                       color: Colors.white,
                       height: 300,
@@ -213,7 +248,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                         getTitlesWidget: (value, meta) {
                                           if (value == 1000 ||
                                               value == 2000 ||
-                                              value == 3000||
+                                              value == 3000 ||
                                               value == 4000) {
                                             return Text(
                                               value.toInt().toString(),
@@ -232,7 +267,8 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                         getTitlesWidget: (value, meta) {
                                           return Text(
                                             weekDays[value.toInt()],
-                                            style: const TextStyle(fontSize: 8),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           );
                                         },
                                       ),
@@ -250,58 +286,6 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                       4000, // Set max Y-axis to accommodate wider calorie values
                                 ),
                               ),
-                              // BarChart(
-                              //   BarChartData(
-                              //     alignment: BarChartAlignment.spaceAround,
-                              //     titlesData: FlTitlesData(
-                              //       rightTitles: const AxisTitles(
-                              //         sideTitles: SideTitles(showTitles: false),
-                              //       ),
-                              //       topTitles: const AxisTitles(
-                              //         sideTitles: SideTitles(showTitles: false),
-                              //       ),
-                              //       leftTitles: AxisTitles(
-                              //         axisNameSize: 30,
-                              //         axisNameWidget: const Text(
-                              //           'Calories',
-                              //           style: TextStyle(fontSize: 10),
-                              //         ),
-                              //         sideTitles: SideTitles(
-                              //           showTitles: true,
-                              //           reservedSize: 40, // Ensures enough space for labels
-                              //           getTitlesWidget: (value, meta) {
-                              //             // if (value == 1000 || value == 2000 || value == 3000 || value == 4000 || value == 5000) {
-                              //             return Text(
-                              //               formatMoney(value.toInt().toString()),
-                              //               style: const TextStyle(fontSize: 10), // Adjust size if needed
-                              //             );
-                              //             // }
-                              //             // return const SizedBox.shrink();
-                              //           },
-                              //         ),
-                              //       ),
-                              //       bottomTitles: AxisTitles(
-                              //         sideTitles: SideTitles(
-                              //           showTitles: true,
-                              //           getTitlesWidget: (value, meta) {
-                              //             return Text(
-                              //               weekDays[value.toInt()],
-                              //               style: const TextStyle(fontSize: 8),
-                              //             );
-                              //           },
-                              //         ),
-                              //       ),
-                              //     ),
-                              //     borderData: FlBorderData(show: false),
-                              //     gridData: FlGridData(
-                              //       drawVerticalLine: false,
-                              //       horizontalInterval: 1000, // Ensures step increments of 1000
-                              //     ),
-                              //     barGroups: barGroups,
-                              //     minY: 0,
-                              //     maxY: 30000, // Set max Y-axis to accommodate wider calorie values
-                              //   ),
-                              // )
                             ),
                     ),
                     const SizedBox(height: 10),
@@ -374,6 +358,248 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                               );
                             },
                           ),
+                    // Inside the Column children:
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        const Text('Weight Tracker',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) {
+                                final TextEditingController targetController =
+                                TextEditingController(text: '');
+                                int _selectedWeight = 60;
+
+                                return StatefulBuilder(
+                                  builder: (context, setModalState) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16,
+                                        right: 16,
+                                        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                                        top: 16,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+
+                                              const Text(
+                                                'Enter your current Weight?',
+                                                style:
+                                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    // handle save
+                                                  },
+                                                  child: const Text(
+                                                    "Save",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                        color: primarySwatch,
+                                                        fontWeight: FontWeight.bold),
+                                                  )),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 25),
+                                          GestureDetector(
+                                            onHorizontalDragUpdate: (details) {
+                                              setModalState(() {
+                                                if (details.delta.dx > 0 && _selectedWeight < 120) {
+                                                  _selectedWeight++;
+                                                } else if (details.delta.dx < 0 && _selectedWeight > 1) {
+                                                  _selectedWeight--;
+                                                }
+                                              });
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(Icons.remove_circle_outline, size: 30),
+                                                  onPressed: () {
+                                                    setModalState(() {
+                                                      if (_selectedWeight > 1) _selectedWeight--;
+                                                    });
+                                                  },
+                                                ),
+                                                const SizedBox(width: 20),
+                                                Text(
+                                                  _selectedWeight.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 40,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 20),
+                                                IconButton(
+                                                  icon: const Icon(Icons.add_circle_outline, size: 30),
+                                                  onPressed: () {
+                                                    setModalState(() {
+                                                      if (_selectedWeight < 120) _selectedWeight++;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 50),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.settings),
+                        )
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 250,
+                      child: buildMonthlyBarChart(
+                          entries: weightEntries,
+                          yAxisLabel: 'Weight (kg)',
+                          context: context),
+                    ),
+                    // buildInputSection(
+                    //   label: 'Enter your weight for this month:',
+                    //   value: currentWeight,
+                    //   onIncrement: () => setState(() => currentWeight += 1),
+                    //   onDecrement: () => setState(() => currentWeight -= 1),
+                    // ),
+
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        const Text('Abdominal Circumference Tracker',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) {
+                                final TextEditingController targetController =
+                                TextEditingController(text: '');
+                                int _selectedWeight = 60;
+
+                                return StatefulBuilder(
+                                  builder: (context, setModalState) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16,
+                                        right: 16,
+                                        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                                        top: 16,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+
+                                              const Text(
+                                                'Current Abdominal circumference?',
+                                                style:
+                                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    // handle save
+                                                  },
+                                                  child: const Text(
+                                                    "Save",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: primarySwatch,
+                                                        fontWeight: FontWeight.bold),
+                                                  )),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 25),
+                                          GestureDetector(
+                                            onHorizontalDragUpdate: (details) {
+                                              setModalState(() {
+                                                if (details.delta.dx > 0 && _selectedWeight < 120) {
+                                                  _selectedWeight++;
+                                                } else if (details.delta.dx < 0 && _selectedWeight > 1) {
+                                                  _selectedWeight--;
+                                                }
+                                              });
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(Icons.remove_circle_outline, size: 30),
+                                                  onPressed: () {
+                                                    setModalState(() {
+                                                      if (_selectedWeight > 1) _selectedWeight--;
+                                                    });
+                                                  },
+                                                ),
+                                                const SizedBox(width: 20),
+                                                Text(
+                                                  _selectedWeight.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 40,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 20),
+                                                IconButton(
+                                                  icon: const Icon(Icons.add_circle_outline, size: 30),
+                                                  onPressed: () {
+                                                    setModalState(() {
+                                                      if (_selectedWeight < 120) _selectedWeight++;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 50),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.settings),
+                        )
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 250,
+                      child: buildMonthlyBarChart(
+                          entries: circumferenceEntries,
+                          yAxisLabel: 'Circumference (cm)',
+                          context: context),
+                    ),
+                    // buildInputSection(
+                    //   label: 'Enter abdominal circumference for this month:',
+                    //   value: currentCircumference,
+                    //   onIncrement: () => setState(() => currentCircumference += 1),
+                    //   onDecrement: () => setState(() => currentCircumference -= 1),
+                    // ),
                   ],
                 ),
               ),
@@ -381,3 +607,56 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
     );
   }
 }
+
+// BarChart(
+//   BarChartData(
+//     alignment: BarChartAlignment.spaceAround,
+//     titlesData: FlTitlesData(
+//       rightTitles: const AxisTitles(
+//         sideTitles: SideTitles(showTitles: false),
+//       ),
+//       topTitles: const AxisTitles(
+//         sideTitles: SideTitles(showTitles: false),
+//       ),
+//       leftTitles: AxisTitles(
+//         axisNameSize: 30,
+//         axisNameWidget: const Text(
+//           'Calories',
+//           style: TextStyle(fontSize: 10),
+//         ),
+//         sideTitles: SideTitles(
+//           showTitles: true,
+//           reservedSize: 40, // Ensures enough space for labels
+//           getTitlesWidget: (value, meta) {
+//             // if (value == 1000 || value == 2000 || value == 3000 || value == 4000 || value == 5000) {
+//             return Text(
+//               formatMoney(value.toInt().toString()),
+//               style: const TextStyle(fontSize: 10), // Adjust size if needed
+//             );
+//             // }
+//             // return const SizedBox.shrink();
+//           },
+//         ),
+//       ),
+//       bottomTitles: AxisTitles(
+//         sideTitles: SideTitles(
+//           showTitles: true,
+//           getTitlesWidget: (value, meta) {
+//             return Text(
+//               weekDays[value.toInt()],
+//               style: const TextStyle(fontSize: 8),
+//             );
+//           },
+//         ),
+//       ),
+//     ),
+//     borderData: FlBorderData(show: false),
+//     gridData: FlGridData(
+//       drawVerticalLine: false,
+//       horizontalInterval: 1000, // Ensures step increments of 1000
+//     ),
+//     barGroups: barGroups,
+//     minY: 0,
+//     maxY: 30000, // Set max Y-axis to accommodate wider calorie values
+//   ),
+// )
