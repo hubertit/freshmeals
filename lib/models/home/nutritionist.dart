@@ -4,6 +4,7 @@ class Nutritionist {
   final String email;
   final String phoneNumber;
   final String profilePicture;
+  final String bio;
 
   Nutritionist({
     required this.userId,
@@ -11,6 +12,7 @@ class Nutritionist {
     required this.email,
     required this.phoneNumber,
     required this.profilePicture,
+    required this.bio
   });
 
   // Factory constructor to create a Nutritionist from JSON
@@ -21,6 +23,7 @@ class Nutritionist {
       email: json['email'] ?? '',
       phoneNumber: json['phone_number'] ?? '',
       profilePicture: json['profile_picture'] ?? '',
+      bio: json['bio'] ?? '',
     );
   }
 

@@ -99,7 +99,7 @@ class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.nutritionist.phoneNumber),
+                      Text(widget.nutritionist.bio),
                       // Text(
                       //   widget.nutritionist.email,
                       //   style: const TextStyle(
