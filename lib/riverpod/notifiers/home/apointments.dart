@@ -43,49 +43,110 @@ class SlotsNotifier extends StateNotifier<SlotsState> {
     }
   }
 
-  // Book appointment method
-  Future<void> bookAppointment(BuildContext context, String token,
-      String slotId, String meetingType) async {
+// Book appointment method
+  Future<void> bookAppointment(
+      BuildContext context,
+      String token,
+      String slotId,
+      String meetingType,
+      ) async {
     try {
       state = state.copyWith(isLoading: true);
-      // Request body
+
       var requestBody = {
         "token": token,
         "slot_id": slotId,
         "appointment_type": meetingType
       };
-      print(requestBody);
 
       final response = await _dio.post(
         '${baseUrl}appointments/book_appointment',
         data: requestBody,
       );
-      print(response);
-      // Check response code and show Snackbar with message
+
       if (response.data['code'] == 200) {
-        // state = SlotsState(isLoading: false, slotsData: []);
-        // ref.read(appointmentsProvider.notifier).fetchSlots(context, date);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.data['message'])),
-        );
-        if (meetingType == "Online") {
-          // context.pop();
-          launchUrl(Uri.parse("https://freshmeals.rw/app/questionnaire"));
+        final data = response.data['data'];
+        final paymentUrl = data['payment_url'];
+        final invoiceNumber = data['invoice_number'];
+
+        // Optional: Print for debugging
+        print('Payment URL: $paymentUrl');
+        print('Invoice Number: $invoiceNumber');
+
+        // If meeting is online, open questionnaire first
+        // if (meetingType == "Online") {
+        //   await launchUrl(Uri.parse("https://freshmeals.rw/app/questionnaire"));
+        // }
+
+        // Then launch payment
+        if (paymentUrl != null) {
+          await launchUrl(Uri.parse(paymentUrl));
         }
-        context.pop();
-      } else {
+
+        // Navigate to processing screen
+        context.go('/processing/${invoiceNumber}/false');
+      }
+      else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${response.data['message']}')),
         );
       }
     } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('An error occurred: $e')),
-      // );
+      // Optional: Show error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Slot not available or already booked'),backgroundColor: Colors.red,),
+      );
+      context.pop();
+      print("Error booking appointment: $e");
     } finally {
       state = state.copyWith(isLoading: false);
     }
   }
+
+
+  // // Book appointment method
+  // Future<void> bookAppointment(BuildContext context, String token,
+  //     String slotId, String meetingType) async {
+  //   try {
+  //     state = state.copyWith(isLoading: true);
+  //     // Request body
+  //     var requestBody = {
+  //       "token": token,
+  //       "slot_id": slotId,
+  //       "appointment_type": meetingType
+  //     };
+  //     print(requestBody);
+  //
+  //     final response = await _dio.post(
+  //       '${baseUrl}appointments/book_appointment',
+  //       data: requestBody,
+  //     );
+  //     print(response);
+  //     // Check response code and show Snackbar with message
+  //     if (response.data['code'] == 200) {
+  //       // state = SlotsState(isLoading: false, slotsData: []);
+  //       // ref.read(appointmentsProvider.notifier).fetchSlots(context, date);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text(response.data['message'])),
+  //       );
+  //       if (meetingType == "Online") {
+  //         // context.pop();
+  //         launchUrl(Uri.parse("https://freshmeals.rw/app/questionnaire"));
+  //       }
+  //       context.pop();
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('${response.data['message']}')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   SnackBar(content: Text('An error occurred: $e')),
+  //     // );
+  //   } finally {
+  //     state = state.copyWith(isLoading: false);
+  //   }
+  // }
 }
 
 class SlotsState {

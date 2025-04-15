@@ -355,6 +355,7 @@ class _MealDetailScreenState extends ConsumerState<NutritionDetails> {
                                                                 final appointment = ref.watch(appointmentsProvider);
                                                                 return ElevatedButton(
                                                                   onPressed: () {
+                                                                    print(slot.slotId);
                                                                     var user = ref.watch(userProvider);
                                                                     ref.read(appointmentsProvider.notifier).bookAppointment(
                                                                         context, user!.user!.token, slot.slotId, _meetingType);
