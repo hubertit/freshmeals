@@ -117,9 +117,9 @@ class _RiderScreenState extends ConsumerState<AppointmentsScreen> {
                                     return CoverContainer(
                                       children: [
                                         address("Appointment Date",
-                                            appontment.appointmentDate),
+                                            appontment.date),
                                         address(
-                                            "Time slot", appontment.timeSlot),
+                                            "Time slot", appontment.startTime),
                                         address(
                                             "Duration", appontment.duration),
                                         address("Nutritionist",

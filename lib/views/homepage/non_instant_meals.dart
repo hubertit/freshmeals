@@ -122,7 +122,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                               const EdgeInsets.only( top: 10),
                           width: double.maxFinite,
                           decoration: BoxDecoration(
-                              color: const Color(0xff0d1e7dd),
+                              color: const Color(0xFF0d1e7dd),
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: const Color(0xffbadbcc))),
                           child: const Text.rich(

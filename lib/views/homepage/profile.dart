@@ -104,11 +104,11 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: MaterialCommunityIcons.shopping,
               ),
               ProfileItemIcon(
-                title: 'Nutrition consultation',
+                title: 'My appointments',
                 iconSize: 18,
                 onPressed: () {
-                  context.push("/nutritionists");
-                  // context.push('/myAppointments');
+                  // context.push("/nutritionists");
+                  context.push('/myAppointments');
 
                     // showModalBottomSheet(
                     //   context: context,
