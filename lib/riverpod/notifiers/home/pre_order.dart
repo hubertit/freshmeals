@@ -15,19 +15,19 @@ class PreOrderNotifier extends StateNotifier<PreOrderState> {
   }
 
   Future<void> fetchBreakfastMeals(BuildContext context, String token) async {
-    await _fetchMealsByCategory(context, token, "1");
+    await _fetchMealsByCategory(context, token, "16");
   }
 
   Future<void> fetchLunchDinnerMeals(BuildContext context, String token) async {
-    await _fetchMealsByCategory(context, token, "2");
+    await _fetchMealsByCategory(context, token, "17");
   }
 
   Future<void> fetchSnackMeals(BuildContext context, String token) async {
-    await _fetchMealsByCategory(context, token, "3");
+    await _fetchMealsByCategory(context, token, "18");
   }
 
   Future<void> fetchDessertMeals(BuildContext context, String token) async {
-    await _fetchMealsByCategory(context, token, "4");
+    await _fetchMealsByCategory(context, token, "19");
   }
 
   Future<void> _fetchMealsByCategory(
@@ -57,13 +57,13 @@ class PreOrderNotifier extends StateNotifier<PreOrderState> {
 
         if (isPreOrder && typeId == null) {
           state = state.copyWith(preOrderMeals: mealsList);
-        } else if (typeId == "1") {
+        } else if (typeId == "16") {
           state = state.copyWith(breakfast: mealsList);
-        } else if (typeId == "2") {
+        } else if (typeId == "17") {
           state = state.copyWith(lunchDinner: mealsList);
-        } else if (typeId == "3") {
+        } else if (typeId == "18") {
           state = state.copyWith(snacks: mealsList);
-        } else if (typeId == "4") {
+        } else if (typeId == "19") {
           state = state.copyWith(dessert: mealsList);
         } else {
           state = state.copyWith(meals: mealsList);

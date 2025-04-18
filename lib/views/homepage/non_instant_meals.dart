@@ -37,9 +37,10 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
         ref
             .read(preOrderMealsProvider.notifier)
             .fetchDessertMeals(context, user.user!.token);
-        ref
-            .read(preOrderMealsProvider.notifier)
-            .fetchLunchDinnerMeals(context, user.user!.token,);
+        ref.read(preOrderMealsProvider.notifier).fetchLunchDinnerMeals(
+              context,
+              user.user!.token,
+            );
         ref
             .read(preOrderMealsProvider.notifier)
             .fetchSnackMeals(context, user.user!.token);
@@ -118,13 +119,13 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
-                          margin:
-                              const EdgeInsets.only( top: 10),
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
                           width: double.maxFinite,
                           decoration: BoxDecoration(
                               color: const Color(0xFF0d1e7dd),
                               borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: const Color(0xffbadbcc))),
+                              border:
+                                  Border.all(color: const Color(0xffbadbcc))),
                           child: const Text.rich(
                             // textAlign: TextAlign.center,
                             // These meals take a   long time to prepare. Kindly make your order at least 24 hours in advance
@@ -172,70 +173,70 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
                         //     },
                         //   ),
                         // ),
-                        if(meals.breakfast.isNotEmpty) _buildMealSection(
-                            "Breakfast",
-                            "Start your day with wholesome and nutritious meals",
-                            List.generate(meals.breakfast.length,
-                                    (index) {
-                                  var breakF = meals.breakfast[index];
+                        if (meals.breakfast.isNotEmpty)
+                          _buildMealSection(
+                              "High-Protein",
+                              "Boost muscle growth with satisfying, protein-rich meals.",
+                              List.generate(meals.breakfast.length, (index) {
+                                var breakF = meals.breakfast[index];
 
-                                  return _buildMealCard(
-                                      breakF.name,
-                                      breakF.price,
-                                      breakF.imageUrl,
-                                          () => context
-                                          .push("/mealDetails/${breakF.mealId}"));
-                                }),
-                            "1"),
+                                return _buildMealCard(
+                                    breakF.name,
+                                    breakF.price,
+                                    breakF.imageUrl,
+                                    () => context
+                                        .push("/mealDetails/${breakF.mealId}"));
+                              }),
+                              "1"),
 
                         const SizedBox(height: 16),
-                        if(meals.lunchDinner.isNotEmpty)_buildMealSection(
-                            "Lunch/Dinner",
-                            "Fuel your afternoon with hearty, balanced meals",
-                            List.generate(meals.lunchDinner.length,
-                                    (index) {
-                                  var lunch = meals.lunchDinner[index];
+                        if (meals.lunchDinner.isNotEmpty)
+                          _buildMealSection(
+                              "Keto Low-Carb",
+                              "Low in carbs, high in healthy fats for energy.",
+                              List.generate(meals.lunchDinner.length, (index) {
+                                var lunch = meals.lunchDinner[index];
 
-                                  return _buildMealCard(
-                                      lunch.name,
-                                      lunch.price,
-                                      lunch.imageUrl,
-                                          () =>
-                                          context.push("/mealDetails/${lunch.mealId}"));
-                                }),
-                            "2"),
+                                return _buildMealCard(
+                                    lunch.name,
+                                    lunch.price,
+                                    lunch.imageUrl,
+                                    () => context
+                                        .push("/mealDetails/${lunch.mealId}"));
+                              }),
+                              "2"),
                         const SizedBox(height: 16),
-                        if(meals.dessert.isNotEmpty) _buildMealSection(
-                            "Desert",
-                            "End your day with a healthy, delicious, and satisfying meal",
-                            List.generate(meals.dessert.length,
-                                    (index) {
-                                  var dinner = meals.dessert[index];
+                        if (meals.dessert.isNotEmpty)
+                          _buildMealSection(
+                              "Weight Loss",
+                              "Calorie-controlled meals to help you shed weight effectively.",
+                              List.generate(meals.dessert.length, (index) {
+                                var dinner = meals.dessert[index];
 
-                                  return _buildMealCard(
-                                      dinner.name,
-                                      dinner.price,
-                                      dinner.imageUrl,
-                                          () => context
-                                          .push("/mealDetails/${dinner.mealId}"));
-                                }),
-                            "3"),
+                                return _buildMealCard(
+                                    dinner.name,
+                                    dinner.price,
+                                    dinner.imageUrl,
+                                    () => context
+                                        .push("/mealDetails/${dinner.mealId}"));
+                              }),
+                              "3"),
                         const SizedBox(height: 16),
-                        if(meals.snacks.isNotEmpty)_buildMealSection(
-                            "Snack",
-                            "Midday snacks to keep your energy levels high",
-                            List.generate(meals.snacks.length,
-                                    (index) {
-                                  var breakF = meals.snacks[index];
+                        if (meals.snacks.isNotEmpty)
+                          _buildMealSection(
+                              "Vegan",
+                              "Plant-powered meals made with fresh, wholesome ingredients.",
+                              List.generate(meals.snacks.length, (index) {
+                                var breakF = meals.snacks[index];
 
-                                  return _buildMealCard(
-                                      breakF.name,
-                                      breakF.price,
-                                      breakF.imageUrl,
-                                          () => context
-                                          .push("/mealDetails/${breakF.mealId}"));
-                                }),
-                            "4"),
+                                return _buildMealCard(
+                                    breakF.name,
+                                    breakF.price,
+                                    breakF.imageUrl,
+                                    () => context
+                                        .push("/mealDetails/${breakF.mealId}"));
+                              }),
+                              "4"),
                       ],
                     ),
                   ),
@@ -275,7 +276,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
           children: [
             Text(title,
                 style:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             InkWell(
                 onTap: () {
                   // context.push("/lunch/${title}");
@@ -299,6 +300,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
       ],
     );
   }
+
   Widget _buildMealCard(
       String title, String price, String imagePath, void Function()? onTap) {
     return Padding(
@@ -318,7 +320,7 @@ class _LunchPageState extends ConsumerState<NonInstantMealsScreen> {
             children: [
               ClipRRect(
                 borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(10)),
+                    const BorderRadius.vertical(top: Radius.circular(10)),
                 child: Image.network(
                   imagePath, fit: BoxFit.cover,
                   width: double
