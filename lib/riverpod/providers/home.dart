@@ -14,6 +14,7 @@ import 'package:freshmeals/riverpod/notifiers/home/payments.dart';
 import 'package:freshmeals/riverpod/notifiers/home/pre_order.dart';
 import 'package:freshmeals/riverpod/notifiers/home/random_meals.dart';
 import 'package:freshmeals/riverpod/notifiers/home/recommended_notifier.dart';
+import 'package:freshmeals/riverpod/notifiers/home/tracker_notifier.dart';
 
 import '../notifiers/cart_notifier.dart';
 import '../notifiers/home/availability_notifier.dart';
@@ -94,7 +95,10 @@ final favoritesProvider =
   return FavoriteMealsNotifier();
 });
 final calorieProvider = StateNotifierProvider<CalorieNotifier, CalorieState>(
-  (ref) => CalorieNotifier(),
+      (ref) => CalorieNotifier(),
+);
+final progressTrackerProvider = StateNotifierProvider<ProgressTrackerNotifier, ProgressTrackerState>(
+      (ref) => ProgressTrackerNotifier(),
 );
 final recommendedMealsProvider =
 StateNotifierProvider<RecomendedNotifier, RecommendedState>(

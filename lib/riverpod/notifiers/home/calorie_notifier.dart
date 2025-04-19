@@ -34,7 +34,7 @@ class CalorieNotifier extends StateNotifier<CalorieState> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        const SnackBar(content: Text('Failed to track calories ')),
       );
     } finally {
       state = state.copyWith(isLoading: false);
@@ -71,7 +71,7 @@ class CalorieNotifier extends StateNotifier<CalorieState> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        const SnackBar(content: Text('Failed')),
       );
     } finally {
       state = state.copyWith(isLoading: false);

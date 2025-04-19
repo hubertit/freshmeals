@@ -8,7 +8,7 @@ import '../../../theme/colors.dart';
 import '../../auth/widgets/input_dec.dart';
 
 Widget buildMonthlyBarChart(
-    {required List<MonthlyEntry> entries,
+    {required List<MonthlyEntry>? entries,
     required String yAxisLabel,
     required BuildContext context}) {
   return Container(
@@ -20,10 +20,13 @@ Widget buildMonthlyBarChart(
       color: Colors.white,
       borderRadius: BorderRadius.circular(5),
     ),
-    child: BarChart(
+    child: entries == null ||
+        entries.isEmpty
+        ? const Center(child: Text("No data available"))
+        : BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        maxY: entries.map((e) => e.value).reduce((a, b) => a > b ? a : b) +
+        maxY: entries!.map((e) => e.value).reduce((a, b) => a > b ? a : b) +
             10,
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
