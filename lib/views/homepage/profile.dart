@@ -48,7 +48,7 @@ class _ProfileState extends ConsumerState<Profile> {
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
     var appointment = ref.watch(appointmentsProvider);
-    print(userState!.user!.token);
+    print(userState!.user!.userId);
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(

@@ -23,8 +23,8 @@ class ProgressData {
     return ProgressData(
       userId: json['id'],
       month: json['month'] ?? '',
-      weight: (json['weight']),
-      abdomen: (json['abdomen']),
+      weight: json['weight']??'0.0',
+      abdomen: json['abdomen']??'0.0',
     );
   }
 
