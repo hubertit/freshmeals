@@ -94,12 +94,12 @@ class _AddToCartModelState extends ConsumerState<AddToCartModel> {
                       ),
                       Row(
                         children: [
-                          const Text(
-                            "For lunch",
-                            style: TextStyle(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // const Text(
+                          //   "For lunch",
+                          //   style: TextStyle(
+                          //       color: Colors.black45,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                           Spacer(),
                           Text(
                             "Rwf ${formatMoney(meal.price)}",

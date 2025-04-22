@@ -203,10 +203,10 @@ Widget buildMealCard({
                       fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 // const SizedBox(height: 4),
-                const Text(
-                  "For lunch",
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
+                // const Text(
+                //   "For lunch",
+                //   style: TextStyle(color: Colors.grey, fontSize: 12),
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

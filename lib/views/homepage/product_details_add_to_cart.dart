@@ -191,7 +191,7 @@ class ProductDetailPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return _buildSimilarProductCard(
                   title: "Salad",
-                  subtitle: "For lunch",
+                  subtitle: "",
                   price: [
                     "RWF 8000",
                     "RWF 5000",
