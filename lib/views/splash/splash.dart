@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import '../../constants/_assets.dart';
 import '../../models/user_model.dart';
 import '../../riverpod/notifiers/user_notifier.dart';
 import '../../riverpod/providers/auth_providers.dart';
+
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
@@ -18,13 +20,11 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
     _initialize();
-
     super.initState();
-
   }
+
 
   Future<void> _initialize() async {
     await Future.delayed(const Duration(seconds: 2));
@@ -52,7 +52,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(AssetsUtils.logo,height: 200,),
+          Image.asset(
+            AssetsUtils.logo,
+            height: 200,
+          ),
         ],
       ),
     ));

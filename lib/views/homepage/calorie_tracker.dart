@@ -377,7 +377,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text(
-                                          'Enter your current Weight?',
+                                          'Enter your current Weight(Kg)?',
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
@@ -514,7 +514,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text(
-                                          'Current Abdominal circumference?',
+                                          'Current Abdominal circumference(Cm)?',
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
