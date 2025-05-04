@@ -26,7 +26,7 @@ Widget buildMonthlyBarChart(
         : BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        minY: 40, // Fixed minimum Y
+        minY: 20, // Fixed minimum Y
         maxY: 180, // Fixed maximum Y
         // maxY: entries!.map((e) => e.value).reduce((a, b) => a > b ? a : b) +
         //     10,
@@ -101,7 +101,7 @@ Widget buildWeightBarChart({
         : BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        minY: 20,
+        minY: 40,
         maxY: 150,
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
