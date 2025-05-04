@@ -474,7 +474,7 @@ class _CalorieTrackerPageState extends ConsumerState<CalorieTrackerPage> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : buildMonthlyBarChart(
+                    : buildWeightBarChart(
                         entries: progressState.weightEntries,
                         yAxisLabel: 'Weight (kg)',
                         context: context),

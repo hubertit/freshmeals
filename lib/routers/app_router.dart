@@ -40,7 +40,7 @@ import '../views/auth/register.dart';
 import '../views/auth/reset_password.dart';
 import '../views/homepage/my_order.dart';
 import '../views/homepage/my_order_details.dart';
-import '../views/homepage/calorie_tracker.dart';
+import '../views/homepage/progress_tracker.dart';
 import '../views/splash/splash.dart';
 import '../views/welcome/weight_input.dart';
 
