@@ -72,7 +72,7 @@ Widget buildMonthlyBarChart(
             barRods: [
               BarChartRodData(
                 toY: entries[index].value,
-                width: 16,
+                width: 18,
                 color: primarySwatch,
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -102,7 +102,7 @@ Widget buildWeightBarChart({
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
         minY: 40,
-        maxY: 150,
+        maxY: 160,
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
