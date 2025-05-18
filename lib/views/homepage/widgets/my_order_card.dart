@@ -33,8 +33,8 @@ class _CartCardState extends ConsumerState<MyOrderCard> {
         child: Row(
           children: [
             Container(
-              // height: 100,
-              width: 95,
+              height: 100,
+              width: 100,
               padding: const EdgeInsets.all(1),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -48,7 +48,7 @@ class _CartCardState extends ConsumerState<MyOrderCard> {
               ),
               child: Image.network(
                 widget.order.imageUrl,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
             Expanded(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshmeals/constants/_assets.dart';
+import 'package:freshmeals/riverpod/notifiers/settings.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:freshmeals/utls/callbacks.dart';
 import 'package:freshmeals/utls/styles.dart';
@@ -47,6 +48,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
     var orderState = ref.watch(orderProvider);
     var summary = ref.watch(cartProvider);
     var subscription = ref.watch(subscriptionsProvider);
+    var settingsState = ref.watch(settingsProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -68,23 +70,56 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order ID Section
-              // const Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       'Order ID',
-              //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              //     ),
-              //     Text(
-              //       '#OD2204',
-              //       style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.green),
-              //     ),
-              //   ],
-              // ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  color: const Color(0xff0d1e7dd),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: const Color(0xffbadbcc)),
+                ),
+                child:  Text.rich(
+                  TextSpan(
+                    style: TextStyle(fontSize: 14),
+                    children: [
+                      const TextSpan(
+                        text: "Call us at ",
+                      ),
+                      TextSpan(
+                        text: settingsState.address!.phone,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: " — our friendly support team is ready to assist you.",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              CoverContainer(
+                margin: 0,
+                children: [
+                  const Text(
+                    "🕒 Working Hours",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _WorkingHourRow(
+                    day: settingsState.hours!.day,
+                    hours: settingsState.hours!.workingHours,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              if (settingsState.hours != null)
               DropdownButtonFormField<String>(
                 value: _meetingType,
                 decoration: InputDecoration(
@@ -111,7 +146,6 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
               ),
               const SizedBox(height: 20),
 
-              const SizedBox(height: 16),
               if (_meetingType == "Delivery")
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -335,6 +369,8 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                   ],
                 ),
               ),
+
+
               const SizedBox(height: 16),
               if (subscription!.activeSubscription != null)
                 Container(
@@ -371,6 +407,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                     ),
                   ),
                 ),
+
               const SizedBox(height: 16),
               const Text(
                 'Comment',
@@ -462,6 +499,37 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
       //     ),
       //   ),
       // ),
+    );
+  }
+}
+
+
+class _WorkingHourRow extends StatelessWidget {
+  final String day;
+  final String hours;
+
+  const _WorkingHourRow({
+    Key? key,
+    required this.day,
+    required this.hours,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("• ", style: TextStyle(fontSize: 16)),
+          Expanded(
+            child: Text(
+              "$day: $hours",
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

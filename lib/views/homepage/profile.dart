@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/constants/_assets.dart';
+import 'package:freshmeals/riverpod/notifiers/settings.dart';
 import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
@@ -48,7 +49,8 @@ class _ProfileState extends ConsumerState<Profile> {
   Widget build(BuildContext context) {
     var userState = ref.watch(userProvider);
     var appointment = ref.watch(appointmentsProvider);
-    print(userState!.user!.userId);
+    var settingsState = ref.watch(settingsProvider);
+    print(userState!.user!.token);
     return Scaffold(
       backgroundColor: scaffold,
       appBar: PreferredSize(
@@ -278,25 +280,22 @@ class _ProfileState extends ConsumerState<Profile> {
                 leadingIcon: Icons.edit,
               ),
               ProfileItemIcon(
-                title: 'Help Center',
+                title: 'Contact Us',
                 iconSize: 18,
                 onPressed: () async {
-                  const String email = "info@freshmeals.rw";
-                  final Uri emailLaunchUri = Uri(
-                    scheme: 'mailto',
-                    path: email,
-                    queryParameters: {
-                      'subject': 'Support Request', // Optional subject
-                    },
+                   String phone = settingsState.address!.phone??"+250788606765";
+                  final Uri phoneLaunchUri = Uri(
+                    scheme: 'tel',
+                    path: phone,
                   );
 
-                  if (await canLaunchUrl(emailLaunchUri)) {
-                    await launchUrl(emailLaunchUri);
+                  if (await canLaunchUrl(phoneLaunchUri)) {
+                    await launchUrl(phoneLaunchUri);
                   } else {
-                    // Handle error (optional)
-                    print("Could not launch email client");
+                    print("Could not launch phone dialer");
                   }
                 },
+
                 leadingIcon: MaterialCommunityIcons.help,
               ),
               // ProfileItemIcon(

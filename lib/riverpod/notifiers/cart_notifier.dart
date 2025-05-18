@@ -108,6 +108,8 @@ class CartNotifier extends StateNotifier<CartState?> {
 
   Future<void> addToCart(WidgetRef ref, BuildContext context, var json) async {
     try {
+      print("_------- Cart_-------");
+      print(json);
       state = state!.copyWith(isLoading: true);
       final response = await _dio.post(
         '${baseUrl}cart/add',
@@ -128,7 +130,6 @@ class CartNotifier extends StateNotifier<CartState?> {
         }
         print(response.data);
 
-
         // if (response.data['code'] == 400) {
         context.pop();
 
@@ -144,7 +145,9 @@ class CartNotifier extends StateNotifier<CartState?> {
             content: Text(
               response.data['message'],
               style: TextStyle(
-                  color: response.data['code'] == 400 ? const Color(0xff842029) : null),
+                  color: response.data['code'] == 400
+                      ? const Color(0xff842029)
+                      : null),
             ),
           ),
         );

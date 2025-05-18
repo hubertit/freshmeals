@@ -10,6 +10,7 @@ import 'package:freshmeals/views/homepage/profile.dart';
 import 'package:freshmeals/views/homepage/recomended_screen.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../riverpod/notifiers/settings.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/general.dart';
 import '../../riverpod/providers/home.dart';
@@ -31,10 +32,10 @@ class _HomepageState extends ConsumerState<Homepage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var isFist = ref.watch(firstTimeProvider);
-      if(isFist){
+      if (isFist) {
         context.go("/newAddress");
       }
-      ref.read(firstTimeProvider.notifier).state =false;
+      ref.read(firstTimeProvider.notifier).state = false;
       var user = ref.watch(userProvider);
       if (user!.user != null) {
         await ref
@@ -47,7 +48,7 @@ class _HomepageState extends ConsumerState<Homepage> {
             .verifyToken(context, user.user!.token, ref);
       });
     });
-
+    ref.read(settingsProvider.notifier).loadSettings();
     super.initState();
   }
 
