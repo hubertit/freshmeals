@@ -37,16 +37,16 @@ class _RiderScreenState extends ConsumerState<MyAppointmentsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Appointments"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                showDialog<String>(
-                  context: context,
-                  builder: (context) => ChoiceDialog(),
-                );
-              },
-              icon: const Icon(Icons.add_circle_outline))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         showDialog<String>(
+        //           context: context,
+        //           builder: (context) => ChoiceDialog(),
+        //         );
+        //       },
+        //       icon: const Icon(Icons.add_circle_outline))
+        // ],
       ),
       body: SingleChildScrollView(
         child: Column(
