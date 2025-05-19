@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:freshmeals/constants/_assets.dart';
@@ -7,6 +8,7 @@ import 'package:freshmeals/theme/colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../riverpod/providers/auth_providers.dart';
 import '../../riverpod/providers/home.dart';
 import 'widgets/choices_dialogue.dart';
@@ -26,6 +28,7 @@ class _ProfileState extends ConsumerState<Profile> {
     // TODO: implement initState
     super.initState();
   }
+
   String _meetingType = "Online"; // Default selection
 
   void sendEmail() async {
@@ -112,102 +115,101 @@ class _ProfileState extends ConsumerState<Profile> {
                   // context.push("/nutritionists");
                   context.push('/myAppointments');
 
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   shape: const RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.vertical(
-                    //         top: Radius.circular(15.0)),
-                    //   ),
-                    //   builder: (context) {
-                    //     return Padding(
-                    //       padding: const EdgeInsets.symmetric(
-                    //           horizontal: 16.0, vertical: 50),
-                    //       child: SizedBox(
-                    //         width: double.infinity,
-                    //         height: 150,
-                    //         child: Column(
-                    //           children: [
-                    //             DropdownButtonFormField<String>(
-                    //               value: _meetingType,
-                    //               decoration: InputDecoration(
-                    //                 border: OutlineInputBorder(
-                    //                   borderRadius:
-                    //                   BorderRadius.circular(
-                    //                       8),
-                    //                 ),
-                    //                 contentPadding:
-                    //                 const EdgeInsets
-                    //                     .symmetric(
-                    //                     vertical: 12,
-                    //                     horizontal: 16),
-                    //               ),
-                    //               items: ["Online", "In-person"]
-                    //                   .map((String option) {
-                    //                 return DropdownMenuItem<
-                    //                     String>(
-                    //                   value: option,
-                    //                   child: Text(option),
-                    //                 );
-                    //               }).toList(),
-                    //               onChanged: (String? newValue) {
-                    //                 setState(() {
-                    //                   _meetingType = newValue!;
-                    //                 });
-                    //               },
-                    //             ),
-                    //
-                    //             Container(
-                    //               width: double.maxFinite,
-                    //               margin: EdgeInsets.only(top: 20),
-                    //               child: ElevatedButton(
-                    //                 onPressed: () {
-                    //                   // if (_meetingType ==
-                    //                   //     "Online") {
-                    //                   //   context.pop();
-                    //                   //   launchUrl(Uri.parse(
-                    //                   //       "https://freshmeals.rw/app/questionnaire"));
-                    //                   // } else {
-                    //                   ref
-                    //                       .read(appointmentsProvider.notifier)
-                    //                       .bookAppointment(
-                    //                       context, userState.user!.token, _meetingType
-                    //                     // "$_eventDate",
-                    //                     // appontment
-                    //                     //     .startTime,
-                    //                     // "${calculateDuration(appontment.startTime, appontment.endTime)}",
-                    //                     // ref,_meetingType
-                    //                   );
-                    //                   // }
-                    //                 },
-                    //                 style: ElevatedButton.styleFrom(
-                    //                   backgroundColor:
-                    //                   primarySwatch, // Use your app's theme color
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 14),
-                    //                   shape: RoundedRectangleBorder(
-                    //                     borderRadius: BorderRadius.circular(10),
-                    //                   ),
-                    //                 ),
-                    //                 child: appointment!.isLoading
-                    //                     ? const Center(
-                    //                   child: CircularProgressIndicator(),
-                    //                 )
-                    //                     : const Text(
-                    //                   "Request For Nutritionist Appointment",
-                    //                   style: TextStyle(
-                    //                       fontSize: 16,
-                    //                       fontWeight: FontWeight.bold,
-                    //                       color: Colors.white),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-
+                  // showModalBottomSheet(
+                  //   context: context,
+                  //   shape: const RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.vertical(
+                  //         top: Radius.circular(15.0)),
+                  //   ),
+                  //   builder: (context) {
+                  //     return Padding(
+                  //       padding: const EdgeInsets.symmetric(
+                  //           horizontal: 16.0, vertical: 50),
+                  //       child: SizedBox(
+                  //         width: double.infinity,
+                  //         height: 150,
+                  //         child: Column(
+                  //           children: [
+                  //             DropdownButtonFormField<String>(
+                  //               value: _meetingType,
+                  //               decoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius:
+                  //                   BorderRadius.circular(
+                  //                       8),
+                  //                 ),
+                  //                 contentPadding:
+                  //                 const EdgeInsets
+                  //                     .symmetric(
+                  //                     vertical: 12,
+                  //                     horizontal: 16),
+                  //               ),
+                  //               items: ["Online", "In-person"]
+                  //                   .map((String option) {
+                  //                 return DropdownMenuItem<
+                  //                     String>(
+                  //                   value: option,
+                  //                   child: Text(option),
+                  //                 );
+                  //               }).toList(),
+                  //               onChanged: (String? newValue) {
+                  //                 setState(() {
+                  //                   _meetingType = newValue!;
+                  //                 });
+                  //               },
+                  //             ),
+                  //
+                  //             Container(
+                  //               width: double.maxFinite,
+                  //               margin: EdgeInsets.only(top: 20),
+                  //               child: ElevatedButton(
+                  //                 onPressed: () {
+                  //                   // if (_meetingType ==
+                  //                   //     "Online") {
+                  //                   //   context.pop();
+                  //                   //   launchUrl(Uri.parse(
+                  //                   //       "https://freshmeals.rw/app/questionnaire"));
+                  //                   // } else {
+                  //                   ref
+                  //                       .read(appointmentsProvider.notifier)
+                  //                       .bookAppointment(
+                  //                       context, userState.user!.token, _meetingType
+                  //                     // "$_eventDate",
+                  //                     // appontment
+                  //                     //     .startTime,
+                  //                     // "${calculateDuration(appontment.startTime, appontment.endTime)}",
+                  //                     // ref,_meetingType
+                  //                   );
+                  //                   // }
+                  //                 },
+                  //                 style: ElevatedButton.styleFrom(
+                  //                   backgroundColor:
+                  //                   primarySwatch, // Use your app's theme color
+                  //                   padding: const EdgeInsets.symmetric(
+                  //                       vertical: 14),
+                  //                   shape: RoundedRectangleBorder(
+                  //                     borderRadius: BorderRadius.circular(10),
+                  //                   ),
+                  //                 ),
+                  //                 child: appointment!.isLoading
+                  //                     ? const Center(
+                  //                   child: CircularProgressIndicator(),
+                  //                 )
+                  //                     : const Text(
+                  //                   "Request For Nutritionist Appointment",
+                  //                   style: TextStyle(
+                  //                       fontSize: 16,
+                  //                       fontWeight: FontWeight.bold,
+                  //                       color: Colors.white),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // );
 
                   // showDialog<String>(
                   //   context: context,
@@ -223,6 +225,14 @@ class _ProfileState extends ConsumerState<Profile> {
                   context.push('/payments');
                 },
                 leadingIcon: MaterialCommunityIcons.contactless_payment,
+              ),
+              ProfileItemIcon(
+                title: 'Nutritionist Consultation',
+                iconSize: 18,
+                onPressed: () {
+                  context.push("/nutritionists");
+                },
+                leadingIcon: MaterialCommunityIcons.stethoscope,
               ),
               ProfileItemIcon(
                 title: 'Progress Tracker',
@@ -283,19 +293,13 @@ class _ProfileState extends ConsumerState<Profile> {
                 title: 'Contact Us',
                 iconSize: 18,
                 onPressed: () async {
-                   String phone = settingsState.address!.phone??"+250788606765";
-                  final Uri phoneLaunchUri = Uri(
+                  String phone = settingsState.address!.phone;
+                  final Uri uri = Uri(
                     scheme: 'tel',
                     path: phone,
                   );
-
-                  if (await canLaunchUrl(phoneLaunchUri)) {
-                    await launchUrl(phoneLaunchUri);
-                  } else {
-                    print("Could not launch phone dialer");
-                  }
+                  launchUrl(uri);
                 },
-
                 leadingIcon: MaterialCommunityIcons.help,
               ),
               // ProfileItemIcon(
