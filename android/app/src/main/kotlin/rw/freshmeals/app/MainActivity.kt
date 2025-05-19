@@ -1,4 +1,4 @@
-package rw.freshmeals.freshmeals
+package rw.freshmeals.app
 
 import io.flutter.embedding.android.FlutterActivity
 
