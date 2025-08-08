@@ -244,7 +244,3 @@ flutter build ios --release
 - Verify third‑party platform setup (Facebook/Google/Maps) in both Android and iOS before release builds.
 
 
-## License
-
-Proprietary. All rights reserved. If you intend to open‑source, replace this section with the appropriate license.
-
