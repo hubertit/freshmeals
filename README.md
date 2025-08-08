@@ -4,6 +4,9 @@ FreshMeals is a cross‑platform Flutter app for discovering meals, managing a c
 
 - Repository: [`hubertit/freshmeals`](https://github.com/hubertit/freshmeals.git)
 
+### Status
+- Temporarily disabled: Google Sign‑In and push notifications
+
 
 ### Highlights
 - Built with Flutter 3 and Dart 3
@@ -11,8 +14,8 @@ FreshMeals is a cross‑platform Flutter app for discovering meals, managing a c
 - Declarative navigation with `go_router`
 - REST API client with `dio`
 - Persistent session via `shared_preferences`
-- Local notifications
-- Facebook and Google Sign‑In integrations (Google backend exchange stubbed)
+- Push notifications (temporarily disabled)
+- Facebook Login; Google Sign‑In temporarily disabled (backend exchange stubbed)
 
 
 ## Features
@@ -23,7 +26,7 @@ FreshMeals is a cross‑platform Flutter app for discovering meals, managing a c
   - Token verification and session persistence (stored in `SharedPreferences`)
   - Splash screen auto‑redirects to Home or Login based on stored user
   - Facebook Login (via `flutter_facebook_auth`)
-  - Google Sign‑In (client sign‑in complete; backend token exchange placeholder)
+  - Google Sign‑In (temporarily disabled; backend token exchange placeholder)
 
 - Onboarding & Profile
   - Welcome screens and profile capture: age, gender, height, weight
@@ -56,7 +59,7 @@ FreshMeals is a cross‑platform Flutter app for discovering meals, managing a c
   - Calorie tracker and progress tracker screens
 
 - Notifications
-  - Local notifications for cart and system events
+  - Push notifications temporarily disabled (local notifications may still be used during development)
 
 
 ## Architecture Overview
